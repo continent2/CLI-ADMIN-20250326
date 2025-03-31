@@ -1,11 +1,13 @@
 // Import Dependencies
 import { useEffect, useReducer } from "react";
+
 import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
 import isString from "lodash/isString";
 
 // Local Imports
 import axios from "utils/axios";
+
 import { isTokenValid, setSession } from "utils/jwt";
 import { AuthContext } from "./context";
 
@@ -82,10 +84,16 @@ export function AuthProvider({ children }) {
 
         if (authToken && isTokenValid(authToken)) {
           setSession(authToken);
-
-          const response = await axios.get("/user/profile");
-          const { user } = response.data;
-
+          //const response = await axios.get("/user/profile");
+          const { user } = {
+            "user": {
+              "id": "7",
+              "username": "elegantBanana",
+              "firstName": "elegantBanana",
+              "lastName": ""
+            },
+            "auth": true
+          };
           dispatch({
             type: "INITIALIZE",
             payload: {
@@ -113,7 +121,6 @@ export function AuthProvider({ children }) {
         });
       }
     };
-
     init();
   }, []);
 
@@ -123,19 +130,16 @@ export function AuthProvider({ children }) {
     });
 
     try {
-      const response = await axios.post("/login", {
-        username,
-        password,
+      const response = await axios.post("/agency/login", {
+            "username" : username,
+            "pw" : password
       });
-
-      const { authToken, user } = response.data;
+      const { token :authToken, userinfo: user } = response.data;
 
       if (!isString(authToken) && !isObject(user)) {
         throw new Error("Response is not vallid");
       }
-
       setSession(authToken);
-
       dispatch({
         type: "LOGIN_SUCCESS",
         payload: {
