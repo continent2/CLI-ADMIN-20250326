@@ -9,15 +9,15 @@ export default function Setting() {
                     설정
                 </h2>
                 <div
-                    className="p-[50px] bg-white dark:bg-dark-700 border border-gray-200 rounded-lg shadow-sm border-none">
+                    className="p-[24px] md:p-[38px] lg:p-[54px] bg-white dark:bg-dark-700 border border-gray-200 rounded-lg shadow-sm border-none">
                     <div className="grid grid-cols-12 place-content-start gap-4 sm:gap-5 lg:gap-9">
-                        <div className="col-span-12 lg:col-span-6">
+                        <div className="col-span-12 md:col-span-6">
                             <div className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5">
                                 <Input placeholder="필드 1 값" label=" 필드 1" disabled/>
                                 <Input placeholder="필드 2 값" label=" 필드 2" disabled/>
                                 <Input placeholder="필드 3 값" label=" 필드 3" disabled/>
                                 {/*Action buttons*/}
-                                <div className="mt-5 flex justify-center space-x-3 rtl:space-x-reverse">
+                                <div className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
                                     <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
                                     <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium" color="primary">
                                         확인하다
@@ -25,7 +25,7 @@ export default function Setting() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-12 lg:col-span-6 h-full">
+                        <div className="col-span-12 md:col-span-6 h-full">
                             <div className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 h-full">
                                 <Input placeholder="필드 4 값" label=" 필드 4" disabled/>
                                 <Input placeholder="필드 5 값" label=" 필드 5" disabled/>
@@ -41,7 +41,7 @@ export default function Setting() {
                                     </div>
                                 </div>
                                 {/*Action buttons*/}
-                                <div className="mt-5 flex justify-center space-x-3 rtl:space-x-reverse">
+                                <div className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
                                     <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
                                     <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium" color="primary">
                                         확인하다
@@ -49,13 +49,13 @@ export default function Setting() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-12 lg:col-span-6">
+                        <div className="col-span-12 md:col-span-6">
                             <div className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5">
                                 <Input placeholder="필드 6 값" label=" 필드 6" disabled/>
                                 <Input placeholder="필드 7 값" label=" 필드 7" disabled/>
                                 <Input placeholder="필드 8 값" label=" 필드 8" disabled/>
                                 {/*Action buttons*/}
-                                <div className="mt-5 flex justify-center space-x-3 rtl:space-x-reverse">
+                                <div className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
                                     <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
                                     <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium" color="primary">
                                         확인하다

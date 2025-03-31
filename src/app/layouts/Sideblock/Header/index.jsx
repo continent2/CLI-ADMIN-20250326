@@ -13,12 +13,15 @@ import {useBreakpointsContext} from "app/contexts/breakpoint/context";
 import {Profile} from "../Profile";
 import {Search} from "components/template/Search";
 import {useThemeContext} from "app/contexts/theme/context";
+import {Radio, RadioGroup} from "@headlessui/react";
+import {MoonIcon, SunIcon} from "@heroicons/react/24/outline/index.js";
 
 // ----------------------------------------------------------------------
 
 export function Header() {
     const {smAndUp} = useBreakpointsContext();
     const {cardSkin} = useThemeContext();
+    const { themeMode, setThemeMode } = useThemeContext();
 
     return (
         <header
@@ -80,6 +83,44 @@ export function Header() {
                 <RightSidebar/>
                 <LanguageSelector/>
                 <Profile/>
+                <div>
+                    <RadioGroup
+                        value={themeMode}
+                        onChange={setThemeMode}
+                        className="flex w-max min-w-full rounded-3xl bg-gray-200 p-1 text-gray-600 dark:bg-dark-700 dark:text-dark-200"
+                    >
+                        <Radio
+                            value="light"
+                            className={({checked}) =>
+                                clsx(
+                                    "flex-1 shrink-0 whitespace-nowrap rounded-3xl p-2 font-medium",
+                                    checked
+                                        ? "bg-white shadow dark:bg-dark-500 dark:text-dark-100"
+                                        : "hover:text-gray-800 focus:text-gray-800 dark:hover:text-dark-100 dark:focus:text-dark-100",
+                                )
+                            }
+                            as={Button}
+                            unstyled
+                        >
+                            <SunIcon className="size-5"/>
+                        </Radio>
+                        <Radio
+                            value="dark"
+                            className={({checked}) =>
+                                clsx(
+                                    "flex-1 shrink-0 whitespace-nowrap rounded-3xl p-2 font-medium",
+                                    checked
+                                        ? "bg-white shadow dark:bg-dark-500 dark:text-dark-100"
+                                        : "hover:text-gray-800 focus:text-gray-800 dark:hover:text-dark-100 dark:focus:text-dark-100",
+                                )
+                            }
+                            as={Button}
+                            unstyled
+                        >
+                            <MoonIcon className="size-5"/>
+                        </Radio>
+                    </RadioGroup>
+                </div>
             </div>
         </header>
     );

@@ -26,12 +26,12 @@ export function DateFilter({ column, title, config }) {
       buttonContent={
         <>
           <CalendarIcon className="size-4" />
-          <span> {title}</span>
+          <span className="text-sm"> {title}</span>
 
           {selectedValues && (
             <>
               <div className="h-full w-px bg-gray-300 dark:bg-dark-450" />
-              <span>
+              <span className="text-sm">
                 {dayjs(selectedValues[0]).locale(locale).format("DD MMM YYYY")}{" "}
                 -{" "}
                 {dayjs(selectedValues[1]).locale(locale).format("DD MMM YYYY")}

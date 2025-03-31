@@ -10,9 +10,6 @@ import PropTypes from "prop-types";
 // Local Imports
 import { Input} from "components/ui";
 import {useBreakpointsContext} from "app/contexts/breakpoint/context";
-import {TableConfig} from "./TableConfig";
-import {rolesOptions} from "./data";
-import {RoleFilter} from "./RoleFilter";
 import { DateFilter } from "components/shared/table/DateFilter";
 
 // ----------------------------------------------------------------------
@@ -50,7 +47,6 @@ export function Toolbar({table}) {
                                 }}
                             />
                         )}
-                        <TableConfig table={table}/>
                     </div>
                     <div
                         className={clsx(
@@ -58,12 +54,6 @@ export function Toolbar({table}) {
                             isFullScreenEnabled ? "px-4 sm:px-5" : "px-[--margin-x]",
                         )}
                     >
-                        {table.getColumn("site") && (
-                            <RoleFilter
-                                column={table.getColumn("site")}
-                                options={rolesOptions}
-                            />
-                        )}
                     </div>
                 </>
             ) : (
@@ -78,14 +68,8 @@ export function Toolbar({table}) {
                             : "var(--margin-x)",
                     }}
                 >
-                    {table.getColumn("site") && (
-                        <RoleFilter
-                            column={table.getColumn("site")}
-                            options={rolesOptions}
-                        />
-                    )}
 
-                    <div className="flex shrink-0 space-x-2 justify-end rtl:space-x-reverse">
+                    <div className="flex shrink-0 space-x-2 rtl:space-x-reverse">
                         <SearchInput table={table}/>
                         {table.getColumn("date") && (
                             <DateFilter
@@ -97,7 +81,6 @@ export function Toolbar({table}) {
                                 }}
                             />
                         )}
-                        <TableConfig table={table}/>
                     </div>
                 </div>
             )}

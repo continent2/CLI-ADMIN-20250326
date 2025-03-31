@@ -107,7 +107,7 @@ function DesktopView({
             as={Button}
             variant="outlined"
             className={clsx(
-              "h-8 gap-2 whitespace-nowrap px-2.5 text-xs",
+              "h-8 gap-2 whitespace-nowrap px-2.5 text-xs p-[18px]",
               open
                 ? "border-primary-600 ring ring-primary-500/50 dark:border-primary-500"
                 : "border-dashed",

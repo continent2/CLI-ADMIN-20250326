@@ -84,14 +84,14 @@ export const menu = {
             transKey: '사이트 관리자 (사이트 어드민)',
             Icon: HomeIcon,
         },
-        {
-            id: 'menu.registerAsASite ',
-            path: path( ROOT_MENU,'/registerAsASite'),
-            type: NAV_TYPE_ITEM,
-            title: '',
-            transKey: '사이트로 등록하세요. (사이트로 등록하십시오.)',
-            Icon: HomeIcon,
-        },
+        // {
+        //     id: 'menu.registerAsASite ',
+        //     path: path( ROOT_MENU,'/registerAsASite'),
+        //     type: NAV_TYPE_ITEM,
+        //     title: '',
+        //     transKey: '사이트로 등록하세요. (사이트로 등록하십시오.)',
+        //     Icon: HomeIcon,
+        // },
         {
             id: 'menu.adminstratorForm ',
             path: path( ROOT_MENU,'/adminstratorForm'),

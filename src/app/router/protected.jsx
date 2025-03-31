@@ -38,25 +38,25 @@ const protectedRoutes = {
             {
               path: "member",
               lazy: async () => ({
-                Component: (await import("app/pages/Blank.jsx")).default,
+                Component: (await import("app/pages/member/Member.jsx")).default,
               }),
             },
             {
               path: "site",
               lazy: async () => ({
-                Component: (await import("app/pages/Blank.jsx")).default,
+                Component: (await import("app/pages/site/Site.jsx")).default,
               }),
             },
             {
               path: "registerYourSite",
               lazy: async () => ({
-                Component: (await import("app/pages/Blank.jsx")).default,
+                Component: (await import("app/pages/site/SiteRegistrationForm.jsx")).default,
               }),
             },
             {
               path: "withdrawalDetail",
               lazy: async () => ({
-                Component: (await import("app/pages/Blank.jsx")).default,
+                Component: (await import("app/pages/withdrawalHistory/WithdrawalHistory.jsx")).default,
               }),
             },
             {
@@ -74,7 +74,7 @@ const protectedRoutes = {
             {
               path: "siteAdministrator",
               lazy: async () => ({
-                Component: (await import("app/pages/Blank.jsx")).default,
+                Component: (await import("app/pages/siteAdminstrator/SiteAdminstrator.jsx")).default,
               }),
             },
             {
@@ -83,12 +83,12 @@ const protectedRoutes = {
                 Component: (await import("app/pages/adminstratorForm/AdminstratorForm.jsx")).default,
               }),
             },
-            {
-              path: "registerAsASite",
-              lazy: async () => ({
-                Component: (await import("app/pages/Blank.jsx")).default,
-              }),
-            },
+            // {
+            //   path: "registerAsASite",
+            //   lazy: async () => ({
+            //     Component: (await import("app/pages/Blank.jsx")).default,
+            //   }),
+            // },
             {
               path: "setting",
               lazy: async () => ({

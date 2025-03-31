@@ -7,7 +7,7 @@ import {Progress} from "components/ui";
 export function SplashScreen() {
     return (
         <div className="fixed grid h-full w-full place-content-center">
-            <img src={appLogo} alt="app_logo" className="size-28 rounded-[50%]"/>
+            <img src={appLogo} alt="app_logo" className="h-[200px]"/>
             <Progress
                 color="primary"
                 isIndeterminate

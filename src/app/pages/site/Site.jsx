@@ -28,7 +28,7 @@ import { GridView } from "./GridView";
 
 // ----------------------------------------------------------------------
 
-export default function Deposit() {
+export default function Site() {
     const [users, setUsers] = useState([...usersList]);
 
     const [tableSettings, setTableSettings] = useState({

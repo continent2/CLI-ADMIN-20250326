@@ -85,7 +85,7 @@ export function Toolbar({table}) {
                         />
                     )}
 
-                    <div className="flex shrink-0 space-x-2 justify-end rtl:space-x-reverse">
+                    <div className="flex shrink-0 space-x-2 rtl:space-x-reverse">
                         <SearchInput table={table}/>
                         {table.getColumn("date") && (
                             <DateFilter

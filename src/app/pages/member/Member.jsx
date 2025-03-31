@@ -28,7 +28,7 @@ import { GridView } from "./GridView";
 
 // ----------------------------------------------------------------------
 
-export default function Deposit() {
+export default function Member() {
     const [users, setUsers] = useState([...usersList]);
 
     const [tableSettings, setTableSettings] = useState({
@@ -140,6 +140,7 @@ export default function Deposit() {
                 <h2 className="truncate text-xl py-6 font-medium tracking-wide text-gray-800 dark:text-dark-50 px-[--margin-x]">
                     보증금
                 </h2>
+
                 <div
                     className={clsx(
                         "flex h-full w-full flex-col",

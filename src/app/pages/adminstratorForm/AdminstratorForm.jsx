@@ -73,18 +73,18 @@ const AdminstrarorForm = () => {
     return (
         <Page title="관리자 양식">
             <div className="transition-content px-[--margin-x] pb-6 pt-4 ">
-                <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:py-6 lg:text-2xl">
+                <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 py-6 lg:text-2xl">
                     관리자 양식
                 </h2>
 
-                <div className="p-[50px] bg-white dark:bg-dark-700 border border-gray-200 rounded-lg shadow-sm border-none">
+                <div className="p-[24px] md:p-[38px] lg:p-[54px] bg-white dark:bg-dark-700 border border-gray-200 rounded-lg shadow-sm border-none">
                     <form
                         autoComplete="off"
                         onSubmit={handleSubmit(onSubmit)}
                         id="new-post-form"
                     >
                         <div className="grid grid-cols-12 place-content-start gap-4 sm:gap-5 lg:gap-9">
-                            <div className="col-span-12 h-full lg:col-span-6">
+                            <div className="col-span-12 h-full md:col-span-6">
                                 <Card className="p-4 sm:px-5 h-full">
                                     <div className="space-y-5">
                                         <Input
@@ -116,7 +116,7 @@ const AdminstrarorForm = () => {
                                     </div>
                                 </Card>
                             </div>
-                            <div className="col-span-12 h-full space-y-4 sm:space-y-5 lg:col-span-6 lg:space-y-6 gap-4 flex flex-col">
+                            <div className="col-span-12 h-full space-y-4 sm:space-y-5 md:col-span-6 lg:space-y-6 gap-4 flex flex-col">
                                 <Card className="space-y-5 p-4 sm:px-5">
                                     <Controller
                                         render={({ field }) => (
@@ -198,20 +198,12 @@ const AdminstrarorForm = () => {
                                 </Card>
                             </div>
                         </div>
-                        <div className="flex flex-col items-center justify-center space-y-4 pt-12 sm:flex-row sm:space-y-0">
-                            <div className="flex gap-2">
-                                <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium me-4" variant="outlined">
-                                    취소
-                                </Button>
-                                <Button
-                                    className="min-w-[7rem] w-[250px] px-5 text-base font-medium"
-                                    color="primary"
-                                    type="submit"
-                                    form="new-post-form"
-                                >
-                                    구하다
-                                </Button>
-                            </div>
+                        {/*Action buttons*/}
+                        <div className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
+                            <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">취소</Button>
+                            <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium" color="primary">
+                                구하다
+                            </Button>
                         </div>
                     </form>
                 </div>

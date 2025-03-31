@@ -1,5 +1,5 @@
 // Import Dependencies
-import { Portal } from "@headlessui/react";
+import {Portal} from "@headlessui/react";
 import { clsx } from "clsx";
 
 // Local Imports
@@ -9,6 +9,8 @@ import { useThemeContext } from "app/contexts/theme/context";
 import { useDidUpdate } from "hooks";
 import { Header } from "./Header";
 import { Menu } from "./Menu";
+
+
 
 // ----------------------------------------------------------------------
 
