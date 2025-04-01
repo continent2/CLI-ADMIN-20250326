@@ -1,5 +1,6 @@
 export const APP_NAME = "Tailux";
 export const APP_KEY = "tailux";
+export const App_URL ="https://testnet.cdeposit.online:50825";
 
 // Redirect Paths
 export const REDIRECT_URL_KEY = "redirect";

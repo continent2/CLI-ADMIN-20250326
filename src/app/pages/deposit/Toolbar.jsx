@@ -11,15 +11,29 @@ import PropTypes from "prop-types";
 import { Input} from "components/ui";
 import {useBreakpointsContext} from "app/contexts/breakpoint/context";
 import {TableConfig} from "./TableConfig";
-import {rolesOptions} from "./data";
 import {RoleFilter} from "./RoleFilter";
 import { DateFilter } from "components/shared/table/DateFilter";
+import {useDepositContext} from "../../contexts/deposit/context.js";
+import {useEffect, useState} from "react";
 
 // ----------------------------------------------------------------------
 
 export function Toolbar({table}) {
     const {isXs} = useBreakpointsContext();
+    const {siteList} = useDepositContext();
+    const [siteOption, setsiteOption] = useState({});
     const isFullScreenEnabled = table.getState().tableSettings.enableFullScreen;
+
+
+
+
+    // Update the `deposit` state when `list` changes
+    useEffect(() => {
+        if (siteList && siteList.length > 0) {
+            setsiteOption(siteList);
+        }
+    }, [siteList]);
+
 
     return (
         <div className="table-toolbar">
@@ -58,10 +72,10 @@ export function Toolbar({table}) {
                             isFullScreenEnabled ? "px-4 sm:px-5" : "px-[--margin-x]",
                         )}
                     >
-                        {table.getColumn("site") && (
+                        {table.getColumn("id") && (
                             <RoleFilter
-                                column={table.getColumn("site")}
-                                options={rolesOptions}
+                                column={table.getColumn("id")}
+                                options={siteOption}
                             />
                         )}
                     </div>
@@ -78,10 +92,10 @@ export function Toolbar({table}) {
                             : "var(--margin-x)",
                     }}
                 >
-                    {table.getColumn("site") && (
+                    {table.getColumn("siteurl") && (
                         <RoleFilter
-                            column={table.getColumn("site")}
-                            options={rolesOptions}
+                            column={table.getColumn("siteurl")}
+                            options={siteOption}
                         />
                     )}
 
@@ -128,4 +142,3 @@ Toolbar.propTypes = {
 SearchInput.propTypes = {
     table: PropTypes.object,
 };
-

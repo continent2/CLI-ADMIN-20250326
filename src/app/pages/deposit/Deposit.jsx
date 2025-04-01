@@ -10,26 +10,30 @@ import {
     flexRender,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { useState } from "react";
+import {useState, useEffect} from "react";
 
 // Local Imports
-import { Page } from "components/shared/Page";
-import { Box, Card } from "components/ui";
-import { useLockScrollbar, useDidUpdate, useLocalStorage } from "hooks";
-import { fuzzyFilter } from "utils/react-table/fuzzyFilter";
-import { useSkipper } from "utils/react-table/useSkipper";
-import { Toolbar } from "./Toolbar";
-import { columns } from "./columns";
-import { usersList } from "./data";
-import { PaginationSection } from "components/shared/table/PaginationSection";
-import { SelectedRowsActions } from "./SelectedRowsActions";
-import { ListView } from "./ListView";
-import { GridView } from "./GridView";
+import {Page} from "components/shared/Page";
+import {Box, Card} from "components/ui";
+import {useLockScrollbar, useDidUpdate, useLocalStorage} from "hooks";
+import {fuzzyFilter} from "utils/react-table/fuzzyFilter";
+import {useSkipper} from "utils/react-table/useSkipper";
+import {Toolbar} from "./Toolbar";
+import {columns} from "./columns";
+import {usersList} from "./data";
+import {PaginationSection} from "components/shared/table/PaginationSection";
+import {SelectedRowsActions} from "./SelectedRowsActions";
+import {ListView} from "./ListView";
+import {GridView} from "./GridView";
+import {useDepositContext} from "../../contexts/deposit/context.js";
 
 // ----------------------------------------------------------------------
 
 export default function Deposit() {
+    const {deposits, list} = useDepositContext();
     const [users, setUsers] = useState([...usersList]);
+
+    const [deposit, setDeposit] = useState({});
 
     const [tableSettings, setTableSettings] = useState({
         enableFullScreen: false,
@@ -58,7 +62,7 @@ export default function Deposit() {
     const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
     const table = useReactTable({
-        data: users,
+        data: deposit,
         columns: columns,
         initialState: {
             pagination: {
@@ -134,6 +138,17 @@ export default function Deposit() {
 
     const WrapComponent = viewType === "list" ? Card : Box;
 
+    useEffect(() => {
+        deposits({offSet: 0, limit: 20});
+    }, []);
+
+    // Update the `deposit` state when `list` changes
+    useEffect(() => {
+        if (list && list.length > 0) {
+            setDeposit(list);
+        }
+    }, [list]);
+
     return (
         <Page title="보증금">
             <div className="transition-content w-full pb-5">
@@ -147,7 +162,7 @@ export default function Deposit() {
                         "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
                     )}
                 >
-                    <Toolbar table={table} />
+                    <Toolbar table={table}/>
                     <div
                         className={clsx(
                             "transition-content flex grow flex-col pt-3",
@@ -163,10 +178,10 @@ export default function Deposit() {
                             )}
                         >
                             {viewType === "list" && (
-                                <ListView table={table} flexRender={flexRender} rows={rows} />
+                                <ListView table={table} flexRender={flexRender} rows={rows}/>
                             )}
 
-                            {viewType === "grid" && <GridView table={table} rows={rows} />}
+                            {viewType === "grid" && <GridView table={table} rows={rows}/>}
 
                             {table.getCoreRowModel().rows.length && (
                                 <div
@@ -185,11 +200,11 @@ export default function Deposit() {
                                         "mt-3",
                                     )}
                                 >
-                                    <PaginationSection table={table} />
+                                    <PaginationSection table={table}/>
                                 </div>
                             )}
                         </WrapComponent>
-                        <SelectedRowsActions table={table} />
+                        <SelectedRowsActions table={table}/>
                     </div>
                 </div>
             </div>

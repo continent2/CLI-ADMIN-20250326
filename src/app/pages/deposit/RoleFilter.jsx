@@ -10,7 +10,6 @@ import { createScopedKeydownHandler } from "utils/dom/createScopedKeydownHandler
 
 export function RoleFilter({ column, options }) {
   const selectedValue = column?.getFilterValue() || "";
-
   return (
     <div
       data-tab
@@ -36,14 +35,14 @@ export function RoleFilter({ column, options }) {
       >
         All
       </Button>
-      {options.map((option) => (
+      {Array.isArray(options) && options.map((option) => (
         <Button
           data-tab-item
-          onClick={() => column.setFilterValue(option.value)}
-          key={option.value}
+          onClick={() => column.setFilterValue(option.siteurl)}
+          key={option.siteurl}
           className={clsx(
             "shrink-0 whitespace-nowrap rounded text-base min-w-[10%] px-5 py-2 font-medium",
-            selectedValue === option.value
+            selectedValue === option.siteurl
               ? "bg-white shadow dark:bg-dark-500 dark:text-dark-100"
               : "hover:text-gray-900 focus:text-gray-900 dark:hover:text-dark-100 dark:focus:text-dark-100",
           )}
@@ -56,7 +55,7 @@ export function RoleFilter({ column, options }) {
             orientation: "horizontal",
           })}
         >
-          {option.label}
+          {option.siteurl}
         </Button>
       ))}
     </div>

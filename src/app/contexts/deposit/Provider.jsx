@@ -1,13 +1,12 @@
 // Import Dependencies
 import { useEffect, useReducer } from "react";
-import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
-import isString from "lodash/isString";
+
 
 // Local Imports
 import axios from "utils/axios";
 import { isTokenValid, setSession } from "utils/jwt";
-import { AuthContext } from "./context";
+import { DepositContext } from "./context";
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +15,9 @@ const initialState = {
   isLoading: false,
   isInitialized: false,
   errorMessage: null,
-  user: null,
+  list: null,
+  siteList: null,
+  count: null,
 };
 
 const reducerHandlers = {
@@ -37,17 +38,18 @@ const reducerHandlers = {
     };
   },
 
-  LOGIN_SUCCESS: (state, action) => {
-    const { user } = action.payload;
+  DEPOSIT_SUCCESS: (state, action) => {
+    const { list,siteList,count  } = action.payload;
     return {
       ...state,
-      isAuthenticated: true,
       isLoading: false,
-      user,
+      list,
+      siteList,
+      count
     };
   },
 
-  LOGIN_ERROR: (state, action) => {
+  DEPOSIT_ERROR: (state, action) => {
     const { errorMessage } = action.payload;
 
     return {
@@ -56,12 +58,6 @@ const reducerHandlers = {
       isLoading: false,
     };
   },
-
-  LOGOUT: (state) => ({
-    ...state,
-    isAuthenticated: false,
-    user: null,
-  }),
 };
 
 const reducer = (state, action) => {
@@ -72,7 +68,7 @@ const reducer = (state, action) => {
   return state;
 };
 
-export function AuthProvider({ children }) {
+export function DepositProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
 
@@ -123,31 +119,52 @@ export function AuthProvider({ children }) {
     init();
   }, []);
 
-  const login = async ({ username, password }) => {
-    dispatch({
-      type: "LOGIN_REQUEST",
-    });
+  const deposits = async ({ offSet, limit }) => {
+    // dispatch({
+    //   type: "LOGIN_REQUEST",
+    // });
 
     try {
-      const response = await axios.post("/agency/login", {
-            "username" : username,
-            "pw" : password
-      });
-      const { token :authToken, userinfo: user } = response.data;
+      const token = localStorage.getItem("authToken");
 
-      if (!isString(authToken) && !isObject(user)) {
-        throw new Error("Response is not vallid");
-      }
-      setSession(authToken);
+      const response = await axios.get(
+          `/query/list/custom/deposit/_/_/id/DESC/${offSet}/${limit}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+            timeout: 5000, // Timeout after 5 seconds
+          }
+      );
+
+      const site_response = await axios.get(
+          "/query/list/plain/site/_/_/name/ASC/0/100",
+          {
+            headers: {
+              Authorization: token,
+            },
+            timeout: 5000, // Timeout after 5 seconds
+          }
+      );
+
+      const { list,count } = response.data;
+      const { list:siteList } = site_response.data;
+
+      // if (!isString(authToken) && !isObject(user)) {
+      //   throw new Error("Response is not vallid");
+      // }
+      // setSession(authToken);
       dispatch({
-        type: "LOGIN_SUCCESS",
+        type: "DEPOSIT_SUCCESS",
         payload: {
-          user,
+          list,
+          count,
+          siteList
         },
       });
     } catch (err) {
       dispatch({
-        type: "LOGIN_ERROR",
+        type: "DEPOSIT_ERROR",
         payload: {
           errorMessage: err,
         },
@@ -155,28 +172,22 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = async () => {
-    setSession(null);
-    dispatch({ type: "LOGOUT" });
-  };
-
   if (!children) {
     return null;
   }
 
   return (
-    <AuthContext
+    <DepositContext
       value={{
         ...state,
-        login,
-        logout,
+        deposits,
       }}
     >
       {children}
-    </AuthContext>
+    </DepositContext>
   );
 }
 
-AuthProvider.propTypes = {
+DepositProvider.propTypes = {
   children: PropTypes.node,
 };
