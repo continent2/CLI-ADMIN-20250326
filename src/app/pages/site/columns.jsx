@@ -1,61 +1,51 @@
 // Import Dependencies
-import { createColumnHelper } from "@tanstack/react-table";
+// import { createColumnHelper } from "@tanstack/react-table";
 
 // Local Imports
-import {DateCell} from "./rows";
-import { HighlightableCell } from "components/shared/table/HighlightableCell";
+// import {DateCell} from "./rows";
+// import { HighlightableCell } from "components/shared/table/HighlightableCell";
+import {CreateUpdateCell, SiteIdURL,AccountCell,Stat1,Stat2} from "../site/rows.jsx";
 
 // ----------------------------------------------------------------------
 
-const columnHelper = createColumnHelper();
+// const columnHelper = createColumnHelper();
 
 export const columns = [
-  columnHelper.accessor((row) => row.date, {
-    id: "date",
-    header: "date",
-    label: "Date",
-    cell: DateCell,
-    filterFn: "inNumberRange",
-  }),
-    columnHelper.accessor((row) => row.site, {
-    id: "site",
-    header: "site",
-    label: "Site",
-  }),
-  columnHelper.accessor((row) => row.multipleAccountAddress, {
-    id: "multipleAccountAddress",
-    header: "multiple Account  Address",
-    label: "Multiple Account Address",
-    cell: HighlightableCell,
-  }),
-  columnHelper.accessor((row) => row.numberOfUsersWhoDeposited, {
-    id: "numberOfUsersWhoDeposited",
-    header: "number Of Users Who Deposited",
-    label: "Number Of Users Who Deposited",
-  }),
-  columnHelper.accessor((row) => row.numberOfActiveDepositAccounts, {
-    id: "numberOfActiveDepositAccounts",
-    header: "number Of Active Deposit Accounts",
-    label: "NumberOfActiveDepositAccounts",
-  }),
-  columnHelper.accessor((row) => row.numberOfInactiveDepositAccounts, {
-    id: "numberOfInactiveDepositAccounts",
-    header: "number Of Inactive Deposit Accounts",
-    label: "Number Of Inactive Deposit Accounts",
-  }),
-  columnHelper.accessor((row) => row.basicWithdrawalCurrencyTypes, {
-    id: "basicWithdrawalCurrencyTypes",
-    header: "basic Withdrawal Currency Types",
-    label: "Basic Withdrawal Currency Types",
-  }),
-  columnHelper.accessor((row) => row.depositAmountCumulativeDepositAmount, {
-    id: "depositAmountCumulativeDepositAmount",
-    header: "deposit Amount Cumulative Deposit Amount",
-    label: "Deposit Amount Cumulative Deposit Amount",
-  }),
-  columnHelper.accessor((row) => row.situation, {
-    id: "situation",
-    header: "situation",
-    label: "Situation",
-  }),
+  {
+    id:"date",
+    accessorKey: "info.createdat", // Keep the accessor for sorting/filtering
+    header: "등록일", //Registration date
+    cell:CreateUpdateCell
+  },
+    {
+        id: "siteURLMember",
+        accessorKey: "info.siteurl", // Keep the accessor for sorting/filtering
+        header: () => (
+            <div>
+                사이트URL
+                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+                사이트 ID
+            </div>
+        ),
+        cell:SiteIdURL
+    },
+    {
+        accessorKey: "account.id", // Keep the accessor for sorting/filtering
+        header: "벌집계정주소",
+        cell:AccountCell
+    },
+    {
+        accessorKey: "stat.count_cumul", // Use accessor for sorting/filtering
+        header: "입금한사용자수", //Number of users who deposited money
+        cell: Stat1
+    },
+    {
+        accessorKey: "stat.sum_1d", // Use accessor for sorting/filtering
+        header: "비활성입금계정 개수", //Number of inactive deposit accounts
+        cell: Stat2
+    },
+    {
+        accessorKey: "info.status", // Keep the accessor for sorting/filtering
+        header: "상태", //Situation
+    },
 ];

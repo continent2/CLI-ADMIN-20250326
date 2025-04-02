@@ -10,15 +10,22 @@ import {
     Select,
 } from "components/ui";
 import {useBreakpointsContext} from "app/contexts/breakpoint/context";
-import {useDepositContext} from "../../../app/contexts/deposit/context.js";
+import { useNavigate } from "react-router";
 
 // ----------------------------------------------------------------------
 
-export function PaginationSection({table}) {
+export function PaginationSection({table,paginationData}) {
     const paginationState = table.getState().pagination;
     const {isXl, is2xl} = useBreakpointsContext();
-    const {deposits, count} = useDepositContext();
+    const navigate = useNavigate();
 
+
+    const {
+        fetchData,
+        count,
+        pageIndex,
+        name
+    } = paginationData
 
     return (
         <div className="flex flex-col justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
@@ -28,7 +35,7 @@ export function PaginationSection({table}) {
                     data={[10, 20, 30, 40, 50, 100]}
                     value={paginationState.pageSize}
                     onChange={(e) => {
-                        deposits({offSet: 0, limit: e.target.value});
+                        fetchData({offSet: 0, limit: e.target.value});
                         table.setPageSize(Number(e.target.value)
                         );
                     }}
@@ -42,10 +49,11 @@ export function PaginationSection({table}) {
             <div>
                 <Pagination
                     total={Math.ceil(count / paginationState.pageSize)}
-                    value={paginationState.pageIndex + 1}
+                    value={+pageIndex}
                     onChange={(page) => {
-                        deposits({offSet: (page - 1) * paginationState.pageSize, limit: paginationState.pageSize});
-                        table.setPageIndex(page - 2);
+                        fetchData({offSet: (page - 1) * paginationState.pageSize, limit: paginationState.pageSize});
+                        table.setPageIndex(page);
+                        navigate(`/${name}?page=${page}`);
                     }}
                     siblings={isXl ? 2 : is2xl ? 3 : 1}
                     boundaries={isXl ? 2 : 1}
@@ -55,10 +63,10 @@ export function PaginationSection({table}) {
                     <PaginationNext/>
                 </Pagination>
             </div>
-            <div className="truncate text-xs+">
-                {paginationState.pageIndex * paginationState.pageSize + 1} -{" "}
-                {table.getRowModel().rows.length} of{" "}
-                {table.getCoreRowModel().rows.length} entries
+            <div className="truncate text-xs">
+                {(pageIndex - 1) * paginationState.pageSize + 1} -{" "}
+                {(pageIndex - 1) * paginationState.pageSize + paginationState.pageSize} of{" "}
+                {count} entries
             </div>
         </div>
     );

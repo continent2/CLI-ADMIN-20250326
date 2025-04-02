@@ -26,19 +26,31 @@ import {SelectedRowsActions} from "./SelectedRowsActions";
 import {ListView} from "./ListView";
 import {GridView} from "./GridView";
 import {useDepositContext} from "../../contexts/deposit/context.js";
+import { useSearchParams } from "react-router";
 
 // ----------------------------------------------------------------------
 
 export default function Deposit() {
-    const {deposits, list} = useDepositContext();
+    const {deposits, count, list} = useDepositContext();
     const [users, setUsers] = useState([...usersList]);
+    const [deposit, setDeposit] = useState([]);
 
-    const [deposit, setDeposit] = useState({});
 
     const [tableSettings, setTableSettings] = useState({
         enableFullScreen: false,
         enableRowDense: false,
     });
+
+    const [searchParams] = useSearchParams();
+    const pageIndex = searchParams.get("page") || 1; // Default to 1 if not provided
+
+    const paginationData = {
+        fetchData : deposits,
+        count,
+        pageIndex,
+        name:"deposit"
+    };
+
 
     const [globalFilter, setGlobalFilter] = useState("");
 
@@ -60,7 +72,6 @@ export default function Deposit() {
     );
 
     const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
-
     const table = useReactTable({
         data: deposit,
         columns: columns,
@@ -136,11 +147,14 @@ export default function Deposit() {
 
     const rows = table.getRowModel().rows;
 
+
     const WrapComponent = viewType === "list" ? Card : Box;
+
 
     useEffect(() => {
         deposits({offSet: 0, limit: 20});
     }, []);
+
 
     // Update the `deposit` state when `list` changes
     useEffect(() => {
@@ -200,7 +214,7 @@ export default function Deposit() {
                                         "mt-3",
                                     )}
                                 >
-                                    <PaginationSection table={table}/>
+                                    <PaginationSection table={table} paginationData={paginationData}/>
                                 </div>
                             )}
                         </WrapComponent>

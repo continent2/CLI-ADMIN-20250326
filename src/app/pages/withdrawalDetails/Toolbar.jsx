@@ -10,27 +10,13 @@ import PropTypes from "prop-types";
 // Local Imports
 import { Input} from "components/ui";
 import {useBreakpointsContext} from "app/contexts/breakpoint/context";
-import {TableConfig} from "./TableConfig";
-import {RoleFilter} from "./RoleFilter";
 import { DateFilter } from "components/shared/table/DateFilter";
-import {useEffect, useState} from "react";
-import {useMemberContext} from "../../contexts/member/context.js";
 
 // ----------------------------------------------------------------------
 
 export function Toolbar({table}) {
     const {isXs} = useBreakpointsContext();
     const isFullScreenEnabled = table.getState().tableSettings.enableFullScreen;
-    const {siteList} = useMemberContext();
-    const [siteOption, setsiteOption] = useState({});
-
-
-    // Update the `deposit` state when `list` changes
-    useEffect(() => {
-        if (siteList && siteList.length > 0) {
-            setsiteOption(siteList);
-        }
-    }, [siteList]);
 
     return (
         <div className="table-toolbar">
@@ -51,9 +37,9 @@ export function Toolbar({table}) {
                         )}
                     >
                         <SearchInput table={table}/>
-                        {table.getColumn("infoDate") && (
+                        {table.getColumn("date") && (
                             <DateFilter
-                                column={table.getColumn("infoDate")}
+                                column={table.getColumn("date")}
                                 title="Date Range"
                                 config={{
                                     maxDate: new Date().fp_incr(1),
@@ -61,7 +47,6 @@ export function Toolbar({table}) {
                                 }}
                             />
                         )}
-                        <TableConfig table={table}/>
                     </div>
                     <div
                         className={clsx(
@@ -69,12 +54,6 @@ export function Toolbar({table}) {
                             isFullScreenEnabled ? "px-4 sm:px-5" : "px-[--margin-x]",
                         )}
                     >
-                        {table.getColumn("siteURLMember") && (
-                            <RoleFilter
-                                column={table.getColumn("siteURLMember")}
-                                options={siteOption}
-                            />
-                        )}
                     </div>
                 </>
             ) : (
@@ -89,18 +68,11 @@ export function Toolbar({table}) {
                             : "var(--margin-x)",
                     }}
                 >
-                    {table.getColumn("siteURLMember") && (
-                        <RoleFilter
-                            column={table.getColumn("siteURLMember")}
-                            options={siteOption}
-                        />
-                    )}
-
                     <div className="flex shrink-0 space-x-2 rtl:space-x-reverse">
                         <SearchInput table={table}/>
-                        {table.getColumn("infoDate") && (
+                        {table.getColumn("date") && (
                             <DateFilter
-                                column={table.getColumn("infoDate")}
+                                column={table.getColumn("date")}
                                 title="Date Range"
                                 config={{
                                     maxDate: new Date().fp_incr(1),
@@ -108,7 +80,6 @@ export function Toolbar({table}) {
                                 }}
                             />
                         )}
-                        <TableConfig table={table}/>
                     </div>
                 </div>
             )}

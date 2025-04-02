@@ -56,7 +56,7 @@ const protectedRoutes = {
             {
               path: "withdrawalDetail",
               lazy: async () => ({
-                Component: (await import("app/pages/withdrawalHistory/WithdrawalHistory.jsx")).default,
+                Component: (await import("app/pages/withdrawalDetails/WithdrawalDetails.jsx")).default,
               }),
             },
             {

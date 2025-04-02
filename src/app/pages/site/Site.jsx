@@ -10,7 +10,7 @@ import {
     flexRender,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 // Local Imports
 import { Page } from "components/shared/Page";
@@ -25,16 +25,30 @@ import { PaginationSection } from "components/shared/table/PaginationSection";
 import { SelectedRowsActions } from "./SelectedRowsActions";
 import { ListView } from "./ListView";
 import { GridView } from "./GridView";
+import {useSiteContext} from "../../contexts/site/context.js";
+import {useSearchParams} from "react-router";
 
 // ----------------------------------------------------------------------
 
 export default function Site() {
     const [users, setUsers] = useState([...usersList]);
+    const {sites,count ,list} = useSiteContext();
+    const [site, setSite] = useState([]);
 
     const [tableSettings, setTableSettings] = useState({
         enableFullScreen: false,
         enableRowDense: false,
     });
+
+    const [searchParams] = useSearchParams();
+    const pageIndex = searchParams.get("page") || 1; // Default to 1 if not provided
+
+    const paginationData = {
+        fetchData : sites,
+        count,
+        pageIndex,
+        name: "site"
+    };
 
     const [globalFilter, setGlobalFilter] = useState("");
 
@@ -58,7 +72,7 @@ export default function Site() {
     const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
     const table = useReactTable({
-        data: users,
+        data: site,
         columns: columns,
         initialState: {
             pagination: {
@@ -134,6 +148,18 @@ export default function Site() {
 
     const WrapComponent = viewType === "list" ? Card : Box;
 
+    useEffect(() => {
+        sites({offSet: 0, limit: 20});
+    }, []);
+
+
+    // Update the `deposit` state when `list` changes
+    useEffect(() => {
+        if (list && list.length > 0) {
+            setSite(list);
+        }
+    }, [list]);
+
     return (
         <Page title="보증금">
             <div className="transition-content w-full pb-5">
@@ -185,7 +211,7 @@ export default function Site() {
                                         "mt-3",
                                     )}
                                 >
-                                    <PaginationSection table={table} />
+                                    <PaginationSection table={table} paginationData={paginationData}/>
                                 </div>
                             )}
                         </WrapComponent>

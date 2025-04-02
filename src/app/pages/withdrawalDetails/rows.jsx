@@ -1,4 +1,5 @@
 // Import Dependencies
+
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 
@@ -9,8 +10,8 @@ import { useLocaleContext } from "app/contexts/locale/context";
 
 export function CreateUpdateCell({row}) {
     const {locale} = useLocaleContext();
-    const createdDate = row.original.info["createdat"];
-    const updatedDate = row.original.info["updatedat"];
+    const createdDate = row.original["createdat"];
+    const updatedDate = row.original["updatedat"];
 
     const formattedCreatedDate = createdDate
         ? `${dayjs(createdDate).locale(locale).format("DD MMM YYYY")} | ${dayjs(createdDate).locale(locale).format("hh:mm A")}`
@@ -29,85 +30,85 @@ export function CreateUpdateCell({row}) {
     );
 }
 
-export function SiteIdURL({row}) {
-    const siteURL = row.original.info?.["siteurl"];
-    const siteId = row.original.info?.["id"];
+export function AmountCurrency({row}) {
+    const Amount = row.original["amount"];
+    const Currency = row.original["currency"];
 
     return (
         <div>
+            <p>{Amount?? "N/A"}</p>
+            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            <p>{Currency ?? "N/A"}</p>
+        </div>
+    );
+}
+
+export function SendAccount({row}) {
+    const ID = row.original["agency.id"];
+    const Name = row.original["agency.name"];
+
+    return (
+        <div>
+            <p>{ID?? "N/A"}</p>
+            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            <p>{Name ?? "N/A"}</p>
+        </div>
+    );
+}
+
+export function ReceivedAccount({row}) {
+    const ID = row.original["site.id"];
+    const Name = row.original["site.siteurl"];
+
+    return (
+        <div>
+            <p>{ID ?? "N/A"}</p>
+            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
             <a
-                key={siteURL}
-                href={siteURL || "#"}
+                key={Name}
+                href={Name || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{textDecoration: "none", color: "blue"}}
             >
-                {siteURL || "N/A"}
+                {Name || "N/A"}
             </a>
-            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-            <p>{siteId || "N/A"}</p>
+
         </div>
     );
 }
 
-export function AccountCell({row}) {
-    const Id = row.original.info?.["account.id"];
-    const Address = row.original.info?.["account.address"];
+export function BankDetail({row}) {
+    const Name = row.original["bankname"];
+    const Account = row.original["bankaccount"];
 
     return (
         <div>
-            <p>{Id ?? "N/A"}</p>
+            <p>{Name ?? "N/A"}</p>
             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-            <p>{Address ?? "N/A"}</p>
+            <p>{Account ?? "N/A"}</p>
         </div>
     );
 }
-
-export function Stat1({row}) {
-    const sum = row.original.stat?.["sum_cumul"];
-    const count = row.original.stat?.["count_cumul"];
-
-    return (
-        <div>
-            <p>{sum ?? "N/A"}</p>
-            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-            <p>{count ?? "N/A"}</p>
-        </div>
-    );
-}
-
-export function Stat2({row}) {
-    const sum = row.original.stat?.["sum_2d"];
-    const count = row.original.stat?.["count_2d"];
-
-    return (
-        <div>
-            <p>{sum ?? "N/A"}</p>
-            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-            <p>{count ?? "N/A"}</p>
-        </div>
-    );
-}
-
 
 CreateUpdateCell.propTypes = {
     getValue: PropTypes.func,
 };
 
-SiteIdURL.propTypes = {
-    row: PropTypes.object,
+AmountCurrency.propTypes = {
+    getValue: PropTypes.func,
 };
 
-AccountCell.propTypes = {
-    row: PropTypes.object,
+SendAccount.propTypes = {
+    getValue: PropTypes.func,
 };
 
-Stat1.propTypes = {
-    row: PropTypes.object,
+ReceivedAccount.propTypes = {
+    getValue: PropTypes.func,
 };
 
-Stat2.propTypes = {
-    row: PropTypes.object,
+BankDetail.propTypes = {
+    getValue: PropTypes.func,
 };
 
 

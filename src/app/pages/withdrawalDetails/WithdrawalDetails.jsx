@@ -13,28 +13,27 @@ import clsx from "clsx";
 import {useEffect, useState} from "react";
 
 // Local Imports
-import {Page} from "components/shared/Page";
-import {Box, Card} from "components/ui";
-import {useLockScrollbar, useDidUpdate, useLocalStorage} from "hooks";
-import {fuzzyFilter} from "utils/react-table/fuzzyFilter";
-import {useSkipper} from "utils/react-table/useSkipper";
-import {Toolbar} from "./Toolbar";
-import {columns} from "./columns";
-import {usersList} from "./data";
-import {PaginationSection} from "components/shared/table/PaginationSection";
-import {SelectedRowsActions} from "./SelectedRowsActions";
-import {ListView} from "./ListView";
-import {GridView} from "./GridView";
-import {useMemberContext} from "../../contexts/member/context.js";
-import { useSearchParams } from "react-router";
+import { Page } from "components/shared/Page";
+import { Box, Card } from "components/ui";
+import { useLockScrollbar, useDidUpdate, useLocalStorage } from "hooks";
+import { fuzzyFilter } from "utils/react-table/fuzzyFilter";
+import { useSkipper } from "utils/react-table/useSkipper";
+import { Toolbar } from "./Toolbar";
+import { columns } from "./columns";
+import { usersList } from "./data";
+import { PaginationSection } from "components/shared/table/PaginationSection";
+import { SelectedRowsActions } from "./SelectedRowsActions";
+import { ListView } from "./ListView";
+import { GridView } from "./GridView";
+import {useWithdrawalDetailsContext} from "../../contexts/withdrawalDetails/context";
+import {useSearchParams} from "react-router";
 
 // ----------------------------------------------------------------------
 
-export default function Member() {
-    const {members,count,list} = useMemberContext();
-    const [member, setMember] = useState([]);
+export default function WithdrawalDetails() {
     const [users, setUsers] = useState([...usersList]);
-
+    const {withdrawas,count,list} = useWithdrawalDetailsContext();
+    const [withdraw , setWithdraw] = useState([]);
 
     const [tableSettings, setTableSettings] = useState({
         enableFullScreen: false,
@@ -45,12 +44,11 @@ export default function Member() {
     const pageIndex = searchParams.get("page") || 1; // Default to 1 if not provided
 
     const paginationData = {
-        fetchData : members,
+        fetchData : withdrawas,
         count,
         pageIndex,
-        name:"member"
+        name: "withdrawalDetail"
     };
-
 
     const [globalFilter, setGlobalFilter] = useState("");
 
@@ -74,7 +72,7 @@ export default function Member() {
     const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
     const table = useReactTable({
-        data: member,
+        data: withdraw,
         columns: columns,
         initialState: {
             pagination: {
@@ -152,13 +150,14 @@ export default function Member() {
 
 
     useEffect(() => {
-        members({offSet: 0, limit: 20});
+        withdrawas({offSet: 0, limit: 20});
     }, []);
+
 
     // Update the `deposit` state when `list` changes
     useEffect(() => {
         if (list && list.length > 0) {
-            setMember(list);
+            setWithdraw(list);
         }
     }, [list]);
 
@@ -168,7 +167,6 @@ export default function Member() {
                 <h2 className="truncate text-xl py-6 font-medium tracking-wide text-gray-800 dark:text-dark-50 px-[--margin-x]">
                     보증금
                 </h2>
-
                 <div
                     className={clsx(
                         "flex h-full w-full flex-col",
@@ -176,7 +174,7 @@ export default function Member() {
                         "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
                     )}
                 >
-                    <Toolbar table={table}/>
+                    <Toolbar table={table} />
                     <div
                         className={clsx(
                             "transition-content flex grow flex-col pt-3",
@@ -192,10 +190,10 @@ export default function Member() {
                             )}
                         >
                             {viewType === "list" && (
-                                <ListView table={table} flexRender={flexRender} rows={rows}/>
+                                <ListView table={table} flexRender={flexRender} rows={rows} />
                             )}
 
-                            {viewType === "grid" && <GridView table={table} rows={rows}/>}
+                            {viewType === "grid" && <GridView table={table} rows={rows} />}
 
                             {table.getCoreRowModel().rows.length && (
                                 <div
@@ -214,11 +212,11 @@ export default function Member() {
                                         "mt-3",
                                     )}
                                 >
-                                    <PaginationSection table={table} paginationData={paginationData}/>
+                                    <PaginationSection table={table} paginationData={paginationData} />
                                 </div>
                             )}
                         </WrapComponent>
-                        <SelectedRowsActions table={table}/>
+                        <SelectedRowsActions table={table} />
                     </div>
                 </div>
             </div>

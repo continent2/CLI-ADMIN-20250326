@@ -1,91 +1,97 @@
 // Import Dependencies
 
-import { CheckIcon } from "@heroicons/react/20/solid";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 
 // Local Imports
-import { Avatar, Badge, Swap, SwapOff, SwapOn } from "components/ui";
-import { rolesOptions } from "./data";
-import { Highlight } from "components/shared/Highlight";
-import { useLocaleContext } from "app/contexts/locale/context";
-import { ensureString } from "utils/ensureString";
+import {useLocaleContext} from "app/contexts/locale/context";
 
 // ----------------------------------------------------------------------
 
-export function NameCell({ row, getValue, column, table }) {
-  const globalQuery = ensureString(table.getState().globalFilter);
-  const columnQuery = ensureString(column.getFilterValue());
+export function CreateUpdateCell({row}) {
+    const {locale} = useLocaleContext();
+    const createdDate = row.original.info["createdat"];
+    const updatedDate = row.original.info["updatedat"];
 
-  return (
-    <div className="flex items-center space-x-3 ltr:-ml-1 rtl:-mr-1 rtl:space-x-reverse">
-      <Swap
-        effect="flip"
-        disabled={!row.getCanSelect()}
-        onChange={(val) => row.toggleSelected(val === "on")}
-        value={row.getIsSelected() ? "on" : "off"}
-      >
-        <SwapOn className="flex size-10 items-center justify-center p-1">
-          <div className="flex h-full w-full items-center justify-center rounded-full bg-primary-500">
-            <CheckIcon className="size-5 text-white" />
-          </div>
-        </SwapOn>
-        <SwapOff>
-          <Avatar
-            size={10}
-            classNames={{
-              root: "rounded-full border-2 border-dashed border-transparent p-0.5 transition-colors group-hover/tr:border-gray-400 dark:group-hover/tr:border-dark-300",
-              display: "text-xs+",
-            }}
-            src={row.original.avatar}
-            initialColor="auto"
-            name={row.original.name}
-          />
-        </SwapOff>
-      </Swap>
+    const formattedCreatedDate = createdDate
+        ? `${dayjs(createdDate).locale(locale).format("DD MMM YYYY")} | ${dayjs(createdDate).locale(locale).format("hh:mm A")}`
+        : "N/A";
 
-      <div className="font-medium text-gray-800 dark:text-dark-100">
-        <Highlight query={[globalQuery, columnQuery]}>{getValue()}</Highlight>
-      </div>
-    </div>
-  );
-}
+    const formattedUpdatedDate = updatedDate
+        ? `${dayjs(updatedDate).locale(locale).format("DD MMM YYYY")} | ${dayjs(updatedDate).locale(locale).format("hh:mm A")}`
+        : "N/A";
 
-export function SiteCell({ getValue }) {
-  const val = getValue();
-  const option = rolesOptions.find((item) => item.value === val);
-
-  return (
-    <Badge color={option.color} variant="outlined">
-      {option.label}
-    </Badge>
-  );
-}
-
-export function DateCell({ getValue }) {
-    const { locale } = useLocaleContext();
-    const timestapms = getValue();
-    const date = dayjs(timestapms).locale(locale).format("DD MMM YYYY");
     return (
-        <>
-            <p className="font-medium">{date}</p>
-        </>
+        <div>
+            <p>{formattedCreatedDate}</p>
+            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            <p>{formattedUpdatedDate}</p>
+        </div>
     );
 }
 
-NameCell.propTypes = {
-  getValue: PropTypes.func,
-  row: PropTypes.object,
-  column: PropTypes.object,
-  table: PropTypes.object,
+export function SiteIdURL({row}) {
+    const siteURL = row.original.info?.["site.siteurl"];
+    const siteId = row.original.info?.["site.id"];
+
+    return (
+        <div>
+            <a
+                key={siteURL}
+                href={siteURL || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{textDecoration: "none", color: "blue"}}
+            >
+                {siteURL || "N/A"}
+            </a>
+            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            <p>{siteId || "N/A"}</p>
+        </div>
+    );
+}
+
+export function Stat1({row}) {
+    const sum = row.original.stat?.["sum_1d"];
+    const count = row.original.stat?.["count_1d"];
+
+    return (
+        <div>
+            <p>{sum ?? "N/A"}</p>
+            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            <p>{count ?? "N/A"}</p>
+        </div>
+    );
+}
+
+export function Stat2({row}) {
+    const sum = row.original.stat?.["sum_2d"];
+    const count = row.original.stat?.["count_2d"];
+
+    return (
+        <div>
+            <p>{sum ?? "N/A"}</p>
+            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            <p>{count ?? "N/A"}</p>
+        </div>
+    );
+}
+
+
+CreateUpdateCell.propTypes = {
+    row: PropTypes.object,
 };
 
-SiteCell.propTypes = {
-  getValue: PropTypes.func,
+SiteIdURL.propTypes = {
+    row: PropTypes.object,
 };
 
-DateCell.propTypes = {
-    getValue: PropTypes.func,
+Stat1.propTypes = {
+    row: PropTypes.object,
+};
+
+Stat2.propTypes = {
+    row: PropTypes.object,
 };
 
 

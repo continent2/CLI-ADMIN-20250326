@@ -10,7 +10,7 @@ import {
     flexRender,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 // Local Imports
 import { Page } from "components/shared/Page";
@@ -25,16 +25,30 @@ import { PaginationSection } from "components/shared/table/PaginationSection";
 import { SelectedRowsActions } from "./SelectedRowsActions";
 import { ListView } from "./ListView";
 import { GridView } from "./GridView";
+import {useAdminUserContext} from "../../contexts/adminUser/context.js";
+import {useSearchParams} from "react-router";
 
 // ----------------------------------------------------------------------
 
 export default function SiteAdminstrator() {
-    const [users, setUsers] = useState([...usersList]);
+    const [users,count, setUsers] = useState([...usersList]);
+    const {adminUsers ,list} = useAdminUserContext();
+    const [adminUser, setadminUser] = useState([]);
 
     const [tableSettings, setTableSettings] = useState({
         enableFullScreen: false,
         enableRowDense: false,
     });
+
+    const [searchParams] = useSearchParams();
+    const pageIndex = searchParams.get("page") || 1; // Default to 1 if not provided
+
+    const paginationData = {
+        fetchData : adminUsers,
+        count,
+        pageIndex,
+        name: "siteAdministrator"
+    };
 
     const [globalFilter, setGlobalFilter] = useState("");
 
@@ -58,7 +72,7 @@ export default function SiteAdminstrator() {
     const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
     const table = useReactTable({
-        data: users,
+        data: adminUser,
         columns: columns,
         initialState: {
             pagination: {
@@ -134,6 +148,18 @@ export default function SiteAdminstrator() {
 
     const WrapComponent = viewType === "list" ? Card : Box;
 
+    useEffect(() => {
+        adminUsers({offSet: 0, limit: 20});
+    }, []);
+
+
+    // Update the `deposit` state when `list` changes
+    useEffect(() => {
+        if (list && list.length > 0) {
+            setadminUser(list);
+        }
+    }, [list]);
+
     return (
         <Page title="보증금">
             <div className="transition-content w-full pb-5">
@@ -185,7 +211,7 @@ export default function SiteAdminstrator() {
                                         "mt-3",
                                     )}
                                 >
-                                    <PaginationSection table={table} />
+                                    <PaginationSection table={table} paginationData={paginationData} />
                                 </div>
                             )}
                         </WrapComponent>
