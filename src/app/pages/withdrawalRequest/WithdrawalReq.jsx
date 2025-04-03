@@ -3,7 +3,7 @@ import {Input, Button, Switch} from "components/ui";
 
 export default function WithdrawalReq() {
     return (
-        <Page title="출금 요청 (출금 신청)">
+        <Page title="출금 요청">
             <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] pb-8">
                 <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 py-6 lg:text-2xl">
                     출금 요청

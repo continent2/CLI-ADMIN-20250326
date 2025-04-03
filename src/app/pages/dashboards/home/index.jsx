@@ -8,11 +8,11 @@ import { Exchange } from "./Exchange";
 
 export default function Home() {
     return (
-        <Page title="계기반">
+        <Page title="대시보드">
             <div className="transition-content w-full px-[--margin-x] pt-5 lg:pt-6">
                 <div className="min-w-0">
                     <h2 className="truncate text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:py-6">
-                        계기반
+                        대시보드
                     </h2>
 
                     <div className="p-[54px] h-fit bg-white dark:bg-dark-700 border border-gray-200 rounded-lg shadow-sm border-none">

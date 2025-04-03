@@ -31,7 +31,7 @@ const links = [
     id: "2",
     title: "Settings",
     description: "Webapp settings",
-    to: "/settings/appearance",
+    to: "/setting",
     Icon: Cog6ToothIcon,
     color: "success",
   },
@@ -43,6 +43,16 @@ export function Profile() {
   const logoutHandler = () => {
     logout();
   }
+
+  const userName = localStorage.getItem("username");
+
+  function formatString(str) {
+    return str
+        ? str.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase()).trim()
+        : "";
+  }
+
+  const formattedUserName = formatString(userName);
 
   return (
     <Popover className="relative flex">
@@ -77,14 +87,14 @@ export function Profile() {
                 <div>
                   <Link
                     className="text-base font-medium text-gray-700 hover:text-primary-600 focus:text-primary-600 dark:text-dark-100 dark:hover:text-primary-400 dark:focus:text-primary-400"
-                    to="/settings/general"
+                    to="/setting"
                   >
-                    Travis Fuller
+                    {formattedUserName}
                   </Link>
 
-                  <p className="mt-0.5 text-xs text-gray-400 dark:text-dark-300">
-                    Product Designer
-                  </p>
+                  {/*<p className="mt-0.5 text-xs text-gray-400 dark:text-dark-300">*/}
+                  {/*  Product Designer*/}
+                  {/*</p>*/}
                 </div>
               </div>
               <div className="flex flex-col pb-5 pt-2">

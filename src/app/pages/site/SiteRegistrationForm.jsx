@@ -3,10 +3,10 @@ import {Input, Button, Switch,Textarea, Select} from "components/ui";
 
 export default function SiteRegistrationForm() {
     return (
-        <Page title="사이트 등록 양식">
+        <Page title="사이트를 등록하세요">
             <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] pb-8">
                 <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 py-6 lg:text-2xl">
-                    사이트 등록 양식
+                    사이트를 등록하세요
                 </h2>
 
                 <div>

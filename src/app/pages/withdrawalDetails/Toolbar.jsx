@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import { Input} from "components/ui";
 import {useBreakpointsContext} from "app/contexts/breakpoint/context";
 import { DateFilter } from "components/shared/table/DateFilter";
+import {TableConfig} from "../deposit/TableConfig.jsx";
 
 // ----------------------------------------------------------------------
 
@@ -37,9 +38,9 @@ export function Toolbar({table}) {
                         )}
                     >
                         <SearchInput table={table}/>
-                        {table.getColumn("date") && (
+                        {table.getColumn("등록일") && (
                             <DateFilter
-                                column={table.getColumn("date")}
+                                column={table.getColumn("등록일")}
                                 title="Date Range"
                                 config={{
                                     maxDate: new Date().fp_incr(1),
@@ -47,6 +48,7 @@ export function Toolbar({table}) {
                                 }}
                             />
                         )}
+                        <TableConfig table={table}/>
                     </div>
                     <div
                         className={clsx(
@@ -59,7 +61,7 @@ export function Toolbar({table}) {
             ) : (
                 <div
                     className={clsx(
-                        "custom-scrollbar transition-content flex justify-between items-center space-x-4 overflow-x-auto pb-1 rtl:space-x-reverse",
+                        "custom-scrollbar transition-content flex justify-end items-center space-x-4 overflow-x-auto pb-1 rtl:space-x-reverse",
                         isFullScreenEnabled ? "px-4 sm:px-5" : "px-[--margin-x]",
                     )}
                     style={{
@@ -70,9 +72,9 @@ export function Toolbar({table}) {
                 >
                     <div className="flex shrink-0 space-x-2 rtl:space-x-reverse">
                         <SearchInput table={table}/>
-                        {table.getColumn("date") && (
+                        {table.getColumn("등록일") && (
                             <DateFilter
-                                column={table.getColumn("date")}
+                                column={table.getColumn("등록일")}
                                 title="Date Range"
                                 config={{
                                     maxDate: new Date().fp_incr(1),
@@ -80,6 +82,7 @@ export function Toolbar({table}) {
                                 }}
                             />
                         )}
+                        <TableConfig table={table}/>
                     </div>
                 </div>
             )}

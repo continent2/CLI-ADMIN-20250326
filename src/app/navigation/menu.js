@@ -17,7 +17,7 @@ export const menu = {
             path: path(ROOT_MENU,'/'),
             type: NAV_TYPE_ITEM,
             title: 'Dashboard',
-            transKey: '대시보드 (대시보드)',
+            transKey: '대시보드', //대시보드
             Icon: HomeIcon,
         },
         {
@@ -25,15 +25,15 @@ export const menu = {
             path: path( ROOT_MENU,'/deposit'),
             type: NAV_TYPE_ITEM,
             title: 'Deposit',
-            transKey: '입금 (입금)',
+            transKey: '사이트 입금',
             Icon: WalletIcon,
         },
         {
             id: 'menu.member',
             path: path( ROOT_MENU,'/member'),
             type: NAV_TYPE_ITEM,
-            title: '',
-            transKey: '회원 (회원)',
+            title: 'Member',
+            transKey: '회원 입금',
             Icon: HomeIcon,
         },
         {
@@ -41,7 +41,7 @@ export const menu = {
             path: path( ROOT_MENU,'/site'),
             type: NAV_TYPE_ITEM,
             title: '',
-            transKey: '사이트 (사이트)',
+            transKey: '대지',
             Icon: HomeIcon,
         },
         {
@@ -49,7 +49,7 @@ export const menu = {
             path: path( ROOT_MENU,'/registerYourSite'),
             type: NAV_TYPE_ITEM,
             title: '',
-            transKey: '사이트를 등록하세요. (사이트를 등록하십시오.)',
+            transKey: '사이트를 등록하세요',
             Icon: HomeIcon,
         },
         {
@@ -57,7 +57,7 @@ export const menu = {
             path: path(ROOT_MENU,'/withdrawalDetail'),
             type: NAV_TYPE_ITEM,
             title: '',
-            transKey: '출금 내역 (출금 상세 정보)',
+            transKey: '출금 내역',
             Icon: HomeIcon,
         },
         {
@@ -73,7 +73,7 @@ export const menu = {
             path: path( ROOT_MENU,'/withdrawalReq'),
             type: NAV_TYPE_ITEM,
             title: '',
-            transKey: '출금 요청 (출금 신청)',
+            transKey: '출금 요청',
             Icon: HomeIcon,
         },
         {
@@ -81,7 +81,7 @@ export const menu = {
             path: path( ROOT_MENU,'/siteAdministrator'),
             type: NAV_TYPE_ITEM,
             title: '',
-            transKey: '사이트 관리자 (사이트 어드민)',
+            transKey: '사이트 관리자',
             Icon: HomeIcon,
         },
         // {
@@ -92,6 +92,14 @@ export const menu = {
         //     transKey: '사이트로 등록하세요. (사이트로 등록하십시오.)',
         //     Icon: HomeIcon,
         // },
+        {
+            id: 'menu.addSiteAdminstratorForm ',
+            path: path( ROOT_MENU,'/addSiteAdminstratorForm'),
+            type: NAV_TYPE_ITEM,
+            title: '',
+            transKey: '사이트 관리자 양식 추가',
+            Icon: HomeIcon,
+        },
         {
             id: 'menu.adminstratorForm ',
             path: path( ROOT_MENU,'/adminstratorForm'),
@@ -105,7 +113,7 @@ export const menu = {
             path: path(ROOT_MENU,'/setting'),
             type: NAV_TYPE_ITEM,
             title: '',
-            transKey: '설정 (설정)',
+            transKey: '세팅',
             Icon: HomeIcon,
         },
     ]

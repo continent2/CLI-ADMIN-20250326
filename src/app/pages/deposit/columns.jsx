@@ -12,17 +12,49 @@ import {DateCell} from "./rows";
 
 export const columns = [
     {
-        accessorKey: "id",
-        header: "아이디", //id
-    },
-    {
-        id:"date",
+        id:"생성시간",
         accessorKey: "transfer.timestamp",
         header: "생성시간", //creation time
         cell: DateCell,
         filterFn: "inNumberRange",
     },
     {
+        id:"아이디",
+        accessorKey: "id",
+        header: "아이디", //id
+    },
+    {
+        id:"사이트 URL",
+        accessorKey: "site.siteurl", // Keep the accessor for sorting/filtering
+        header: () => (
+            <div>
+                Site URL
+                <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+                ID
+            </div>
+        ),
+        cell: ({ row }) => {
+            const siteUrl = row.original["site.siteurl"]; // Get Site URL
+            const siteId = row.original["site.id"]; // Get Site ID
+
+            return (
+                <div>
+                    <a
+                        href={siteUrl || "#"} // Corrected link to use siteUrl
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="dark:text-gray-500 text-blue-500 no-underline" // Add style if needed
+                    >
+                        {siteUrl || "N/A"} {/* Display site URL or "-" if not available */}
+                    </a>
+                    <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+                    <p>{siteId || "N/A"}</p> {/* Display Site ID or "N/A" if not available */}
+                </div>
+            );
+        },
+    },
+    {
+        id:"txHash",
         accessorKey: "transfer.txhash", // Keep the accessor for sorting/filtering
         header: () => (
             <div>
@@ -45,47 +77,50 @@ export const columns = [
         },
     },
     {
+        id:"보낸 주소",
         accessorKey: "transfer.from",
         header: "보낸 주소", //Sent address
         cell: (info) => info.row.original["transfer.from"] || "N/A",
     },
     {
+        id:"받는 주소",
         accessorKey: "transfer.to",
         header: "받는 주소", //Receving address
         cell: (info) => info.row.original["transfer.to"] || "N/A",
     },
+    // {
+    //     accessorKey: "transfer.memo",
+    //     header: "트랜잭션 메모", //transaction memo
+    //     cell: (info) => info.row.original["transfer.memo"] || "N/A",
+    // },
+    // {
+    //     accessorKey: "transfer.amount", // Keep the accessor for sorting/filtering
+    //     header: () => (
+    //         <div>
+    //             거래금액 {/* Transaction amount */}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             거래화폐 {/* Transaction currency */}
+    //         </div>
+    //     ),
+    //     cell: ({row}) => {
+    //         const amount = row.original["transfer.amount"]; // Get transfer amount
+    //         const currency = row.original["transfer.currency"]; // Get transfer currency
+    //
+    //         return (
+    //             <div>
+    //                 <p>{amount || "N/A"}</p>
+    //                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //                 <p>{currency || "N/A"}</p>
+    //             </div>
+    //         );
+    //     },
+    // },
+    // {
+    //     accessorKey: "feeratebp",
+    //     header: "fee rate bp",
+    // },
     {
-        accessorKey: "transfer.memo",
-        header: "트랜잭션 메모", //transaction memo
-        cell: (info) => info.row.original["transfer.memo"] || "N/A",
-    },
-    {
-        accessorKey: "transfer.amount", // Keep the accessor for sorting/filtering
-        header: () => (
-            <div>
-                거래금액 {/* Transaction amount */}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                거래화폐 {/* Transaction currency */}
-            </div>
-        ),
-        cell: ({row}) => {
-            const amount = row.original["transfer.amount"]; // Get transfer amount
-            const currency = row.original["transfer.currency"]; // Get transfer currency
-
-            return (
-                <div>
-                    <p>{amount || "N/A"}</p>
-                    <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                    <p>{currency || "N/A"}</p>
-                </div>
-            );
-        },
-    },
-    {
-        accessorKey: "feeratebp",
-        header: "fee rate bp",
-    },
-    {
+        id:"전환률 ",
         accessorKey: "convrate", // Use accessor for sorting/filtering
         header: () => (
             <div>
@@ -113,138 +148,109 @@ export const columns = [
         },
     }
     ,
+    // {
+    //     accessorKey: "user.name", // Use accessor for sorting/filtering
+    //     header: () => (
+    //         <div>
+    //             사용자명 {/* Username */}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             ID
+    //         </div>
+    //     ),
+    //     cell: ({row}) => {
+    //         const userName = row.original["user.name"]; // User name
+    //         const userId = row.original["user.id"]; // User ID
+    //
+    //         return (
+    //             <div>
+    //                 <p>{userName || "N/A"}</p> {/* Display user name */}
+    //                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //                 <p>{userId || "N/A"}</p> {/* Display user ID */}
+    //             </div>
+    //         );
+    //     },
+    // },
+    // {
+    //     accessorKey: "agency.name", // Use accessor for sorting/filtering
+    //     header: () => (
+    //         <div>
+    //             에이전시 이름 {/* Agency Name */}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             코드 {/* Code */}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             ID
+    //         </div>
+    //     ),
+    //     cell: ({row}) => {
+    //         const agencyName = row.original["agency.name"]; // Agency name
+    //         const agencyCode = row.original["agency.code"]; // Agency code
+    //         const agencyId = row.original["agency.id"]; // Agency ID
+    //
+    //         return (
+    //             <div>
+    //                 <p>{agencyName || "N/A"}</p> {/* Display Agency Name */}
+    //                 <p>{agencyCode || "N/A"}</p> {/* Display Agency Code */}
+    //                 <p>{agencyId || "N/A"}</p> {/* Display Agency ID */}
+    //             </div>
+    //         );
+    //     },
+    // },
+    // {
+    //     accessorKey: "transfer.account.countuse", // Use accessor for sorting/filtering
+    //     header: () => (
+    //         <div>
+    //             거래계좌사용횟수 {/* Number of times trading account is used */}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             잔여 토큰 {/* Residual token */}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             잔여 코인 {/* Remaining coins */}
+    //         </div>
+    //     ),
+    //     cell: ({row}) => {
+    //         const countUse = row.original["transfer.account.countuse"]; // Number of times trading account is used
+    //         const balanceToken = row.original["transfer.account.balancetoken"]; // Residual token
+    //         const balanceCoin = row.original["transfer.account.balancecoin"]; // Remaining coins
+    //
+    //         return (
+    //             <div>
+    //                 <p>{countUse || "N/A"}</p> {/* Display Number of times trading account is used */}
+    //                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //                 <p>{balanceToken || "N/A"}</p> {/* Display Residual token */}
+    //                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //                 <p>{balanceCoin || "N/A"}</p> {/* Display Remaining coins */}
+    //             </div>
+    //         );
+    //     },
+    // },
+    // {
+    //     accessorKey: "account.address", // Use accessor for sorting/filtering
+    //     header: () => (
+    //         <div>
+    //             계좌주소 {/* Account address */}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             사용횟수 {/* Number of uses */}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             ID {/* Account ID */}
+    //         </div>
+    //     ),
+    //     cell: ({row}) => {
+    //         const address = row.original["account.address"]; // Account address
+    //         const countUse = row.original["account.countuse"]; // Number of uses
+    //         const accountId = row.original["account.id"]; // Account ID
+    //
+    //         return (
+    //             <div>
+    //                 <p>{address || "N/A"}</p> {/* Display Account address */}
+    //                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //                 <p>{countUse || "N/A"}</p> {/* Display Number of uses */}
+    //                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //                 <p>{accountId || "N/A"}</p> {/* Display Account ID */}
+    //             </div>
+    //         );
+    //     },
+    // },
     {
-        accessorKey: "user.name", // Use accessor for sorting/filtering
-        header: () => (
-            <div>
-                사용자명 {/* Username */}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                ID
-            </div>
-        ),
-        cell: ({row}) => {
-            const userName = row.original["user.name"]; // User name
-            const userId = row.original["user.id"]; // User ID
-
-            return (
-                <div>
-                    <p>{userName || "N/A"}</p> {/* Display user name */}
-                    <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                    <p>{userId || "N/A"}</p> {/* Display user ID */}
-                </div>
-            );
-        },
-    },
-    {
-        id:"siteurl",
-        accessorKey: "site.siteurl", // Keep the accessor for sorting/filtering
-        header: () => (
-            <div>
-                Site URL
-                <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-                ID
-            </div>
-        ),
-        cell: ({ row }) => {
-            const siteUrl = row.original["site.siteurl"]; // Get Site URL
-            const siteId = row.original["site.id"]; // Get Site ID
-
-            return (
-                <div>
-                    <a
-                        href={siteUrl || "#"} // Corrected link to use siteUrl
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ textDecoration: "none", color: "blue" }} // Add style if needed
-                    >
-                        {siteUrl || "N/A"} {/* Display site URL or "-" if not available */}
-                    </a>
-                    <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-                    <p>{siteId || "N/A"}</p> {/* Display Site ID or "N/A" if not available */}
-                </div>
-            );
-        },
-    },
-    {
-        accessorKey: "agency.name", // Use accessor for sorting/filtering
-        header: () => (
-            <div>
-                에이전시 이름 {/* Agency Name */}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                코드 {/* Code */}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                ID
-            </div>
-        ),
-        cell: ({row}) => {
-            const agencyName = row.original["agency.name"]; // Agency name
-            const agencyCode = row.original["agency.code"]; // Agency code
-            const agencyId = row.original["agency.id"]; // Agency ID
-
-            return (
-                <div>
-                    <p>{agencyName || "N/A"}</p> {/* Display Agency Name */}
-                    <p>{agencyCode || "N/A"}</p> {/* Display Agency Code */}
-                    <p>{agencyId || "N/A"}</p> {/* Display Agency ID */}
-                </div>
-            );
-        },
-    },
-    {
-        accessorKey: "transfer.account.countuse", // Use accessor for sorting/filtering
-        header: () => (
-            <div>
-                거래계좌사용횟수 {/* Number of times trading account is used */}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                잔여 토큰 {/* Residual token */}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                잔여 코인 {/* Remaining coins */}
-            </div>
-        ),
-        cell: ({row}) => {
-            const countUse = row.original["transfer.account.countuse"]; // Number of times trading account is used
-            const balanceToken = row.original["transfer.account.balancetoken"]; // Residual token
-            const balanceCoin = row.original["transfer.account.balancecoin"]; // Remaining coins
-
-            return (
-                <div>
-                    <p>{countUse || "N/A"}</p> {/* Display Number of times trading account is used */}
-                    <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                    <p>{balanceToken || "N/A"}</p> {/* Display Residual token */}
-                    <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                    <p>{balanceCoin || "N/A"}</p> {/* Display Remaining coins */}
-                </div>
-            );
-        },
-    },
-    {
-        accessorKey: "account.address", // Use accessor for sorting/filtering
-        header: () => (
-            <div>
-                계좌주소 {/* Account address */}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                사용횟수 {/* Number of uses */}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                ID {/* Account ID */}
-            </div>
-        ),
-        cell: ({row}) => {
-            const address = row.original["account.address"]; // Account address
-            const countUse = row.original["account.countuse"]; // Number of uses
-            const accountId = row.original["account.id"]; // Account ID
-
-            return (
-                <div>
-                    <p>{address || "N/A"}</p> {/* Display Account address */}
-                    <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                    <p>{countUse || "N/A"}</p> {/* Display Number of uses */}
-                    <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                    <p>{accountId || "N/A"}</p> {/* Display Account ID */}
-                </div>
-            );
-        },
-    },
-    {
+        id:"사용자 상태",
         accessorKey: "user.status", // Use accessor for sorting/filtering
         header: () => (
             <div>

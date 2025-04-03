@@ -8,11 +8,11 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 
 // Local Imports
-import { Input} from "components/ui";
+import {Input} from "components/ui";
 import {useBreakpointsContext} from "app/contexts/breakpoint/context";
 import {TableConfig} from "./TableConfig";
 import {RoleFilter} from "./RoleFilter";
-import { DateFilter } from "components/shared/table/DateFilter";
+import {DateFilter} from "components/shared/table/DateFilter";
 import {useDepositContext} from "../../contexts/deposit/context.js";
 import {useEffect, useState} from "react";
 
@@ -23,8 +23,6 @@ export function Toolbar({table}) {
     const {siteList} = useDepositContext();
     const [siteOption, setsiteOption] = useState({});
     const isFullScreenEnabled = table.getState().tableSettings.enableFullScreen;
-
-
 
 
     // Update the `deposit` state when `list` changes
@@ -54,9 +52,9 @@ export function Toolbar({table}) {
                         )}
                     >
                         <SearchInput table={table}/>
-                        {table.getColumn("date") && (
+                        {table.getColumn("생성시간") && (
                             <DateFilter
-                                column={table.getColumn("date")}
+                                column={table.getColumn("생성시간")}
                                 title="Date Range"
                                 config={{
                                     maxDate: new Date().fp_incr(1),
@@ -72,12 +70,15 @@ export function Toolbar({table}) {
                             isFullScreenEnabled ? "px-4 sm:px-5" : "px-[--margin-x]",
                         )}
                     >
-                        {table.getColumn("id") && (
-                            <RoleFilter
-                                column={table.getColumn("id")}
-                                options={siteOption}
-                            />
-                        )}
+                        {table.getColumn("사이트 URL") && (
+                            <div
+                                className="border rounded-xl border-gray-300 hover:border-gray-400 focus:border-primary-600 dark:border-dark-450 dark:hover:border-dark-400 dark:focus:border-primary-500 text-sm ring-primary-500/50 focus:ring overflow-hidden flex items-center justify-between">
+                                <RoleFilter
+                                    column={table.getColumn("사이트 URL")}
+                                    options={siteOption}
+                                />
+                                <SearchSiteInput table={table}/>
+                            </div>)}
                     </div>
                 </>
             ) : (
@@ -92,18 +93,22 @@ export function Toolbar({table}) {
                             : "var(--margin-x)",
                     }}
                 >
-                    {table.getColumn("siteurl") && (
-                        <RoleFilter
-                            column={table.getColumn("siteurl")}
-                            options={siteOption}
-                        />
+                    {table.getColumn("사이트 URL") && (
+                        <div
+                            className="border rounded-xl border-gray-300 hover:border-gray-400 focus:border-primary-600 dark:border-dark-450 dark:hover:border-dark-400 dark:focus:border-primary-500 text-sm ring-primary-500/50 focus:ring overflow-hidden flex items-center justify-between">
+                            <RoleFilter
+                                column={table.getColumn("사이트 URL")}
+                                options={siteOption}
+                            />
+                            <SearchSiteInput table={table}/>
+                        </div>
                     )}
 
                     <div className="flex shrink-0 space-x-2 justify-end rtl:space-x-reverse">
                         <SearchInput table={table}/>
-                        {table.getColumn("date") && (
+                        {table.getColumn("생성시간") && (
                             <DateFilter
-                                column={table.getColumn("date")}
+                                column={table.getColumn("생성시간")}
                                 title="Date Range"
                                 config={{
                                     maxDate: new Date().fp_incr(1),
@@ -134,11 +139,30 @@ function SearchInput({table}) {
     );
 }
 
+function SearchSiteInput({table}) {
+    return (
+        <Input
+            value={table.getState().globalFilter}
+            onChange={(e) => table.setGlobalFilter(e.target.value)}
+            prefix={<MagnifyingGlassIcon className="size-6"/>}
+            classNames={{
+                root: "h-full",
+                input: "text-sm border-0 py-4",
+            }}
+            placeholder="Search Site"
+        />
+    );
+}
+
 
 Toolbar.propTypes = {
     table: PropTypes.object,
 };
 
 SearchInput.propTypes = {
+    table: PropTypes.object,
+};
+
+SearchSiteInput.propTypes = {
     table: PropTypes.object,
 };

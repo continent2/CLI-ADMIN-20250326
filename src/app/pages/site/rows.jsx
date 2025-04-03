@@ -7,23 +7,23 @@ import { useLocaleContext } from "app/contexts/locale/context";
 
 // ----------------------------------------------------------------------
 
-export function CreateUpdateCell({row}) {
-    const {locale} = useLocaleContext();
+export function CreateUpdateCell({ row }) {
+    const { locale } = useLocaleContext();
     const createdDate = row.original.info["createdat"];
     const updatedDate = row.original.info["updatedat"];
 
     const formattedCreatedDate = createdDate
-        ? `${dayjs(createdDate).locale(locale).format("DD MMM YYYY")} | ${dayjs(createdDate).locale(locale).format("hh:mm A")}`
+        ? `${dayjs(createdDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
         : "N/A";
 
     const formattedUpdatedDate = updatedDate
-        ? `${dayjs(updatedDate).locale(locale).format("DD MMM YYYY")} | ${dayjs(updatedDate).locale(locale).format("hh:mm A")}`
+        ? `${dayjs(updatedDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
         : "N/A";
 
     return (
         <div>
             <p>{formattedCreatedDate}</p>
-            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
             <p>{formattedUpdatedDate}</p>
         </div>
     );
@@ -40,7 +40,7 @@ export function SiteIdURL({row}) {
                 href={siteURL || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{textDecoration: "none", color: "blue"}}
+                className="dark:text-gray-500 text-blue-500 no-underline"
             >
                 {siteURL || "N/A"}
             </a>

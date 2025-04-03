@@ -34,6 +34,10 @@ export default function SignIn() {
     });
   };
 
+  // Clear local storage
+  localStorage.clear();
+  sessionStorage.clear();
+
   return (
     <Page title="Login">
       <main className="min-h-100vh grid w-full grow grid-cols-1 place-items-center">
@@ -53,8 +57,8 @@ export default function SignIn() {
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
               <div className="space-y-4">
                 <Input
-                  label="Username"
-                  placeholder="Enter Username"
+                  label="사용자명" //Username
+                  placeholder="사용자 이름을 입력하세요" //Enter Username
                   prefix={
                     <EnvelopeIcon
                       className="size-5 transition-colors duration-200"
@@ -65,8 +69,8 @@ export default function SignIn() {
                   error={errors?.username?.message}
                 />
                 <Input
-                  label="Password"
-                  placeholder="Enter Password"
+                  label="비밀번호" //Password
+                  placeholder="비밀번호 입력" //Enter Password
                   type="password"
                   prefix={
                     <LockClosedIcon
@@ -98,7 +102,7 @@ export default function SignIn() {
               </div>
 
               <Button type="submit" className="mt-5 w-full" color="primary">
-                Sign In
+                로그인 {/*Sign in*/}
               </Button>
             </form>
             <div className="mt-4 text-center text-xs+">

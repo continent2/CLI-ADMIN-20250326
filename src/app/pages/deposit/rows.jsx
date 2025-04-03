@@ -64,13 +64,14 @@ export function SiteCell({ getValue }) {
 
 export function DateCell({ getValue }) {
     const { locale } = useLocaleContext();
-    const timestapms = getValue();
-    const date = dayjs(timestapms).locale(locale).format("DD MMM YYYY");
-    const time = dayjs(timestapms).locale(locale).format("hh:mm A");
+    const timestamp = getValue();
+
+    const date = dayjs(timestamp).locale(locale).format("YYYY-MM-DD");
+    const time = dayjs(timestamp).locale(locale).format("HH:mm:ss");
+
     return (
         <>
-            <p className="font-medium">{date}</p>
-            <p className="mt-0.5 text-xs text-gray-400 dark:text-dark-300">{time}</p>
+            <p>{date} | {time}</p>
         </>
     );
 }

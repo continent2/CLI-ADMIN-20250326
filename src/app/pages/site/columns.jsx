@@ -12,13 +12,13 @@ import {CreateUpdateCell, SiteIdURL,AccountCell,Stat1,Stat2} from "../site/rows.
 
 export const columns = [
   {
-    id:"date",
+    id:"등록일",
     accessorKey: "info.createdat", // Keep the accessor for sorting/filtering
     header: "등록일", //Registration date
     cell:CreateUpdateCell
   },
     {
-        id: "siteURLMember",
+        id: "사이트",
         accessorKey: "info.siteurl", // Keep the accessor for sorting/filtering
         header: () => (
             <div>
@@ -30,21 +30,25 @@ export const columns = [
         cell:SiteIdURL
     },
     {
+        id:"벌집계정주소",
         accessorKey: "account.id", // Keep the accessor for sorting/filtering
         header: "벌집계정주소",
         cell:AccountCell
     },
     {
+        id:"입금한사용자수",
         accessorKey: "stat.count_cumul", // Use accessor for sorting/filtering
         header: "입금한사용자수", //Number of users who deposited money
         cell: Stat1
     },
     {
+        id:"비활성입금계정 개수",
         accessorKey: "stat.sum_1d", // Use accessor for sorting/filtering
         header: "비활성입금계정 개수", //Number of inactive deposit accounts
         cell: Stat2
     },
     {
+        id:"상태",
         accessorKey: "info.status", // Keep the accessor for sorting/filtering
         header: "상태", //Situation
     },

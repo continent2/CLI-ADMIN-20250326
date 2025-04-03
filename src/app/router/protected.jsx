@@ -48,6 +48,12 @@ const protectedRoutes = {
               }),
             },
             {
+              path: "addSiteAdminstratorForm",
+              lazy: async () => ({
+                Component: (await import("app/pages/adminUser/AdminUserForm.jsx")).default,
+              })
+            },
+            {
               path: "registerYourSite",
               lazy: async () => ({
                 Component: (await import("app/pages/site/SiteRegistrationForm.jsx")).default,

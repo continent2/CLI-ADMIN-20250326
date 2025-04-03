@@ -31,11 +31,12 @@ const reducerHandlers = {
   },
 
   USERS_SUCCESS: (state, action) => {
-    const { list,count  } = action.payload;
+    const { list,count,siteList  } = action.payload;
     return {
       ...state,
       isLoading: false,
       list,
+      siteList,
       count
     };
   },
@@ -128,7 +129,18 @@ export function AdminUserProvider({ children }) {
           }
       );
 
+      const site_response = await axios.get(
+          "/query/list/plain/site/_/_/name/ASC/0/100",
+          {
+            headers: {
+              Authorization: token,
+            },
+            timeout: 5000, // Timeout after 5 seconds
+          }
+      );
+
       const { list,count } = response.data;
+      const { list:siteList } = site_response.data;
 
       // if (!isString(authToken) && !isObject(user)) {
       //   throw new Error("Response is not vallid");
@@ -139,6 +151,7 @@ export function AdminUserProvider({ children }) {
         payload: {
           list,
           count,
+          siteList
         },
       });
     } catch (err) {

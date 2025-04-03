@@ -14,11 +14,11 @@ export function CreateUpdateCell({row}) {
     const updatedDate = row.original["updatedat"];
 
     const formattedCreatedDate = createdDate
-        ? `${dayjs(createdDate).locale(locale).format("DD MMM YYYY")} | ${dayjs(createdDate).locale(locale).format("hh:mm A")}`
+        ? `${dayjs(createdDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
         : "N/A";
 
     const formattedUpdatedDate = updatedDate
-        ? `${dayjs(updatedDate).locale(locale).format("DD MMM YYYY")} | ${dayjs(updatedDate).locale(locale).format("hh:mm A")}`
+        ? `${dayjs(updatedDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
         : "N/A";
 
     return (
@@ -69,7 +69,7 @@ export function ReceivedAccount({row}) {
                 href={Name || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{textDecoration: "none", color: "blue"}}
+                className="dark:text-gray-500 text-blue-500 no-underline"
             >
                 {Name || "N/A"}
             </a>

@@ -16,12 +16,13 @@ import {
 
 export const columns = [
     {
-        id: "date",
+        id: "등록일",
         accessorKey: "createdat", // Keep the accessor for sorting/filtering
         header: "등록일", //Registration date
         cell: CreateUpdateCell
     },
     {
+        id:"수량 ,단위",
         accessorKey: "info.siteurl", // Keep the accessor for sorting/filtering
         header: () => (
             <div>
@@ -33,6 +34,7 @@ export const columns = [
         cell: AmountCurrency
     },
     {
+        id:"TXHASH 발생수수료",
         accessorKey: "transfer.txhash", // Keep the accessor for sorting/filtering
         header: "TXHASH 발생수수료",
         cell: ({row}) => {
@@ -45,6 +47,7 @@ export const columns = [
         },
     },
     {
+        id:"보낸주소",
         accessorKey: "transfer.from", // Keep the accessor for sorting/filtering
         header: "보낸주소", //Sent address
         cell: ({row}) => {
@@ -57,6 +60,7 @@ export const columns = [
         },
     },
     {
+        id:"받은주소",
         accessorKey: "transfer.to", // Keep the accessor for sorting/filtering
         header: "받은주소", //Received address
         cell: ({row}) => {
@@ -69,16 +73,19 @@ export const columns = [
         },
     },
     {
+        id:"보낸계정",
         accessorKey: "agency.name", // Keep the accessor for sorting/filtering
         header: "보낸계정", //Sent account
         cell: SendAccount
     },
     {
+        id:"받은계정",
         accessorKey: "site.id", // Keep the accessor for sorting/filtering
         header: "받은계정", //Received account
         cell: ReceivedAccount
     },
     {
+        id:"자동 신청",
         accessorKey: "bankname", // Keep the accessor for sorting/filtering
         header: () => (
             <div>
@@ -90,6 +97,7 @@ export const columns = [
         cell: BankDetail
     },
     {
+        id:"상태",
         accessorKey: "status", // Keep the accessor for sorting/filtering
         header: "상태", //Situation
     },

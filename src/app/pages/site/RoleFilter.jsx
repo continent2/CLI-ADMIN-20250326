@@ -14,7 +14,7 @@ export function RoleFilter({ column, options }) {
   return (
     <div
       data-tab
-      className="flex rounded-md overflow-auto w-[100%] md:w-[65%] bg-gray-200 px-3 py-2 text-xs+ text-gray-800 dark:bg-dark-700 dark:text-dark-200"
+      className="flex rounded-md overflow-auto bg-gray-200 px-3 py-2 text-xs+ text-gray-800 dark:bg-dark-700 dark:text-dark-200"
     >
       <Button
         data-tab-item

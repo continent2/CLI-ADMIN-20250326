@@ -47,8 +47,7 @@ export default function Deposit() {
     const paginationData = {
         fetchData : deposits,
         count,
-        pageIndex,
-        name:"deposit"
+        pageIndex
     };
 
 
@@ -164,10 +163,10 @@ export default function Deposit() {
     }, [list]);
 
     return (
-        <Page title="보증금">
+        <Page title="사이트 입금">
             <div className="transition-content w-full pb-5">
                 <h2 className="truncate text-xl py-6 font-medium tracking-wide text-gray-800 dark:text-dark-50 px-[--margin-x]">
-                    보증금
+                    사이트 입금
                 </h2>
                 <div
                     className={clsx(
