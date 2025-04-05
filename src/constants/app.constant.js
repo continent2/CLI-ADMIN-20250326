@@ -1,6 +1,7 @@
 export const APP_NAME = "Tailux";
 export const APP_KEY = "tailux";
-export const App_URL ="https://testnet.cdeposit.online:50825";
+export const tronScan_Transaction ="https://tronscan.org/#/transaction/";
+export const tronScan_Address ="https://tronscan.org/#/address/";
 
 // Redirect Paths
 export const REDIRECT_URL_KEY = "redirect";

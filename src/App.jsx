@@ -13,6 +13,7 @@ import {MemberProvider} from "./app/contexts/member/Provider";
 import {SiteProvider} from "./app/contexts/site/Provider.jsx"
 import {WithdrawalDetailsProvider} from "./app/contexts/withdrawalDetails/Provider.jsx";
 import {AdminUserProvider} from "./app/contexts/adminUser/Provider";
+import {AppDataProvider} from "./app/contexts/appData/Provider.jsx";
 
 // ----------------------------------------------------------------------
 
@@ -20,23 +21,25 @@ function App() {
     return (
         <AuthProvider>
             <ThemeProvider>
-                <DepositProvider>
-                    <SiteProvider>
-                        <WithdrawalDetailsProvider>
-                            <MemberProvider>
-                                <AdminUserProvider>
-                                    <LocaleProvider>
-                                        <BreakpointProvider>
-                                            <SidebarProvider>
-                                                <RouterProvider router={router}/>
-                                            </SidebarProvider>
-                                        </BreakpointProvider>
-                                    </LocaleProvider>
-                                </AdminUserProvider>
-                            </MemberProvider>
-                        </WithdrawalDetailsProvider>
-                    </SiteProvider>
-                </DepositProvider>
+                <AppDataProvider>
+                    <DepositProvider>
+                        <SiteProvider>
+                            <WithdrawalDetailsProvider>
+                                <MemberProvider>
+                                    <AdminUserProvider>
+                                        <LocaleProvider>
+                                            <BreakpointProvider>
+                                                <SidebarProvider>
+                                                    <RouterProvider router={router}/>
+                                                </SidebarProvider>
+                                            </BreakpointProvider>
+                                        </LocaleProvider>
+                                    </AdminUserProvider>
+                                </MemberProvider>
+                            </WithdrawalDetailsProvider>
+                        </SiteProvider>
+                    </DepositProvider>
+                </AppDataProvider>
             </ThemeProvider>
         </AuthProvider>
     );

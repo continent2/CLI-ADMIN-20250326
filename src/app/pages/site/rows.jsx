@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 
 // Local Imports
 import { useLocaleContext } from "app/contexts/locale/context";
+import {CopyableCellWithClick} from "components/shared/table/CopyableCell";
+import {tronScan_Address} from "../../../constants/app.constant.js";
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +52,7 @@ export function SiteIdURL({row}) {
     );
 }
 
-export function AccountCell({row}) {
+export function AccountCell({row,table}) {
     const Id = row.original.info?.["account.id"];
     const Address = row.original.info?.["account.address"];
 
@@ -58,7 +60,15 @@ export function AccountCell({row}) {
         <div>
             <p>{Id ?? "N/A"}</p>
             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-            <p>{Address ?? "N/A"}</p>
+            <CopyableCellWithClick
+                getValue={() => Address ?? "N/A"}
+                table={table}
+                onClick={() => {
+                    if (Address) {
+                        window.open(`${tronScan_Address}${Address}`, "_blank");
+                    }
+                }}
+            />
         </div>
     );
 }

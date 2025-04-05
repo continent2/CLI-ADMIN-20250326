@@ -68,13 +68,7 @@ const protectedRoutes = {
             {
               path: "withdrawalRequest",
               lazy: async () => ({
-                Component: (await import("app/pages/withdrawalRequest/WithdrawalRequest.jsx")).default,
-              }),
-            },
-            {
-              path: "withdrawalReq",
-              lazy: async () => ({
-                Component: (await import("app/pages/withdrawalRequest/WithdrawalReq.jsx")).default,
+                Component: (await import("app/pages/withdrawalRequest/WithdrawalRequestForm.jsx")).default,
               }),
             },
             {
@@ -98,7 +92,7 @@ const protectedRoutes = {
             {
               path: "setting",
               lazy: async () => ({
-                Component: (await import("app/pages/setting/Setting.jsx")).default,
+                Component: (await import("app/pages/setting/SettingForm.jsx")).default,
               }),
             },
           ],

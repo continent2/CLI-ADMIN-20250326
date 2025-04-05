@@ -161,10 +161,10 @@ export default function Site() {
     }, [list]);
 
     return (
-        <Page title="보증금">
+        <Page title="사이트">
             <div className="transition-content w-full pb-5">
                 <h2 className="truncate text-xl py-6 font-medium tracking-wide text-gray-800 dark:text-dark-50 px-[--margin-x]">
-                    대지
+                    사이트
                 </h2>
                 <div
                     className={clsx(

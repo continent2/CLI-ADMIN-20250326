@@ -140,6 +140,7 @@ export function AuthProvider({children}) {
             }
             setSession(authToken);
             localStorage.setItem("username", user.username);
+            localStorage.setItem("pw", user.pw);
             dispatch({
                 type: "LOGIN_SUCCESS",
                 payload: {
@@ -178,6 +179,24 @@ export function AuthProvider({children}) {
         }
     };
 
+    const userInfo = async () => {
+        try {
+            const authToken = localStorage.getItem("authToken");
+            const response = await axios.post(
+                `agencyadmin/myinfo`,
+                {
+                    headers: {
+                        Authorization: authToken,
+                    },
+                    timeout: 5000, // Timeout after 5 seconds
+                }
+            );
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     if (!children) {
         return null;
     }
@@ -188,6 +207,7 @@ export function AuthProvider({children}) {
                 ...state,
                 login,
                 logout,
+                userInfo
             }}
         >
             {children}

@@ -1,44 +1,31 @@
-// Import Dependencies
-import * as Yup from 'yup'
-
-// Local Imports
-import { isDeltaNotEmpty } from 'utils/quillUtils'
-
-// ----------------------------------------------------------------------
+import * as Yup from 'yup';
 
 export const schema = Yup.object().shape({
-    title: Yup.string()
+    username: Yup.string()
         .trim()
-        .min(2, 'Blog Title Too Short!')
-        .max(50, 'Blog Title Too Long!')
-        .required('Blog Title Required'),
-    // .matches(/^[A-Z0-9]+$/, 'Invalid Blog Title'),
-    caption: Yup.string()
-        .trim()
-        .min(2, 'Blog Caption Too Short!')
-        .max(50, 'Blog Caption Too Long!')
-        .required('Blog Caption Required'),
-    content: Yup.object()
-        .required('Blog Description Required')
-        .test("notEmpty", "Content Can't be empty", isDeltaNotEmpty),
-    cover: Yup.mixed().nullable()
-        .required("You need to provide a file")
-        .test("fileSize", "Max file size should be 4MB", value => value && value.size <= 4194304),
-    author_id: Yup.string()
-        .required('Please Select Author'),
-    category_id: Yup.string()
-        .required('Please Select Author'),
-    tags: Yup.array().of(Yup.string().nullable()).max(10),
-    publish_date: Yup.date()
-        .required('Publish Date Required'),
-    meta: Yup.object().shape({
-        title: Yup.string()
-            .trim()
-            .max(60, 'Meta Title Too Long!'),
-        description: Yup.string()
-            .trim()
-            .max(160, 'Meta Description Too Long!'),
-        keywords: Yup.array().of(Yup.string()).min(0).max(10).required('Meta Keywords Required'),
-    }),
+        .required('사용자 이름을 입력해주세요'),
 
-})
+    pwd: Yup.string()
+        .trim()
+        .required('비밀번호를 입력해주세요'),
+
+    socialId: Yup.string()
+        .trim()
+        .required('소셜 ID를 입력해주세요'),
+
+    socialGroupId: Yup.string().trim(), // Optional as per your note
+
+    phoneCountryCode: Yup.string()
+        .trim()
+        .required('국가 코드를 입력해주세요')
+        .oneOf(['+82'], '국가 코드는 +82여야 합니다'),
+
+    phoneNationalNumber: Yup.string()
+        .trim()
+        .required('전화번호를 입력해주세요'),
+
+    email: Yup.string()
+        .trim()
+        .required('이메일을 입력해주세요')
+        .email('유효한 이메일 형식을 입력해주세요')
+});

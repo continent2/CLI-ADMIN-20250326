@@ -1,27 +1,29 @@
 import {Page} from "components/shared/Page";
 import {Input, Button, Switch, Select} from "components/ui";
-import {Fragment, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {schema} from "./schema.js";
 import {useAppDataContext} from "../../contexts/appData/context.js";
+import {Fragment, useEffect, useState} from "react";
 import axios from "../../../utils/axios.js";
 import {Dialog, DialogPanel, DialogTitle, Transition, TransitionChild} from "@headlessui/react";
 import {CheckCircleIcon} from "@heroicons/react/24/outline/index.js";
 
 
-const initialState = {
-    siteUrl: "",
-    SocialGroupId: "",
-    managerSocialId: "",
+export const initialState = {
+    amountFrom: "",
+    currencyFrom: "",
+    amountTo: "",
+    currencyTo: "",
+    bankName: '',
+    bankAccount: '',
     isCrypto: 1,
-    isReceiveAgencyOrSite: 1,
-    bankName: "",
-    bankId: "",
-    address: ""
+    address: '',
+    netType: '',
+    quoteSignature: ''
 };
 
-export default function SiteRegistrationForm() {
+export default function WithdrawalRequestForm() {
     const token = localStorage.getItem("authToken");
     const {banks, bankInfo} = useAppDataContext();
 
@@ -41,23 +43,28 @@ export default function SiteRegistrationForm() {
         defaultValues: initialState,
     });
 
+
     const onSubmit = async (data) => {
+        console.log(data);
+
         const bankAccount = banks.find((item) => item.id === +data.bankName)
         const payload = {
-            siteurl: data.siteUrl,
-            socialgroupid: data.SocialGroupId,
-            managersocialid: data.managerSocialId,
-            iscrypto: data.isCrypto,  // Assuming it's a boolean
-            isreceiveagencyorsite: data.isReceiveAgencyOrSite, // Assuming it's a boolean
-            bankname: bankAccount.banknameen,
-            bankaccount: data.bankAccount,
-            bankid: bankAccount.id,
-            address: data.address
+            amountFrom: data.amountFrom,
+            currencyFrom: data.currencyFrom,
+            amountTo: data.amountFrom,
+            currencyTo: data.currencyTo,
+            bankName: bankAccount.banknameen,
+            bankcode: bankAccount.code,
+            bankAccount: data.bankAccount,
+            isCrypto: data.isCrypto,
+            address: data.address,
+            netType: data.netType,
+            quoteSignature: data.quoteSignature
         };
-        console.log(payload);
+
         try {
             const response = await axios.post(
-                `/query/item/site`,
+                `/withdraw/request`,
                 payload,
                 {
                     headers: {
@@ -101,10 +108,10 @@ export default function SiteRegistrationForm() {
     }, []);
 
     return (
-        <Page title="사이트를 등록하세요">
+        <Page title="출금 요청">
             <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] pb-8">
                 <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 py-6 lg:text-2xl">
-                    사이트를 등록하세요
+                    출금 요청
                 </h2>
 
                 <div>
@@ -112,76 +119,46 @@ export default function SiteRegistrationForm() {
                         className="p-[24px] md:p-[38px] lg:p-[54px] h-fit bg-white dark:bg-dark-700 border border-gray-200 rounded-lg shadow-sm border-none">
                         <div>
                             {/*Form*/}
-                            <form autoComplete="off"
-                                  onSubmit={handleSubmit(onSubmit)}
-                                  id="new-site-form">
-                                <div className="flex flex-col md:flex-row gap-9">
+                            <form autoComplete="off" onSubmit={handleSubmit(onSubmit)} id="new-withdrawal-form">
+                                <div className="flex flex-col lg:flex-row gap-9">
                                     <div
-                                        className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 w-full md:w-1/2">
-
-                                        {/*Site URL*/}
+                                        className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 w-full lg:w-1/2">
+                                        {/*Amount From*/}
                                         <Input
-                                            placeholder="사이트 URL 값"
-                                            label="사이트 URL"
-                                            {...register("siteUrl")}
-                                            error={errors?.siteUrl?.message}
-                                        />
-                                        <div>
-
-                                            {/*deposit type*/}
-                                            <label className="col-span-2">
-                                                예금 유형
-                                            </label>
-                                            <div className="col-span-10">
-                                                <div className="flex mt-1">
-                                                    <span className="label me-2">USDT</span>
-                                                    <Switch
-                                                        defaultChecked label="Won"
-                                                        {...register("isCrypto")}
-                                                        error={errors?.isCrypto?.message}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            {/*Deposit address*/}
-                                            <label className="col-span-2">
-                                                입금주소
-                                            </label>
-                                            <div className="col-span-10">
-                                                <div className="flex mt-1">
-                                                    <span className="label me-2">대행사</span>
-                                                    <Switch
-                                                        defaultChecked
-                                                        label="사이트별 주소"
-                                                        {...register("isReceiveAgencyOrSite")}
-                                                        error={errors?.isReceiveAgencyOrSite?.message}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/*SocialGroupId*/}
-                                        <Input
-                                            placeholder="소셜 그룹 ID"
-                                            label="소셜 그룹 ID"
-                                            {...register("SocialGroupId")}
-                                            error={errors?.SocialGroupId?.message}
+                                            placeholder=""
+                                            label="보내는 금액"
+                                            {...register("amountFrom")}
+                                            error={errors?.amountFrom?.message}
                                         />
 
-                                        {/*managerSocialId*/}
+                                        {/*Currency From*/}
                                         <Input
-                                            placeholder="관리자 소셜 ID"
-                                            label="관리자 소셜 ID"
-                                            {...register("managerSocialId")}
-                                            error={errors?.managerSocialId?.message}
+                                            placeholder=""
+                                            label="보내는 통화"
+                                            {...register("currencyFrom")}
+                                            error={errors?.currencyFrom?.message}
+                                        />
+
+                                        {/*Amount to*/}
+                                        <Input
+                                            placeholder=""
+                                            label="받는 금액"
+                                            {...register("amountTo")}
+                                            error={errors?.amountTo?.message}
+                                        />
+
+                                        {/*Currency to*/}
+                                        <Input
+                                            placeholder=""
+                                            label="받는 통화"
+                                            {...register("currencyTo")}
+                                            error={errors?.currencyTo?.message}
                                         />
                                     </div>
                                     <div
-                                        className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 w-full md:w-1/2">
-
+                                        className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 w-full lg:w-1/2">
                                         <Select
-                                            label="입금받을 계좌"
+                                            label="은행명"
                                             data={[
                                                 { label: "은행을 선택해주세요", value: "" },
                                                 ...(banks || []).map((b) => ({
@@ -194,29 +171,61 @@ export default function SiteRegistrationForm() {
                                         />
 
                                         {/*Bank account*/}
-                                        <Input placeholder=""
-                                               label="은행 계좌"
-                                               {...register("bankAccount")}
-                                               error={errors?.bankAccount?.message}
+                                        <Input
+                                            placeholder=""
+                                            label="계좌번호"
+                                            {...register("bankAccount")}
+                                            error={errors?.bankAccount?.message}
                                         />
 
-                                        {/*address*/}
+                                        <div>
+                                            <label className="col-span-2">
+                                                암호화폐 여부 (0 또는 1
+                                            </label>
+                                            <div className="col-span-10">
+                                                <div className="flex mt-1">
+                                                    <span className="label me-2">KWR</span>
+                                                    <Switch
+                                                        defaultChecked
+                                                        label="USDT"
+                                                        {...register("isCrypto")}
+                                                        error={errors?.bankName?.message}/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/*Address*/}
                                         <Input
-                                            placeholder="입금주소값"
+                                            placeholder=""
                                             label="주소"
                                             {...register("address")}
                                             error={errors?.address?.message}
                                         />
 
+                                        {/*Net type*/}
+                                        <Input
+                                            placeholder=""
+                                            label="네트워크 유형"
+                                            {...register("netType")}
+                                            error={errors?.netType?.message}
+                                        />
+
+                                        {/*Quote signature*/}
+                                        <Input
+                                            placeholder=""
+                                            label="서명 값"
+                                            {...register("quoteSignature")}
+                                            error={errors?.quoteSignature?.message}
+                                        />
                                     </div>
                                 </div>
                                 {/*Action buttons*/}
                                 <div
-                                    className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center  rtl:space-x-reverse">
-                                    <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
+                                    className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
+                                    <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">취소</Button>
                                     <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium"
                                             color="primary">
-                                        확인하다
+                                        확인
                                     </Button>
                                 </div>
                             </form>
@@ -224,6 +233,8 @@ export default function SiteRegistrationForm() {
                     </div>
                 </div>
             </div>
+
+
 
 
             {/*modal*/}
@@ -278,7 +289,6 @@ export default function SiteRegistrationForm() {
                     </TransitionChild>
                 </Dialog>
             </Transition>
-
         </Page>
     )
 }

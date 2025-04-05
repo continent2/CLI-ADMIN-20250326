@@ -8,6 +8,8 @@ import {
     ReceivedAccount,
     BankDetail
 } from "../withdrawalDetails/rows.jsx";
+import {tronScan_Transaction,tronScan_Address} from "../../../constants/app.constant.js";
+import {CopyableCellWithClick} from "components/shared/table/CopyableCell";
 
 
 // ----------------------------------------------------------------------
@@ -37,12 +39,18 @@ export const columns = [
         id:"TXHASH 발생수수료",
         accessorKey: "transfer.txhash", // Keep the accessor for sorting/filtering
         header: "TXHASH 발생수수료",
-        cell: ({row}) => {
-            const txHash = row.original["transfer.txhash"]; // Get txHash
+        cell: ({ row, table }) => {
+            const txHash = row.original["transfer.txhash"];
             return (
-                <div>
-                    <p>{txHash || "N/A"}</p>
-                </div>
+                <CopyableCellWithClick
+                    getValue={() => txHash || "N/A"}
+                    table={table}
+                    onClick={() => {
+                        if (txHash) {
+                            window.open(`${tronScan_Transaction}${txHash}`, "_blank");
+                        }
+                    }}
+                />
             );
         },
     },
@@ -50,12 +58,18 @@ export const columns = [
         id:"보낸주소",
         accessorKey: "transfer.from", // Keep the accessor for sorting/filtering
         header: "보낸주소", //Sent address
-        cell: ({row}) => {
-            const transfer = row.original["transfer.from"]; // Get txHash
+        cell: ({ row, table }) => {
+            const fromAddress = row.original["transfer.from"];
             return (
-                <div>
-                    <p>{transfer || "N/A"}</p>
-                </div>
+                <CopyableCellWithClick
+                    getValue={() => fromAddress || "N/A"}
+                    table={table}
+                    onClick={() => {
+                        if (fromAddress) {
+                            window.open(`${tronScan_Address}${fromAddress}`, "_blank");
+                        }
+                    }}
+                />
             );
         },
     },
@@ -63,12 +77,18 @@ export const columns = [
         id:"받은주소",
         accessorKey: "transfer.to", // Keep the accessor for sorting/filtering
         header: "받은주소", //Received address
-        cell: ({row}) => {
-            const transfer = row.original["transfer.to"]; // Get txHash
+        cell: ({ row, table }) => {
+            const toAddress = row.original["transfer.to"];
             return (
-                <div>
-                    <p>{transfer || "N/A"}</p>
-                </div>
+                <CopyableCellWithClick
+                    getValue={() => toAddress || "N/A"}
+                    table={table}
+                    onClick={() => {
+                        if (toAddress) {
+                            window.open(`${tronScan_Address}${toAddress}`, "_blank");
+                        }
+                    }}
+                />
             );
         },
     },

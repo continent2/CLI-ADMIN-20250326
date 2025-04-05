@@ -2,8 +2,9 @@
 // import { createColumnHelper } from "@tanstack/react-table";
 
 // Local Imports
-// import { CopyableCell } from "components/shared/table/CopyableCell";
+import {CopyableCellWithClick} from "components/shared/table/CopyableCell";
 import {DateCell} from "./rows";
+import {tronScan_Transaction, tronScan_Address} from "../../../constants/app.constant.js";
 // import { HighlightableCell } from "components/shared/table/HighlightableCell";
 //
 // // ----------------------------------------------------------------------
@@ -12,28 +13,28 @@ import {DateCell} from "./rows";
 
 export const columns = [
     {
-        id:"생성시간",
+        id: "생성시간",
         accessorKey: "transfer.timestamp",
         header: "생성시간", //creation time
         cell: DateCell,
         filterFn: "inNumberRange",
     },
     {
-        id:"아이디",
+        id: "아이디",
         accessorKey: "id",
         header: "아이디", //id
     },
     {
-        id:"사이트 URL",
+        id: "사이트 URL",
         accessorKey: "site.siteurl", // Keep the accessor for sorting/filtering
         header: () => (
             <div>
                 Site URL
-                <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
                 ID
             </div>
         ),
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const siteUrl = row.original["site.siteurl"]; // Get Site URL
             const siteId = row.original["site.id"]; // Get Site ID
 
@@ -47,14 +48,14 @@ export const columns = [
                     >
                         {siteUrl || "N/A"} {/* Display site URL or "-" if not available */}
                     </a>
-                    <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+                    <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
                     <p>{siteId || "N/A"}</p> {/* Display Site ID or "N/A" if not available */}
                 </div>
             );
         },
     },
     {
-        id:"txHash",
+        id: "txHash",
         accessorKey: "transfer.txhash", // Keep the accessor for sorting/filtering
         header: () => (
             <div>
@@ -63,13 +64,21 @@ export const columns = [
                 Gasfee
             </div>
         ),
-        cell: ({row}) => {
-            const txHash = row.original["transfer.txhash"]; // Get txHash
+        cell: ({row, table}) => {
             const gasFee = row.original["transfer.gasfee"]; // Get Gasfee
 
             return (
                 <div>
-                    <p>{txHash || "N/A"}</p>
+                    <CopyableCellWithClick
+                        getValue={() => row.original["transfer.txhash"]}
+                        table={table}
+                        onClick={() => {
+                            const txHash = row.original["transfer.txhash"];
+                            if (txHash) {
+                                window.open(`${tronScan_Transaction}${txHash}`, "_blank");
+                            }
+                        }}
+                    />
                     <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
                     <p>{gasFee || "N/A"}</p>
                 </div>
@@ -77,16 +86,43 @@ export const columns = [
         },
     },
     {
-        id:"보낸 주소",
+        id: "보낸 주소",
         accessorKey: "transfer.from",
         header: "보낸 주소", //Sent address
-        cell: (info) => info.row.original["transfer.from"] || "N/A",
+        cell: ({ row, table }) => {
+            const fromAddress = row.original["transfer.from"];
+
+            return (
+                <CopyableCellWithClick
+                    getValue={() => fromAddress || "N/A"}
+                    table={table}
+                    onClick={() => {
+                        if (fromAddress) {
+                            window.open(`${tronScan_Address}${fromAddress}`, "_blank");
+                        }
+                    }}
+                />
+            );
+        },
     },
     {
-        id:"받는 주소",
+        id: "받는 주소",
         accessorKey: "transfer.to",
         header: "받는 주소", //Receving address
-        cell: (info) => info.row.original["transfer.to"] || "N/A",
+        cell: ({ row, table }) => {
+            const receivingAddress = row.original["transfer.to"];
+            return (
+                <CopyableCellWithClick
+                    getValue={() => receivingAddress || "N/A"}
+                    table={table}
+                    onClick={() => {
+                        if (receivingAddress) {
+                            window.open(`${tronScan_Address}${receivingAddress}`, "_blank");
+                        }
+                    }}
+                />
+            );
+        },
     },
     // {
     //     accessorKey: "transfer.memo",
@@ -120,7 +156,7 @@ export const columns = [
     //     header: "fee rate bp",
     // },
     {
-        id:"전환률 ",
+        id: "전환률 ",
         accessorKey: "convrate", // Use accessor for sorting/filtering
         header: () => (
             <div>
@@ -250,7 +286,7 @@ export const columns = [
     //     },
     // },
     {
-        id:"사용자 상태",
+        id: "사용자 상태",
         accessorKey: "user.status", // Use accessor for sorting/filtering
         header: () => (
             <div>

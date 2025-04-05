@@ -10,11 +10,14 @@ import { useAuthContext } from "app/contexts/auth/context";
 import { schema } from "./schema";
 import { Page } from "components/shared/Page";
 import appLogo from "../../../assets/appIcon.png";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import { useDisclosure } from "hooks";
 
 // ----------------------------------------------------------------------
 
 export default function SignIn() {
   const { login, errorMessage } = useAuthContext();
+  const [show, { toggle }] = useDisclosure();
   const {
     register,
     handleSubmit,
@@ -71,12 +74,25 @@ export default function SignIn() {
                 <Input
                   label="비밀번호" //Password
                   placeholder="비밀번호 입력" //Enter Password
-                  type="password"
+                  type={show ? "text" : "password"}
                   prefix={
                     <LockClosedIcon
                       className="size-5 transition-colors duration-200"
                       strokeWidth="1"
                     />
+                  }
+                  suffix={
+                    <Button
+                        variant="flat"
+                        className="pointer-events-auto size-6 shrink-0 rounded-full p-0"
+                        onClick={toggle}
+                    >
+                      {show ? (
+                          <EyeSlashIcon className="size-4.5 text-gray-500 dark:text-dark-200" />
+                      ) : (
+                          <EyeIcon className="size-4.5 text-gray-500 dark:text-dark-200" />
+                      )}
+                    </Button>
                   }
                   {...register("password")}
                   error={errors?.password?.message}

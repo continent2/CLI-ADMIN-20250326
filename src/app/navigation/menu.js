@@ -41,7 +41,7 @@ export const menu = {
             path: path( ROOT_MENU,'/site'),
             type: NAV_TYPE_ITEM,
             title: '',
-            transKey: '대지',
+            transKey: '사이트',
             Icon: HomeIcon,
         },
         {
@@ -63,14 +63,6 @@ export const menu = {
         {
             id: 'menu.withdrawalRequest',
             path: path( ROOT_MENU,'/withdrawalRequest'),
-            type: NAV_TYPE_ITEM,
-            title: '',
-            transKey: '출금 요청 (출금 신청)',
-            Icon: HomeIcon,
-        },
-        {
-            id: 'menu.withdrawalRequest',
-            path: path( ROOT_MENU,'/withdrawalReq'),
             type: NAV_TYPE_ITEM,
             title: '',
             transKey: '출금 요청',
