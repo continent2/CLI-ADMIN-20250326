@@ -63,52 +63,54 @@ export function WithdrawalDetailsProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const authToken = window.localStorage.getItem("authToken");
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const authToken = window.localStorage.getItem("authToken");
 
-        if (authToken && isTokenValid(authToken)) {
-          setSession(authToken);
-          //const response = await axios.get("/user/profile");
-          const { user } = {
-            "user": {
-              "id": "7",
-              "username": "elegantBanana",
-              "firstName": "elegantBanana",
-              "lastName": ""
-            },
-            "auth": true
-          };
-          dispatch({
-            type: "INITIALIZE",
-            payload: {
-              isAuthenticated: true,
-              user,
-            },
-          });
-        } else {
-          dispatch({
-            type: "INITIALIZE",
-            payload: {
-              isAuthenticated: false,
-              user: null,
-            },
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        dispatch({
-          type: "INITIALIZE",
-          payload: {
-            isAuthenticated: false,
-            user: null,
-          },
-        });
-      }
-    };
-    init();
-  }, []);
+                if (authToken && isTokenValid(authToken)) {
+                    setSession(authToken);
+                    //const response = await axios.get("/user/profile");
+                    const response = await axios.post(
+                `agencyadmin/myinfo`,
+                {
+                    headers: {
+                        Authorization: authToken,
+                    },
+                    timeout: 5000, // Timeout after 5 seconds
+                }
+            );
+
+                     dispatch({
+                        type: "INITIALIZE",
+                        payload: {
+                            isAuthenticated: true,
+                            user: response.data.info,
+                        },
+                    });
+                } else {
+                    dispatch({
+                        type: "INITIALIZE",
+                        payload: {
+                            isAuthenticated: false,
+                            user: null,
+                        },
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                dispatch({
+                    type: "INITIALIZE",
+                    payload: {
+                        isAuthenticated: false,
+                        user: null,
+                    },
+                });
+            }
+        };
+        init();
+    }, []);
+
 
   const withdrawas = async ({ offSet, limit }) => {
     // dispatch({

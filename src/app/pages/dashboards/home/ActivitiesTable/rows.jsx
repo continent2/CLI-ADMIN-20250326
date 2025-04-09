@@ -18,13 +18,15 @@ import { Avatar } from "components/ui";
 const activityColor = {
   "utility-payment": "info",
   "property-coverage": "primary",
-  personal: "warning",
+  "personal": "warning",
+  "deposit": "success"
 };
 
 function getActivityIcon(type) {
   if (type === "utility-payment") return ShieldExclamationIcon;
   if (type === "property-coverage") return BoltIcon;
   if (type === "personal") return UserIcon;
+  if (type === "deposit") return ArrowsRightLeftIcon;
   return ArrowsRightLeftIcon;
 }
 
@@ -53,10 +55,10 @@ export function ActivityCell({ row, getValue }) {
   );
 }
 
-export function AccountNameCell({ getValue }) {
+export function SiteNameCell({ getValue }) {
   return (
     <span className="font-medium text-gray-800 dark:text-dark-100">
-      {getValue()} Wallet
+      {getValue()}
     </span>
   );
 }
@@ -92,7 +94,7 @@ ActivityCell.propTypes = {
   getValue: PropTypes.func,
 };
 
-AccountNameCell.propTypes = {
+SiteNameCell.propTypes = {
   getValue: PropTypes.func,
 };
 

@@ -20,7 +20,17 @@ import { Button, CopyButton } from "components/ui";
 
 // ----------------------------------------------------------------------
 
-export function Balance() {
+
+
+export function Balance({ data }) {
+  console.log('data:', data);
+  
+  // Optional fallback if data is still loading or undefined
+  const depositToday = data?.amount_deposit_today ?? 0;
+  const withdrawToday = data?.amount_withdraw_today ?? 0;
+  const withdrawableAmountQuote = data?.withdrawable?.withdrawableamount_in_quote ?? 0;
+  const withdrawableAmount = data?.withdrawable?.withdrawableamount ?? 0;
+
   return (
     <div className="rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 px-4 pb-4 text-white sm:px-5">
       <div className="flex items-center justify-between py-3">
@@ -49,44 +59,54 @@ export function Balance() {
               }}
             </CopyButton>
           </div>
-          <div className="mt-3 text-3xl font-semibold">$5,566.00</div>
-          <p className="mt-2 text-xs+ text-white/80">11.159849849 BTC</p>
+
+          {/* Display dynamic balance */}
+          <div className="mt-3 text-3xl font-semibold">
+            ₩{withdrawableAmount.toLocaleString()}
+          </div>
+          <p className="mt-2 text-xs+ text-white/80">{withdrawableAmountQuote}</p>
         </div>
+
         <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
+          {/* Income */}
           <div>
-            <p className="text-white/90">Income</p>
+            <p className="text-white/90">당일 입금액</p>
             <div className="mt-1 flex items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowUpIcon className="size-4" />
               </div>
-              <p className="text-base font-medium">$2,225.22</p>
+              <p className="text-base font-medium">
+                ₩{depositToday.toLocaleString()}
+              </p>
             </div>
             <Button
               unstyled
               className="mt-3 w-full rounded-lg border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
             >
-              Send
-            </Button>
+              입금            </Button>
           </div>
+
+          {/* Expense */}
           <div>
-            <p className="text-white/90">Expense</p>
+            <p className="text-white/90">당일 출금액</p>
             <div className="mt-1 flex items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowDownIcon className="size-4" />
               </div>
-              <p className="text-base font-medium">$225.22</p>
+              <p className="text-base font-medium">
+                ₩{withdrawToday.toLocaleString()}
+              </p>
             </div>
             <Button
               unstyled
               className="mt-3 w-full rounded-lg border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
             >
-              Request
+출금
             </Button>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>  );
 }
 
 function ActionMenu() {

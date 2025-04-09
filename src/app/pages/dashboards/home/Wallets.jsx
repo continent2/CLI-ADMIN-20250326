@@ -39,7 +39,7 @@ const contacts = [
   },
 ];
 
-export function Wallets() {
+export function Wallets({ data, isLoading }) {
   return (
     <Card className="col-span-12 pb-5 lg:col-span-4">
       <div className="flex items-center justify-between px-4 py-3 sm:px-5">
@@ -56,19 +56,18 @@ export function Wallets() {
         <div className="w-48 shrink-0 rounded-lg bg-gradient-to-br from-amber-400 to-orange-600 p-[3px]">
           <div className="rounded-lg bg-white p-3 dark:bg-dark-700">
             <div className="flex items-center justify-between">
-              <p>Bitcoin</p>
-              <img
-                src="/images/100x100.png"
-                className="size-6"
-                alt="logo"
-              />
+              <p>당일입금건수</p>
+              {/* <img */}
+              {/*   src="/images/100x100.png" */}
+              {/*   className="size-6" */}
+              {/*   alt="logo" */}
+              {/* /> */}
             </div>
 
             <div className="mt-4 flex items-end justify-between">
               <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                .739
+                {data?.count_deposit_today}              
               </p>
-              <p>$7,946.00</p>
             </div>
           </div>
         </div>
@@ -76,42 +75,44 @@ export function Wallets() {
         <div className="w-48 shrink-0 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 p-[3px]">
           <div className="rounded-lg bg-white p-3 dark:bg-dark-700">
             <div className="flex items-center justify-between">
-              <p>Litecoin</p>
-              <img
-                src="/images/100x100.png"
-                className="size-6"
-                alt="logo"
-              />
+              <p>
+        당일출금건수
+              </p>
+              {/* <img */}
+              {/*   src="/images/100x100.png" */}
+              {/*   className="size-6" */}
+              {/*   alt="logo" */}
+              {/* /> */}
             </div>
 
             <div className="mt-4 flex items-end justify-between">
               <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                3.545
+                  {data?.amount_withdraw_today.toLocaleString()}
               </p>
-              <p>$2,589.00</p>
+              {/* <p>$2,589.00</p> */}
             </div>
           </div>
         </div>
 
-        <div className="w-48 shrink-0 rounded-lg bg-gradient-to-br from-info to-info-darker p-[3px]">
-          <div className="rounded-lg bg-white p-3 dark:bg-dark-700">
-            <div className="flex items-center justify-between">
-              <p>Ethereum</p>
-              <img
-                src="/images/100x100.png"
-                className="size-6"
-                alt="logo"
-              />
-            </div>
-
-            <div className="mt-4 flex items-end justify-between">
-              <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                5.589
-              </p>
-              <p>$11,499.00</p>
-            </div>
-          </div>
-        </div>
+        {/* <div className="w-48 shrink-0 rounded-lg bg-gradient-to-br from-info to-info-darker p-[3px]"> */}
+        {/*   <div className="rounded-lg bg-white p-3 dark:bg-dark-700"> */}
+        {/*     <div className="flex items-center justify-between"> */}
+        {/*       <p>Ethereum</p> */}
+        {/*       <img */}
+        {/*         src="/images/100x100.png" */}
+        {/*         className="size-6" */}
+        {/*         alt="logo" */}
+        {/*       /> */}
+        {/*     </div> */}
+        {/**/}
+        {/*     <div className="mt-4 flex items-end justify-between"> */}
+        {/*       <p className="text-xl font-medium text-gray-800 dark:text-dark-100"> */}
+        {/*         5.589 */}
+        {/*       </p> */}
+        {/*       <p>$11,499.00</p> */}
+        {/*     </div> */}
+        {/*   </div> */}
+        {/* </div> */}
       </div>
 
       <div className="mt-2 px-4 sm:px-5">

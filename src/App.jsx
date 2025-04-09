@@ -14,11 +14,16 @@ import {SiteProvider} from "./app/contexts/site/Provider.jsx"
 import {WithdrawalDetailsProvider} from "./app/contexts/withdrawalDetails/Provider.jsx";
 import {AdminUserProvider} from "./app/contexts/adminUser/Provider";
 import {AppDataProvider} from "./app/contexts/appData/Provider.jsx";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 
 // ----------------------------------------------------------------------
 
 function App() {
+  const queryClient = new QueryClient();
+
     return (
+    <QueryClientProvider client={queryClient}>
         <AuthProvider>
             <ThemeProvider>
                 <AppDataProvider>
@@ -42,7 +47,8 @@ function App() {
                 </AppDataProvider>
             </ThemeProvider>
         </AuthProvider>
-    );
+    </QueryClientProvider>
+  )
 }
 
 export default App;

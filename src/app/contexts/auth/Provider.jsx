@@ -3,6 +3,7 @@ import {useEffect, useReducer} from "react";
 import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
 import isString from "lodash/isString";
+import { toast } from "sonner";
 
 // Local Imports
 import axios from "utils/axios";
@@ -133,6 +134,12 @@ export function AuthProvider({children}) {
                 "username": username,
                 "pw": password
             });
+
+            if (response.data.status === 'ERR') {
+           toast.error("Incorrect user name or password");
+        return;
+      }
+
             const {token: authToken, userinfo: user} = response.data;
 
             if (!isString(authToken) && !isObject(user)) {
