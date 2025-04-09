@@ -35,8 +35,8 @@ export const columns = [
             </div>
         ),
         cell: ({row}) => {
-            const siteUrl = row.original["site.siteurl"]; // Get Site URL
-            const siteId = row.original["site.id"]; // Get Site ID
+            const siteUrl = row.original["site.siteurl"]; // Get SiteList URL
+            const siteId = row.original["site.id"]; // Get SiteList ID
 
             return (
                 <div>
@@ -46,10 +46,10 @@ export const columns = [
                         rel="noopener noreferrer"
                         className="dark:text-gray-500 text-blue-500 no-underline" // Add style if needed
                     >
-                        {siteUrl || "N/A"} {/* Display site URL or "-" if not available */}
+                        {siteUrl.replace(/^https?:\/\//, '') || "N/A"} {/* Display site URL or "-" if not available */}
                     </a>
                     <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                    <p>{siteId || "N/A"}</p> {/* Display Site ID or "N/A" if not available */}
+                    <p>{siteId || "N/A"}</p> {/* Display SiteList ID or "N/A" if not available */}
                 </div>
             );
         },
@@ -162,21 +162,21 @@ export const columns = [
             <div>
                 전환률 {/* Conversion Rate */}
                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                사이트 전환률 {/* Site Conversion Rate */}
+                사이트 전환률 {/* SiteList Conversion Rate */}
                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
                 에이전시 전환률 {/* Agency Conversion Rate */}
             </div>
         ),
         cell: ({row}) => {
             const convrate = row.original["convrate"]; // Conversion rate
-            const siteConvrate = row.original["site.convrate"]; // Site conversion rate
+            const siteConvrate = row.original["site.convrate"]; // SiteList conversion rate
             const agencyConvrate = row.original["agency.convrate"]; // Agency conversion rate
 
             return (
                 <div>
                     <p>{convrate || "N/A"}</p> {/* Conversion rate */}
                     <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                    <p>{siteConvrate || "N/A"}</p> {/* Site conversion rate */}
+                    <p>{siteConvrate || "N/A"}</p> {/* SiteList conversion rate */}
                     <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
                     <p>{agencyConvrate || "N/A"}</p> {/* Agency conversion rate */}
                 </div>

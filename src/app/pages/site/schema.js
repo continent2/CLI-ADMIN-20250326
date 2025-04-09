@@ -8,14 +8,16 @@ export const schema = Yup.object().shape({
             "유효한 URL을 입력하세요"
         )
         .required("사이트 URL이 필요합니다"),
-    SocialGroupId : Yup.string()
+    SocialGroupId: Yup.string()
         .trim(),
-    managerSocialId : Yup.string()
+    managerSocialId: Yup.string()
         .trim(),
-    isCrypto : Yup.string()
-        .trim(),
-    isReceiveAgencyOrSite: Yup.string()
-        .trim(),
+    isCrypto: Yup.number()
+        .oneOf([0, 1])
+        .nullable(),
+    isReceiveAgencyOrSite: Yup.number()
+        .oneOf([1, 2])
+        .nullable(),
     bankName: Yup.string()
         .trim()
         .nullable()
@@ -25,7 +27,6 @@ export const schema = Yup.object().shape({
     bankAccount: Yup.string()
         .trim()
         .required("계좌번호를 입력해주세요"),
-
     address: Yup.string()
         .trim()
         .required("주소가 필요합니다"),

@@ -1,15 +1,18 @@
 // Import Dependencies
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useForm} from "react-hook-form";
+import { LockClosedIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 // Local Imports
 import {schema} from "./schema";
 import {Page} from "components/shared/Page";
-import {Button, Input} from "components/ui";
 import axios from "../../../utils/axios.js";
 import {Dialog, DialogPanel, DialogTitle, Transition, TransitionChild} from "@headlessui/react";
 import {Fragment, useState} from "react";
 import {CheckCircleIcon} from "@heroicons/react/24/outline/index.js";
+import { Input, Button } from "components/ui";
+import { useDisclosure } from "hooks";
 
 // ----------------------------------------------------------------------
 
@@ -19,13 +22,14 @@ const initialState = {
     socialId: "",
     socialGroupId: "",
     phoneCountryCode: "",
-    phoneNationalNumber: "",
+    phoneNationalNumber: null,
     email: ""
 };
 
 const AdminUserForm = () => {
     const token = localStorage.getItem("authToken");
     const [isModalVisible, setisModalVisible] = useState(false);
+    const [show, { toggle }] = useDisclosure();
     const [modalData, setModalData] = useState({
         color: "",
         title: "",
@@ -35,9 +39,10 @@ const AdminUserForm = () => {
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: {errors, isValid},
     } = useForm({
         resolver: yupResolver(schema),
+        mode: 'all',
         defaultValues: initialState,
     });
 
@@ -107,49 +112,92 @@ const AdminUserForm = () => {
                     <form
                         autoComplete="off"
                         onSubmit={handleSubmit(onSubmit)}
-                        id="new-post-form"
+                        id="new-admin-user-form"
                     >
 
                         <div className="flex gap-4">
-                            <div className="flex flex-col border p-4 rounded-lg dark:border-gray-600 w-1/2 gap-5">
+                            <div className="flex flex-col border p-4 rounded-lg dark:border-gray-600 w-1/2 gap-5 pb-5">
                                 <Input
-                                    label="사용자 이름" //UserName
+                                    label={
+                                    <>
+                                        사용자 이름 <span className="text-red-500">*</span>
+                                    </>
+                                } //UserName
                                     placeholder="사용자 이름"
                                     {...register("username")}
                                     error={errors?.username?.message}
                                 />
 
+                                {/*Password*/}
                                 <Input
-                                    label="비밀번호" //Password
+                                    label={
+                                        <>
+                                            비밀번호 <span className="text-red-500">*</span>
+                                        </>
+                                    } //Password
                                     placeholder="비밀번호"
+                                    type={show ? "text" : "password"}
+                                    prefix={<LockClosedIcon className="size-4.5" />}
+                                    suffix={
+                                        <Button
+                                            variant="flat"
+                                            className="pointer-events-auto size-6 shrink-0 rounded-full p-0"
+                                            onClick={toggle}
+                                        >
+                                            {show ? (
+                                                <EyeSlashIcon className="size-4.5 text-gray-500 dark:text-dark-200" />
+                                            ) : (
+                                                <EyeIcon className="size-4.5 text-gray-500 dark:text-dark-200" />
+                                            )}
+                                        </Button>
+                                    }
                                     {...register("pwd")}
                                     error={errors?.pwd?.message}
                                 />
+                                <p className="text-sm text-gray-500 -mt-4">
+                                    메모: 비밀번호는 8자 이상 20자 이하이며, 숫자와 특수문자를 각각 최소 1개 이상 포함해야 합니다.
+                                </p>
 
                                 <Input
-                                    label="전화 국가 코드" //Phone country code
+                                    label={
+                                        <>
+                                            전화 국가 코드 <span className="text-red-500">*</span>
+                                        </>
+                                    } //Phone country code
                                     placeholder="전화 국가 코드"
                                     {...register("phoneCountryCode")}
                                     error={errors?.phoneCountryCode?.message}
                                 />
 
                                 <Input
-                                    label="전화번호" //Phone national number
+                                    label={
+                                        <>
+                                            전화번호 <span className="text-red-500">*</span>
+                                        </>
+                                    } //Phone national number
                                     placeholder="전화번호"
                                     {...register("phoneNationalNumber")}
                                     error={errors?.phoneNationalNumber?.message}
                                 />
 
                                 <Input
-                                    label="이메일" //Email
+                                    label={
+                                        <>
+                                            이메일 <span className="text-red-500">*</span>
+                                        </>
+                                    } //Email
                                     placeholder="이메일"
                                     {...register("email")}
                                     error={errors?.email?.message}
                                 />
                             </div>
-                            <div className="flex flex-col border p-4 rounded-lg dark:border-gray-600 w-1/2 gap-5">
+                            <div className="flex flex-col border p-4 rounded-lg dark:border-gray-600 w-1/2 gap-5 pb-5">
                                 <Input
-                                    label="소셜 ID" //Socail Id
+                                    label={
+                                        <>
+                                            소셜 ID <span className="text-red-500">*</span>
+                                        </>
+                                    } //Socail Id
                                     placeholder="소셜 ID"
                                     {...register("socialId")}
                                     error={errors?.socialId?.message}
@@ -168,8 +216,10 @@ const AdminUserForm = () => {
                         <div
                             className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
                             <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">취소</Button>
-                            <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium"
-                                    color="primary">
+                            <Button type="submit"
+                                    className="min-w-[7rem] w-[250px] text-base font-medium"
+                                    color="primary"
+                                    disabled={!isValid}>
                                 구하다
                             </Button>
                         </div>

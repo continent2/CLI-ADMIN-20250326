@@ -1,8 +1,8 @@
 import {Page} from "components/shared/Page";
-import {Button, Input, Select} from "../../../components/ui/index.js";
+import {Button, Input} from "../../../components/ui/index.js";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {bankSchema, userUpdateSchema,addressSchema} from "./schema.js";
+import {bankSchema, userUpdateSchema, addressSchema} from "./schema.js";
 import axios from "../../../utils/axios.js";
 import {useEffect, useState} from "react";
 import {
@@ -15,13 +15,26 @@ import {
 import {CheckCircleIcon} from "@heroicons/react/24/outline";
 import {Fragment} from "react";
 import {useAppDataContext} from "../../contexts/appData/context.js";
+import ReactSelect from 'react-select';
 
 
 export default function SettingForm() {
     const token = localStorage.getItem("authToken");
     const [isModalVisible, setisModalVisible] = useState(false);
     const {banks, bankInfo} = useAppDataContext();
-    // const [bank, setbank] = useState({});
+    const [banksDetail, setBanksDetail] = useState([]);
+    const [selectedOption, setSelectedOption] = useState();
+
+    const bankOptions = banks?.map((bank) => ({
+        value: bank, // store the whole bank object
+        label: (
+            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                <img src={bank.urllogo} alt={bank.banknameen} style={{width: 20, height: 20}}/>
+                {bank.banknameen}
+            </div>
+        ),
+    }));
+
 
     const initialState = {
         existingPassword: "",
@@ -32,30 +45,34 @@ export default function SettingForm() {
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: {errors, isValid},
     } = useForm({
         resolver: yupResolver(userUpdateSchema),
+        mode: 'all',
         defaultValues: initialState,
     });
 
     const {
         register: registerBank,
         handleSubmit: handleSubmitBank,
-        formState: {errors: bankErrors},
+        setValue,
+        formState: {errors: bankErrors, isValid: registerBankIsValid},
     } = useForm({
         resolver: yupResolver(bankSchema),
+        mode: 'all',
         defaultValues: {
             bankName: "",
-            bankAccount: ""
+            bankAccount: null
         },
     });
 
     const {
         register: registerAddress,
         handleSubmit: handleSubmitAddress,
-        formState: {errors: addressErrors},
+        formState: {errors: addressErrors, isValid: registerAddressIsValid},
     } = useForm({
         resolver: yupResolver(addressSchema),
+        mode: 'all',
         defaultValues: {
             address: "",
         },
@@ -126,7 +143,8 @@ export default function SettingForm() {
     };
 
     const onSubmitBank = async (data) => {
-        const SelectedBank = banks.find((item) => item.id === +data.bankName)
+        console.log(data);
+        const SelectedBank = banks.find((item) => item.banknameen === data.bankName)
         const payload = {
             bankname: SelectedBank.banknameen,
             bankaccount: data.bankAccount,
@@ -175,9 +193,9 @@ export default function SettingForm() {
         }
     };
 
-    const onSubmitAddress = async (data)=>{
+    const onSubmitAddress = async (data) => {
         const payload = {
-            address : data.address,
+            address: data.address,
         };
         try {
             const response = await axios.post(
@@ -221,6 +239,24 @@ export default function SettingForm() {
         }
     }
 
+    //used for select option for bank
+    useEffect(() => {
+        if (bankOptions?.length > 0) {
+            const firstBank = bankOptions[0];
+            setSelectedOption(firstBank); // for ReactSelect UI
+            setValue('bankName', firstBank.value.banknameen); // for your form schema
+        }
+    }, [banksDetail])
+
+
+    //set banks to bankdetails
+    useEffect(() => {
+        if (banks && banks.length > 0) {
+            setBanksDetail(banks);
+        }
+    }, [banks])
+
+    //run banks api
     useEffect(() => {
         bankInfo();
     }, []);
@@ -244,20 +280,35 @@ export default function SettingForm() {
 
                                     {/*Existing password*/}
                                     <Input
-                                        label="기존비밀번호"
+                                        label={
+                                            <>
+                                                기존비밀번호 <span className="text-red-500">*</span>
+                                            </>
+                                        }
                                         {...register("existingPassword")} // Register the input
                                         error={errors?.existingPassword?.message}/>
 
                                     {/*new password*/}
                                     <Input
-                                        label="새 비밀번호"
+                                        label={
+                                            <>
+                                                새 비밀번호 <span className="text-red-500">*</span>
+                                            </>
+                                        }
                                         {...register("newPassword")} // Register the input
                                         error={errors?.newPassword?.message}/>
 
+                                    <p className="text-sm text-gray-500 -mt-4">
+                                        메모: 비밀번호는 8자 이상 20자 이하이며, 숫자와 특수문자를 각각 최소 1개 이상 포함해야 합니다.
+                                    </p>
 
                                     {/*Confirm new password*/}
                                     <Input
-                                        label="새 비밀번호 확인"
+                                        label={
+                                            <>
+                                                새 비밀번호 확인 <span className="text-red-500">*</span>
+                                            </>
+                                        }
                                         {...register("confirmPassword")} // Register the input
                                         error={errors?.confirmPassword?.message}/>
 
@@ -266,8 +317,10 @@ export default function SettingForm() {
                                         className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
                                         <Button
                                             className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
-                                        <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium"
-                                                color="primary">
+                                        <Button type="submit"
+                                                className="min-w-[7rem] w-[250px] text-base font-medium"
+                                                color="primary"
+                                                disabled={!isValid}>
                                             확인하다
                                         </Button>
                                     </div>
@@ -299,7 +352,8 @@ export default function SettingForm() {
                                             className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
                                         <Button type="submit"
                                                 className="min-w-[7rem] w-[250px] text-base font-medium"
-                                                color="primary">
+                                                color="primary"
+                                                disabled={!registerAddressIsValid}>
                                             확인하다
                                         </Button>
                                     </div>
@@ -314,31 +368,63 @@ export default function SettingForm() {
                             >
                                 <div className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5">
                                     <label>기본 계정</label>
-                                    <Select
-                                        label="은행"
-                                        data={[
-                                            { label: "은행을 선택해주세요", value: "" },
-                                            ...(banks || []).map((b) => ({
-                                                label: b.banknameen,
-                                                value: b.id
-                                            }))
-                                        ]}
-                                        {...registerBank("bankName")}
-                                        error={bankErrors?.bankName?.message}
+                                    {/*<Select*/}
+                                    {/*    label="은행"*/}
+                                    {/*    data={[*/}
+                                    {/*        {label: "은행을 선택해주세요", value: ""},*/}
+                                    {/*        ...(banks || []).map((b) => ({*/}
+                                    {/*            label: b.banknameen,*/}
+                                    {/*            value: b.id*/}
+                                    {/*        }))*/}
+                                    {/*    ]}*/}
+                                    {/*    {...registerBank("bankName")}*/}
+                                    {/*    error={bankErrors?.bankName?.message}*/}
+                                    {/*/>*/}
+
+
+                                    {/*Receiving bank*/}
+                                    <label className="-mb-4">받는은행 <span
+                                        className="text-red-500">*</span></label>
+                                    <ReactSelect
+                                        options={bankOptions}
+                                        value={selectedOption}
+                                        onChange={(selected) => {
+                                            setSelectedOption(selected);// For select UI
+                                            setValue('bankName', selected.value.banknameen);
+                                        }}
+                                        classNames={{
+                                            control: () => '!bg-transparent !rounded-lg dark:!border-dark-450 hover:!border-gray-400',
+                                            singleValue: () => 'text-black dark:text-dark-100',
+                                            input: () => 'text-black dark:text-white',
+                                            option: ({isFocused, isSelected}) =>
+                                                [
+                                                    'text-black dark:text-white',
+                                                    'bg-white dark:bg-dark-800', // ✅ background of dropdown options
+                                                    isFocused && 'bg-gray-100 dark:bg-gray-700',
+                                                    isSelected && 'bg-blue-500 text-white',
+                                                ]
+                                                    .filter(Boolean)
+                                                    .join(' '),
+                                            menu: () => 'bg-white dark:bg-gray-800',
+                                            menuList: () => 'bg-white dark:bg-gray-800',
+                                        }}
                                     />
+
 
                                     <Input placeholder=""
                                            label=" 은행계정"
                                            {...registerBank("bankAccount")}
                                            error={bankErrors?.bankAccount?.message}
-                                           />
+                                    />
                                     {/*Action buttons*/}
                                     <div
                                         className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
                                         <Button
                                             className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
-                                        <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium"
-                                                color="primary">
+                                        <Button type="submit"
+                                                className="min-w-[7rem] w-[250px] text-base font-medium"
+                                                color="primary"
+                                                disabled={!registerBankIsValid}>
                                             확인하다
                                         </Button>
                                     </div>
@@ -392,7 +478,8 @@ export default function SettingForm() {
                                 <p className="mt-2">
                                     {modalData.message}
                                 </p>
-                                <Button onClick={() => setisModalVisible(false)} color={modalData.color} className="mt-6">
+                                <Button onClick={() => setisModalVisible(false)} color={modalData.color}
+                                        className="mt-6">
                                     Close
                                 </Button>
                             </div>

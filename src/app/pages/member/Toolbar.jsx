@@ -54,7 +54,7 @@ export function Toolbar({table}) {
                         {table.getColumn("사용시작일") && (
                             <DateFilter
                                 column={table.getColumn("사용시작일")}
-                                title="Date Range"
+                                title="기간"
                                 config={{
                                     maxDate: new Date().fp_incr(1),
                                     mode: "range",
@@ -109,7 +109,7 @@ export function Toolbar({table}) {
                         {table.getColumn("사용시작일") && (
                             <DateFilter
                                 column={table.getColumn("사용시작일")}
-                                title="Date Range"
+                                title="기간"
                                 config={{
                                     maxDate: new Date().fp_incr(1),
                                     mode: "range",
@@ -134,22 +134,20 @@ function SearchInput({table}) {
                 root: "shrink-0",
                 input: "text-sm ring-primary-500/50 focus:ring",
             }}
-            placeholder="Search Name, Member Id..."
+            placeholder="검색"
         />
     );
 }
 
-function SearchSiteInput({table}) {
+function SearchSiteInput() {
     return (
         <Input
-            value={table.getState().globalFilter}
-            onChange={(e) => table.setGlobalFilter(e.target.value)}
             prefix={<MagnifyingGlassIcon className="size-6"/>}
             classNames={{
                 root: "h-full",
                 input: "text-sm border-0 py-4",
             }}
-            placeholder="Search Site"
+            placeholder="사이트 검색"
         />
     );
 }

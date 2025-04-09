@@ -14,7 +14,7 @@ export function RoleFilter({ column, options }) {
   return (
     <div
       data-tab
-      className="flex rounded-md overflow-auto bg-gray-200 px-3 py-2 text-xs+ text-gray-800 dark:bg-dark-700 dark:text-dark-200"
+      className="flex rounded-md overflow-auto bg-gray-200 px-3 py-2 text-xs+ text-gray-800 dark:bg-dark-700 dark:text-dark-200 max-w-[80%]"
     >
       <Button
         data-tab-item
@@ -40,9 +40,9 @@ export function RoleFilter({ column, options }) {
         <Button
           data-tab-item
           onClick={() => column.setFilterValue(option.value)}
-          key={option.value}
+          key={option.id}
           className={clsx(
-            "shrink-0 whitespace-nowrap rounded text-base min-w-[10%] px-5 py-2 font-medium",
+            "shrink-0 whitespace-nowrap rounded text-sm min-w-[10%] px-5 py-2 font-medium",
             selectedValue === option.value
               ? "bg-white shadow dark:bg-dark-500 dark:text-dark-100"
               : "hover:text-gray-900 focus:text-gray-900 dark:hover:text-dark-100 dark:focus:text-dark-100",

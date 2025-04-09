@@ -1,17 +1,17 @@
 export const rolesOptions = [
     {
         value: 'site 1',
-        label: 'Site 1',
+        label: 'SiteList 1',
         color: 'success'
     },
     {
         value: 'site 2',
-        label: 'Site 2',
+        label: 'SiteList 2',
         color: 'info'
     },
     {
         value: 'site 3',
-        label: 'Site 3',
+        label: 'SiteList 3',
         color: 'error'
     },
 ];
@@ -32,7 +32,7 @@ export const usersList = [
     {
         user_id: 2,
         multipleAccountAddress: "456 Avenue, Busan, South Korea",
-        situation: "Deposit on hold",
+        situation: "DepositList on hold",
         numberOfUsersWhoDeposited: "8",
         site: "https://xyz.com",
         date: 1691735043000,
@@ -56,7 +56,7 @@ export const usersList = [
     {
         user_id: 4,
         multipleAccountAddress: "101 Park, Daejeon, South Korea",
-        situation: "Deposit on hold",
+        situation: "DepositList on hold",
         numberOfUsersWhoDeposited: "10",
         site: "https://site2.com",
         date: 1691907843000,

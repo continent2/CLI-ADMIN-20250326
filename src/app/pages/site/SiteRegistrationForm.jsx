@@ -35,9 +35,12 @@ export default function SiteRegistrationForm() {
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        setValue,
+        watch,
+        formState: {errors, isValid},
     } = useForm({
         resolver: yupResolver(schema),
+        mode: 'all',
         defaultValues: initialState,
     });
 
@@ -47,8 +50,8 @@ export default function SiteRegistrationForm() {
             siteurl: data.siteUrl,
             socialgroupid: data.SocialGroupId,
             managersocialid: data.managerSocialId,
-            iscrypto: data.isCrypto,  // Assuming it's a boolean
-            isreceiveagencyorsite: data.isReceiveAgencyOrSite, // Assuming it's a boolean
+            iscrypto: data.isCrypto,
+            isreceiveagencyorsite: data.isReceiveAgencyOrSite,
             bankname: bankAccount.banknameen,
             bankaccount: data.bankAccount,
             bankid: bankAccount.id,
@@ -117,50 +120,19 @@ export default function SiteRegistrationForm() {
                                   id="new-site-form">
                                 <div className="flex flex-col md:flex-row gap-9">
                                     <div
-                                        className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 w-full md:w-1/2">
+                                        className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 w-full md:w-1/2 pb-5">
 
-                                        {/*Site URL*/}
+                                        {/*SiteList URL*/}
                                         <Input
                                             placeholder="사이트 URL 값"
-                                            label="사이트 URL"
+                                            label={
+                                                <>
+                                                    사이트 URL <span className="text-red-500">*</span>
+                                                </>
+                                            }
                                             {...register("siteUrl")}
                                             error={errors?.siteUrl?.message}
                                         />
-                                        <div>
-
-                                            {/*deposit type*/}
-                                            <label className="col-span-2">
-                                                예금 유형
-                                            </label>
-                                            <div className="col-span-10">
-                                                <div className="flex mt-1">
-                                                    <span className="label me-2">USDT</span>
-                                                    <Switch
-                                                        defaultChecked label="Won"
-                                                        {...register("isCrypto")}
-                                                        error={errors?.isCrypto?.message}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            {/*Deposit address*/}
-                                            <label className="col-span-2">
-                                                입금주소
-                                            </label>
-                                            <div className="col-span-10">
-                                                <div className="flex mt-1">
-                                                    <span className="label me-2">대행사</span>
-                                                    <Switch
-                                                        defaultChecked
-                                                        label="사이트별 주소"
-                                                        {...register("isReceiveAgencyOrSite")}
-                                                        error={errors?.isReceiveAgencyOrSite?.message}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-
                                         {/*SocialGroupId*/}
                                         <Input
                                             placeholder="소셜 그룹 ID"
@@ -178,12 +150,51 @@ export default function SiteRegistrationForm() {
                                         />
                                     </div>
                                     <div
-                                        className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 w-full md:w-1/2">
+                                        className="border p-4 rounded-lg dark:border-gray-600 flex flex-col gap-5 w-full md:w-1/2 pb-5">
+
+                                        <div className="mx-auto">
+                                            {/*deposit type*/}
+                                            <label className="col-span-2">
+                                                예금 유형
+                                            </label>
+                                            <div className="col-span-10">
+                                                <div className="flex mt-1">
+                                                    <span className="label me-2">KRW</span>
+                                                    <Switch
+                                                        label="USDT"
+                                                        checked={watch("isCrypto") === 1} // convert to boolean for checked prop
+                                                        onChange={(e) => setValue("isCrypto", e.target.checked ? 1 : 0)}
+                                                        error={errors?.isCrypto?.message}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mx-auto">
+                                            {/*DepositList address*/}
+                                            <label className="col-span-2">
+                                                입금주소
+                                            </label>
+                                            <div className="col-span-10">
+                                                <div className="flex mt-1">
+                                                    <span className="label me-2">에이전시</span>
+                                                    <Switch
+                                                        label="사이트"
+                                                        checked={watch("isReceiveAgencyOrSite") === 2} //
+                                                        onChange={(e) => setValue("isReceiveAgencyOrSite", e.target.checked ? 2 : 1)}// convert to boolean for checked prop
+                                                        error={errors?.isReceiveAgencyOrSite?.message}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <Select
-                                            label="입금받을 계좌"
+                                            label={
+                                                <>
+                                                    입금받을 계좌 <span className="text-red-500">*</span>
+                                                </>
+                                            }
                                             data={[
-                                                { label: "은행을 선택해주세요", value: "" },
+                                                {label: "은행을 선택해주세요", value: ""},
                                                 ...(banks || []).map((b) => ({
                                                     label: b.banknameen,
                                                     value: b.id
@@ -195,7 +206,11 @@ export default function SiteRegistrationForm() {
 
                                         {/*Bank account*/}
                                         <Input placeholder=""
-                                               label="은행 계좌"
+                                               label={
+                                                   <>
+                                                       은행 계좌 <span className="text-red-500">*</span>
+                                                   </>
+                                               }
                                                {...register("bankAccount")}
                                                error={errors?.bankAccount?.message}
                                         />
@@ -203,7 +218,11 @@ export default function SiteRegistrationForm() {
                                         {/*address*/}
                                         <Input
                                             placeholder="입금주소값"
-                                            label="주소"
+                                            label={
+                                                <>
+                                                    주소 <span className="text-red-500">*</span>
+                                                </>
+                                            }
                                             {...register("address")}
                                             error={errors?.address?.message}
                                         />
@@ -214,8 +233,10 @@ export default function SiteRegistrationForm() {
                                 <div
                                     className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center  rtl:space-x-reverse">
                                     <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
-                                    <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium"
-                                            color="primary">
+                                    <Button type="submit"
+                                            className="min-w-[7rem] w-[250px] text-base font-medium"
+                                            color="primary"
+                                            disabled={!isValid}>
                                         확인하다
                                     </Button>
                                 </div>
@@ -278,7 +299,6 @@ export default function SiteRegistrationForm() {
                     </TransitionChild>
                 </Dialog>
             </Transition>
-
         </Page>
     )
 }

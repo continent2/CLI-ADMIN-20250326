@@ -16,7 +16,11 @@ const initialState = {
     isInitialized: false,
     errorMessage: null,
     banks: null,
-    agencyBank: null
+    agencyBank: null,
+    agencyBankStatus: null,
+    withdraw: null,
+    dashboardDeposit: null
+
 };
 
 const reducerHandlers = {
@@ -30,18 +34,16 @@ const reducerHandlers = {
         };
     },
 
-    BANK_SUCCESS: (state, action) => {
-        const {banks,agencyBank} = action.payload;
+    APP_DATA_SUCCESS: (state, action) => {
         return {
             ...state,
             isAuthenticated: true,
             isLoading: false,
-            banks,
-            agencyBank
+            ...action.payload
         };
     },
 
-    BANK_ERROR: (state, action) => {
+    APP_DATA_ERROR: (state, action) => {
         const {errorMessage} = action.payload;
 
         return {
@@ -78,14 +80,14 @@ export function AppDataProvider({children}) {
 
             const banks = response.data.list;
             dispatch({
-                type: "BANK_SUCCESS",
+                type: "APP_DATA_SUCCESS",
                 payload: {
                     banks,
                 },
             });
         } catch (err) {
             dispatch({
-                type: "BANK_ERROR",
+                type: "APP_DATA_ERROR",
                 payload: {
                     errorMessage: err,
                 },
@@ -107,16 +109,16 @@ export function AppDataProvider({children}) {
                 }
             );
 
-            const agencyBank = response.data.list;
             dispatch({
-                type: "BANK_SUCCESS",
+                type: "APP_DATA_SUCCESS",
                 payload: {
-                    agencyBank,
+                    agencyBank: response.data.list,
+                    agencyBankStatus: response.data.status,
                 },
             });
         } catch (err) {
             dispatch({
-                type: "BANK_ERROR",
+                type: "APP_DATA_ERROR",
                 payload: {
                     errorMessage: err,
                 },
@@ -124,6 +126,71 @@ export function AppDataProvider({children}) {
             console.log(err);
         }
     };
+
+    const withdrawInfo = async () => {
+        try {
+            const authToken = localStorage.getItem("authToken");
+            const response = await axios.get(
+                `/withdraw`,
+                {
+                    headers: {
+                        Authorization: authToken,
+                    },
+                    timeout: 5000, // Timeout after 5 seconds
+                }
+            );
+
+            const withdraw = response.data;
+            dispatch({
+                type: "APP_DATA_SUCCESS",
+                payload: {
+                    withdraw,
+                },
+            });
+        } catch (err) {
+            dispatch({
+                type: "APP_DATA_ERROR",
+                payload: {
+                    errorMessage: err,
+                },
+            });
+            console.log(err);
+        }
+    };
+
+    const dashboardDepositInfo = async ({ offSet, limit }) => {
+        try {
+            const authToken = localStorage.getItem("authToken");
+            const response = await axios.get(
+                `/query/list/custom/deposit/_/_/id/DESC/${offSet}/${limit}`,
+                {
+                    headers: {
+                        Authorization: authToken,
+                    },
+                    timeout: 5000, // Timeout after 5 seconds
+                }
+            );
+
+            const dashboardDeposit = response.data.list;
+            const dashboardDepositCount = response.data.count
+            dispatch({
+                type: "APP_DATA_SUCCESS",
+                payload: {
+                    dashboardDeposit,
+                    dashboardDepositCount
+                },
+            });
+        } catch (err) {
+            dispatch({
+                type: "APP_DATA_ERROR",
+                payload: {
+                    errorMessage: err,
+                },
+            });
+            console.log(err);
+        }
+    };
+
 
     if (!children) {
         return null;
@@ -134,7 +201,9 @@ export function AppDataProvider({children}) {
             value={{
                 ...state,
                 bankInfo,
-                agencyAccountInfo
+                agencyAccountInfo,
+                withdrawInfo,
+                dashboardDepositInfo
             }}
         >
             {children}

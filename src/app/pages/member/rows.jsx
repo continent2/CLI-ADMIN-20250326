@@ -43,7 +43,7 @@ export function SiteIdURL({row}) {
                 rel="noopener noreferrer"
                 className="dark:text-gray-500 text-blue-500 no-underline"
             >
-                {siteURL || "N/A"}
+                {siteURL.replace(/^https?:\/\//, '') || "N/A"}
             </a>
             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
             <p>{siteId || "N/A"}</p>

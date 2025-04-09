@@ -1,7 +1,7 @@
 // Local Imports
 import {Page} from "components/shared/Page";
 import { Balance } from "./Balance";
-import { ActivitiesTable } from "./ActivitiesTable";
+import { ActivitiesTable } from "./DepositTable";
 import { Watchlist } from "./Watchlist";
 import { Wallets } from "./Wallets";
 import { Exchange } from "./Exchange";

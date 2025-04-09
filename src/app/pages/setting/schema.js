@@ -18,18 +18,16 @@ export const userUpdateSchema = Yup.object().shape({
 });
 
 export const bankSchema = Yup.object().shape({
-    bankName: Yup.string()
-        .required('은행명을 입력해주세요'),
+    bankName: Yup.string(),
     bankAccount: Yup.string()
         .trim()
-        .min(11, '계좌번호는 10자 이상이어야 합니다')
-        .required('계좌번호를 입력해주세요')
+        .min(11, '계좌번호는 11자 이상이어야 합니다')
+        .matches(/^\d+$/, '숫자만 입력해주세요'),
 });
 
 export const addressSchema = Yup.object().shape({
     address: Yup.string()
         .trim()
-        .required('주소를 입력해주세요')
 });
 
 

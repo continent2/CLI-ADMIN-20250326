@@ -32,19 +32,19 @@ const protectedRoutes = {
             {
               path: "deposit",
               lazy: async () => ({
-                Component: (await import("app/pages/deposit/Deposit.jsx")).default,
+                Component: (await import("app/pages/deposit/DepositList.jsx")).default,
               }),
             },
             {
               path: "member",
               lazy: async () => ({
-                Component: (await import("app/pages/member/Member.jsx")).default,
+                Component: (await import("app/pages/member/MemberList.jsx")).default,
               }),
             },
             {
               path: "site",
               lazy: async () => ({
-                Component: (await import("app/pages/site/Site.jsx")).default,
+                Component: (await import("app/pages/site/SiteList.jsx")).default,
               }),
             },
             {
@@ -62,19 +62,19 @@ const protectedRoutes = {
             {
               path: "withdrawalDetail",
               lazy: async () => ({
-                Component: (await import("app/pages/withdrawalDetails/WithdrawalDetails.jsx")).default,
+                Component: (await import("app/pages/withdrawal/WithdrawalList.jsx")).default,
               }),
             },
             {
               path: "withdrawalRequest",
               lazy: async () => ({
-                Component: (await import("app/pages/withdrawalRequest/WithdrawalRequestForm.jsx")).default,
+                Component: (await import("app/pages/withdrawal/WithdrawalRequestForm.jsx")).default,
               }),
             },
             {
               path: "siteAdministrator",
               lazy: async () => ({
-                Component: (await import("app/pages/siteAdminstrator/SiteAdminstrator.jsx")).default,
+                Component: (await import("app/pages/siteAdministrator/SiteAdministratorList.jsx")).default,
               }),
             },
             {
@@ -83,12 +83,6 @@ const protectedRoutes = {
                 Component: (await import("app/pages/adminstratorForm/AdminstratorForm.jsx")).default,
               }),
             },
-            // {
-            //   path: "registerAsASite",
-            //   lazy: async () => ({
-            //     Component: (await import("app/pages/Blank.jsx")).default,
-            //   }),
-            // },
             {
               path: "setting",
               lazy: async () => ({

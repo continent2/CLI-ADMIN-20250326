@@ -85,7 +85,7 @@ const AdminstrarorForm = () => {
                     >
                         <div className="grid grid-cols-12 place-content-start gap-4 sm:gap-5 lg:gap-9">
                             <div className="col-span-12 h-full md:col-span-6">
-                                <Card className="p-4 sm:px-5 h-full">
+                                <Card className="p-4 h-full pb-5">
                                     <div className="space-y-5">
                                         <Input
                                             label="필드 1"
@@ -117,7 +117,7 @@ const AdminstrarorForm = () => {
                                 </Card>
                             </div>
                             <div className="col-span-12 h-full space-y-4 sm:space-y-5 md:col-span-6 lg:space-y-6 gap-4 flex flex-col">
-                                <Card className="space-y-5 p-4 sm:px-5">
+                                <Card className="space-y-5 p-4 pb-5">
                                     <Controller
                                         render={({ field }) => (
                                             <Listbox
@@ -174,7 +174,7 @@ const AdminstrarorForm = () => {
                                     />
                                 </Card>
 
-                                <Card className="p-4 sm:px-5 h-full">
+                                <Card className="p-4 pb-5 h-full">
                                     <div className="mt-3 space-y-5">
                                         <div>
                                             <label className="mb-2 block">필드 8</label>

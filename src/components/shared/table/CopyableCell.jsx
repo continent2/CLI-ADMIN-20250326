@@ -7,6 +7,7 @@ import { Button } from "components/ui";
 import { useClipboard } from "hooks";
 import { ensureString } from "utils/ensureString";
 import { Highlight } from "../Highlight";
+import { shorten } from "crypto-shortener";
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ export function CopyableCell({ getValue, table, highlight }) {
 
 export function CopyableCellWithClick({ getValue, table, highlight, onClick }) {
     const val = getValue();
+    const shortenAddress = shorten({ length: 6 });
     const { copied, copy } = useClipboard({ timeout: 2000 });
     const query = ensureString(table?.getState?.()?.globalFilter);
 
@@ -48,9 +50,9 @@ export function CopyableCellWithClick({ getValue, table, highlight, onClick }) {
         <div className="flex space-x-1 rtl:space-x-reverse">
       <span
           onClick={onClick}
-          className={onClick ? "dark:text-gray-500 text-blue-500 cursor-pointer w-40 truncate text-xs-plus" : ""}
+          className={onClick ? "dark:text-gray-500 text-blue-500 cursor-pointer" : ""}
       >
-        {highlight ? <Highlight query={query}>{val}</Highlight> : val}
+        {highlight ? <Highlight query={query}>{shortenAddress(val)}</Highlight> :  shortenAddress(val)}
       </span>
 
             <Button

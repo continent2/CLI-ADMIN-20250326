@@ -1,77 +1,77 @@
 export const rolesOptions = [
     {
         value: 'site 1',
-        label: 'Site 1',
+        label: 'SiteList 1',
         color: 'success'
     },
     {
         value: 'site 2',
-        label: 'Site 2',
+        label: 'SiteList 2',
         color: 'info'
     },
     {
         value: 'site 3',
-        label: 'Site 3',
+        label: 'SiteList 3',
         color: 'error'
     },
     {
         value: 'site 4',
-        label: 'Site 4',
+        label: 'SiteList 4',
         color: 'success'
     },
     {
         value: 'site 5',
-        label: 'Site 5',
+        label: 'SiteList 5',
         color: 'info'
     },
     {
         value: 'site 6',
-        label: 'Site 6',
+        label: 'SiteList 6',
         color: 'error'
     },
     {
         value: 'site 7',
-        label: 'Site 7',
+        label: 'SiteList 7',
         color: 'success'
     },
     {
         value: 'site 8',
-        label: 'Site 8',
+        label: 'SiteList 8',
         color: 'info'
     },
     {
         value: 'site 9',
-        label: 'Site 9',
+        label: 'SiteList 9',
         color: 'error'
     },
     {
         value: 'site 10',
-        label: 'Site 10',
+        label: 'SiteList 10',
         color: 'success'
     },
     {
         value: 'site 11',
-        label: 'Site 11',
+        label: 'SiteList 11',
         color: 'info'
     },
     {
         value: 'site 12',
-        label: 'Site 12',
+        label: 'SiteList 12',
         color: 'error'
     },
     {
         value: 'site 13',
-        label: 'Site 13',
+        label: 'SiteList 13',
         color: 'success'
     },
     {
         value: 'site 14',
-        label: 'Site 14',
+        label: 'SiteList 14',
         color: 'info'
     },
     {
         value: 'site 15',
-        label: 'Site 15',
+        label: 'SiteList 15',
         color: 'error'
     },
 ];
