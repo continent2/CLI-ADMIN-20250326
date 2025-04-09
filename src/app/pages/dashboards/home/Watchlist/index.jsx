@@ -7,80 +7,132 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
+import {
+  EllipsisHorizontalIcon,
+  ArrowDownIcon,
+  ArrowUpIcon,
+} from "@heroicons/react/20/solid";
 import clsx from "clsx";
+import Chart from "react-apexcharts";
+import PropTypes from "prop-types";
 
 // Local Imports
-import { Button, Card } from "components/ui";
-import { WalletCard } from "./WalletCard";
+import { Button, Card, Box } from "components/ui";
 
-// ----------------------------------------------------------------------
+// Chart Configuration
+const chartConfig = {
+  chart: {
+    parentHeightOffset: 0,
+    toolbar: { show: false },
+  },
+  dataLabels: { enabled: false },
+  stroke: { curve: "smooth", width: 3 },
+  grid: { padding: { left: 0, right: 0, top: -28, bottom: 0 } },
+  xaxis: {
+    show: false,
+    axisBorder: { show: false },
+    axisTicks: { show: false },
+    labels: { show: false },
+  },
+  yaxis: {
+    show: false,
+    axisBorder: { show: false },
+    axisTicks: { show: false },
+    labels: { show: false },
+  },
+};
 
-const wallets = [
-  {
-    uid: 1,
-    wallet: "Bitcoin",
-    abbr: "BTC",
-    image: "/images/100x100.png",
-    impession: 4.3,
-    amount: "$31,566.11",
-    color: "#F7931A",
-    chartData: [20, 420, 102, 540, 275, 614],
-  },
-  {
-    uid: 2,
-    wallet: "Ethereum",
-    abbr: "ETH",
-    image: "/images/100x100.png",
-    impession: -6.53,
-    amount: "$7,668.56",
-    color: "#627EEA",
-    chartData: [54, 77, 43, 69, 12],
-  },
-  {
-    uid: 3,
-    wallet: "Solana",
-    abbr: "SOL",
-    image: "/images/100x100.png",
-    impession: 3.6,
-    amount: "$1,956.11",
-    color: "#3AC5BC",
-    chartData: [654, 820, 102, 540, 154, 614],
-  },
-  {
-    uid: 4,
-    wallet: "Litecoin",
-    abbr: "LTC",
-    image: "/images/100x100.png",
-    impession: 7.86,
-    amount: "$487.76",
-    color: "#4073C3",
-    chartData: [0, 20, 10, 30, 20, 50],
-  },
-];
+// Deposit Card Component
+function DepositCard({ data, title, timeUnit }) {
+  const chartPoints = data?.map((item) => item.sumamount / 1000) || [];
+  const totalAmount = data?.reduce((sum, item) => sum + item.sumamount, 0) || 0;
 
-export function Watchlist() {
+  const trend =
+    chartPoints.length > 1
+      ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) /
+          (chartPoints[0] || 1)) *
+        100
+      : 0;
+
   return (
-    <Card>
-      <div className="flex items-center justify-between px-4 py-3 sm:px-5">
-        <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          Watchlist
-        </h2>
-        <ActionMenu />
+    <Box className="flex w-72 shrink-0 flex-col">
+      <div className="flex items-center gap-2">
+        <div
+          className={`size-6 rounded-full ${
+            trend >= 0
+              ? "bg-green-100 dark:bg-green-900"
+              : "bg-red-100 dark:bg-red-900"
+          }`}
+        />
+        <div>
+          <span>{title}</span>
+          <span className="ml-2 text-xs uppercase text-gray-400 dark:text-dark-300">
+            {timeUnit}
+          </span>
+        </div>
       </div>
-
-      <div
-        className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-2 sm:px-5"
-        style={{ "--margin-scroll": "1.25rem" }}
-      >
-        {wallets.map((wallet) => (
-          <WalletCard key={wallet.uid} {...wallet} />
-        ))}
+      <div className="mt-2.5 flex justify-between rounded-lg bg-gray-50 py-3 dark:bg-surface-3 ltr:pr-3 rtl:pl-3">
+        <div className="ax-transparent-gridline">
+          <Chart
+            options={{ ...chartConfig, colors: ["#3B82F6"] }}
+            series={[{ name: "Deposits", data: chartPoints }]}
+            height="60"
+            width="120"
+            type="line"
+          />
+        </div>
+        <div className="flex w-36 flex-col items-center rounded-lg bg-gray-100 py-2 dark:bg-surface-2">
+          <p className="truncate text-xl font-medium text-gray-800 dark:text-dark-100">
+            ${totalAmount.toLocaleString()}
+          </p>
+          <div
+            className={clsx(
+              `this:${trend > 0 ? "success" : "error"}`,
+              "mt-1 flex items-center gap-0.5 text-xs text-this dark:text-this-lighter",
+            )}
+          >
+            {trend > 0 ? (
+              <ArrowUpIcon className="size-3.5" />
+            ) : (
+              <ArrowDownIcon className="size-3.5" />
+            )}
+            <span>{Math.abs(trend).toFixed(1)}%</span>
+          </div>
+        </div>
       </div>
-    </Card>
+    </Box>
   );
 }
 
+function UserRanking({ data, title }) {
+  const chartPoints = data?.map((item) => item.sumamount) || [];
+
+  return (
+    <Box className="flex w-72 shrink-0 flex-col">
+      <div className="flex items-center gap-2">
+        <div>
+          <span>{title}</span>
+          {/* <span className="ml-2 text-xs uppercase text-gray-400 dark:text-dark-300"> */}
+          {/*   {timeUnit} */}
+          {/* </span> */}
+        </div>
+      </div>
+      <div className="mt-2.5 flex justify-between rounded-lg bg-gray-50 py-3 dark:bg-surface-3 ltr:pr-3 rtl:pl-3">
+        <div className="ax-transparent-gridline">
+          <Chart
+            options={{ ...chartConfig, colors: ["#3B82F6"] }}
+            series={[{ name: "Deposits", data: chartPoints }]}
+            height="60"
+            width="120"
+            type="line"
+          />
+        </div>
+      </div>
+    </Box>
+  );
+}
+
+// Action Menu Component
 function ActionMenu() {
   return (
     <Menu
@@ -114,7 +166,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Action</span>
+                <span>Refresh Data</span>
               </button>
             )}
           </MenuItem>
@@ -127,36 +179,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Another action</span>
-              </button>
-            )}
-          </MenuItem>
-          <MenuItem>
-            {({ focus }) => (
-              <button
-                className={clsx(
-                  "flex h-9 w-full items-center px-3 tracking-wide outline-none transition-colors",
-                  focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
-                )}
-              >
-                <span>Other action</span>
-              </button>
-            )}
-          </MenuItem>
-
-          <hr className="mx-3 my-1.5 h-px border-gray-150 dark:border-dark-500" />
-
-          <MenuItem>
-            {({ focus }) => (
-              <button
-                className={clsx(
-                  "flex h-9 w-full items-center px-3 tracking-wide outline-none transition-colors",
-                  focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
-                )}
-              >
-                <span>Separated action</span>
+                <span>Export</span>
               </button>
             )}
           </MenuItem>
@@ -165,3 +188,81 @@ function ActionMenu() {
     </Menu>
   );
 }
+
+// Main Watchlist Component
+export function Watchlist({ data }) {
+  // Process both data types
+  const hourlyData = data?.stat_sum_deposit_by_hour?.flat() || [];
+  const dailyData = data?.stat_sum_deposit_by_date?.flat() || [];
+  const top3 = data?.user_rank
+    ?.flat()
+    ?.sort((a, b) => b.sumamount - a.sumamount)
+    .slice(0, 3);
+
+  // Format date strings (YYYYMMDD -> MM/DD)
+  const formattedDailyData = dailyData.map((item) => ({
+    ...item,
+    datevalue: `${item.datevalue.slice(4, 6)}/${item.datevalue.slice(6, 8)}`,
+  }));
+
+  return (
+    <Card>
+      <div className="flex items-center justify-between px-4 py-3 sm:px-5">
+        <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
+          Deposit Statistics
+        </h2>
+        <ActionMenu />
+      </div>
+
+      <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
+        <DepositCard data={hourlyData} title="Hourly Deposits" timeUnit="24H" />
+        <DepositCard
+          data={formattedDailyData}
+          title="Daily Deposits"
+          timeUnit="DATE"
+        />
+
+        <div className="flex flex-col gap-2">
+          <h2>Top 3 Depositors</h2>
+          <ol className="space-y-3">
+            {top3?.map((user, index) => (
+              <li key={index} className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-gray-700 dark:text-dark-100">
+                    #{index + 1}
+                  </span>
+                  {/* <span className="text-gray-600 dark:text-dark-200"> */}
+                  {/*   {user.username} */}
+                  {/* </span> */}
+                </div>
+                <span className="font-medium text-green-600 dark:text-green-400">
+                  ${user?.sumamount.toFixed(0).toLocaleString()}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+// PropTypes
+DepositCard.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      sumamount: PropTypes.number,
+      hourvalue: PropTypes.string,
+      datevalue: PropTypes.string,
+    }),
+  ),
+  title: PropTypes.string.isRequired,
+  timeUnit: PropTypes.string.isRequired,
+};
+
+Watchlist.propTypes = {
+  data: PropTypes.shape({
+    stat_sum_deposit_by_hour: PropTypes.array,
+    stat_sum_deposit_by_date: PropTypes.array,
+  }),
+};

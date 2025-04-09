@@ -26,7 +26,7 @@ export default function SignIn() {
     resolver: yupResolver(schema),
     defaultValues: {
       username: "elegantBanana",
-      password: "EARCMUFT",
+      password: "TEST@1234",
     },
   });
 
@@ -38,8 +38,8 @@ export default function SignIn() {
   };
 
   // Clear local storage
-  localStorage.clear();
-  sessionStorage.clear();
+  // localStorage.clear();
+  // sessionStorage.clear();
 
   return (
     <Page title="Login">

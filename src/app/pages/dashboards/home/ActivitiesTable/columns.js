@@ -8,10 +8,11 @@ import {
 } from "components/shared/table/SelectCheckbox";
 import { RowActions } from "./RowActions";
 import {
-    AccountNameCell,
+    // AccountNameCell,
     ActivityCell,
     AmountCell,
     TransactionDateCell,
+    SiteNameCell
 } from "./rows";
 
 // ----------------------------------------------------------------------
@@ -25,29 +26,28 @@ export const columns = [
         cell: SelectCell,
     }),
     columnHelper.accessor((row) => row.activity_name, {
-        id: "activity",
-        header: "Activity",
+        id: "depositor",
+        header: "Depositor Name",
         cell: ActivityCell,
     }),
-    columnHelper.accessor((row) => row.account_name, {
-        id: "account",
-        header: "Account",
-        cell: AccountNameCell,
-    }),
-    columnHelper.accessor((row) => row.transaction_date, {
-        id: "transaction_date",
-        header: "Transaction Date",
-        cell: TransactionDateCell,
-    }),
-
     columnHelper.accessor((row) => row.amount, {
         id: "amount",
         header: "Amount",
         cell: AmountCell,
     }),
+    columnHelper.accessor((row) => row.site_name, {
+        id: "site",
+        header: "Site Name",
+        cell: SiteNameCell,
+    }),
+    columnHelper.accessor((row) => row.transaction_date, {
+        id: "deposit_date",
+        header: "Deposit Date",
+        cell: TransactionDateCell,
+    }),
     columnHelper.display({
         id: "actions",
-        header: "",
+        header: "View Details",
         cell: RowActions,
     }),
-]
+];

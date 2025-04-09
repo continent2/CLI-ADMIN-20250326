@@ -34,11 +34,12 @@ const setSession = (authToken) => {
     // Store token in local storage and set authorization header for axios
     localStorage.setItem("authToken", authToken);
     axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
-  } else {
-    // Remove token from local storage and delete authorization header from axios
-    localStorage.removeItem("authToken");
-    delete axios.defaults.headers.common.Authorization;
   }
+  // } else {
+  //   // Remove token from local storage and delete authorization header from axios
+  //   localStorage.removeItem("authToken");
+  //   delete axios.defaults.headers.common.Authorization;
+  // }
 };
 
 export { isTokenValid, setSession };

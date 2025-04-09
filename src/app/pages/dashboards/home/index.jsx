@@ -5,8 +5,30 @@ import { ActivitiesTable } from "./DepositTable";
 import { Watchlist } from "./Watchlist";
 import { Wallets } from "./Wallets";
 import { Exchange } from "./Exchange";
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios"
+
+const useWalletData = () => {
+  const { data, isLoading} = useQuery({
+    queryKey: ['wallet-data'],
+    queryFn: async () => {
+       const response = await axios.get(
+    `https://testnet.cdeposit.online:50825/dash/agency`, {
+          headers: {
+            Authorization: localStorage.getItem("authToken")
+          }
+        }
+  );
+      return response.data;
+    }
+  })
+
+  return { data, isLoading };
+}
 
 export default function Home() {
+  const { data, isLoading } = useWalletData();
+
     return (
         <Page title="대시보드">
             <div className="transition-content w-full px-[--margin-x] pt-5 lg:pt-6">
@@ -18,12 +40,12 @@ export default function Home() {
                     <div className="p-[54px] h-fit bg-white dark:bg-dark-700 border border-gray-200 rounded-lg shadow-sm border-none">
                         <div className="transition-content grid grid-cols-12 gap-4 pb-8 sm:gap-5 lg:gap-6">
                             <div className="col-span-12 space-y-4 sm:space-y-5 lg:col-span-8 lg:space-y-6">
-                                <Balance />
-                                <Watchlist />
+                                <Balance data={data} />
+                                <Watchlist data={data} isLoading={isLoading} />
                                 <ActivitiesTable />
                             </div>
                             <div className="col-span-12 space-y-4 sm:space-y-5 lg:col-span-4 lg:space-y-6">
-                                <Wallets />
+                                <Wallets data={data} isLoading={isLoading}/>
                                 <Exchange />
                             </div>
                         </div>

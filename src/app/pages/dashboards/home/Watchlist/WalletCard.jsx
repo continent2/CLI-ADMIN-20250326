@@ -57,23 +57,24 @@ const chartConfig = {
   },
 };
 
-export function WalletCard({
-  wallet,
-  abbr,
-  image,
-  impession,
-  amount,
-  color,
-  chartData,
-}) {
+export function WalletCard({ depositData }) {
+  // Process the deposit data
+  const chartPoints = depositData?.map(item => item.sumamount / 1000) || [];
+  const totalAmount = depositData?.reduce((sum, item) => sum + item.sumamount, 0) || 0;
+  
+  // Calculate trend (percentage change from first to last point)
+  const trend = chartPoints.length > 1 
+    ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) / chartPoints[0]) * 100
+    : 0;
+
   return (
     <Box className="flex w-72 shrink-0 flex-col">
       <div className="flex items-center gap-2">
-        <img src={image} alt={wallet} className="size-6" />
+        <div className="size-6 rounded-full bg-blue-100 dark:bg-blue-900" />
         <div>
-          <span>{wallet}</span>{" "}
+          <span>Deposits</span>{" "}
           <span className="text-xs uppercase text-gray-400 dark:text-dark-300">
-            {abbr}
+            STAT
           </span>
         </div>
       </div>
@@ -82,12 +83,12 @@ export function WalletCard({
           <Chart
             options={{
               ...chartConfig,
-              colors: [color],
+              colors: ['#3B82F6'], // Blue color for deposit chart
             }}
             series={[
               {
-                name: "Stat",
-                data: chartData,
+                name: "Deposits",
+                data: chartPoints,
               },
             ]}
             height="60"
@@ -97,20 +98,20 @@ export function WalletCard({
         </div>
         <div className="flex w-36 flex-col items-center rounded-lg bg-gray-100 py-2 dark:bg-surface-2">
           <p className="truncate text-xl font-medium text-gray-800 dark:text-dark-100">
-            {amount}
+            ${totalAmount.toLocaleString()}
           </p>
           <div
             className={clsx(
-              `this:${impession > 0 ? "success" : "error"}`,
+              `this:${trend > 0 ? "success" : "error"}`,
               "mt-1 flex items-center gap-0.5 text-xs text-this dark:text-this-lighter",
             )}
           >
-            {impession > 0 ? (
+            {trend > 0 ? (
               <ArrowUpIcon className="size-3.5" />
             ) : (
               <ArrowDownIcon className="size-3.5" />
             )}
-            <span>{Math.abs(impession).toFixed(1)}%</span>
+            <span>{Math.abs(trend).toFixed(1)}%</span>
           </div>
         </div>
       </div>
@@ -119,11 +120,10 @@ export function WalletCard({
 }
 
 WalletCard.propTypes = {
-  wallet: PropTypes.string,
-  abbr: PropTypes.string,
-  image: PropTypes.string,
-  impession: PropTypes.number,
-  amount: PropTypes.string,
-  color: PropTypes.string,
-  chartData: PropTypes.arrayOf(PropTypes.number),
+  depositData: PropTypes.arrayOf(
+    PropTypes.shape({
+      sumamount: PropTypes.number,
+      hourvalue: PropTypes.string,
+    })
+  ),
 };
