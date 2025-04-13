@@ -26,8 +26,9 @@ export const columns = [
   },
   {
     id: "회원아이디",
-    accessorKey: "info.id", // Keep the accessor for sorting/filtering
-    header: "회원아이디",
+    accessorKey: "info.externaluserid", // Keep the accessor for sorting/filtering
+//    accessorKey: "info.id", // Keep the accessor for sorting/filtering
+    header: "회원ID",
   },
   {
     id: "사이트",
@@ -43,7 +44,7 @@ export const columns = [
   },
   {
     id: "전일입금액",
-    accessorKey: "transfer.account.countuse", // Use accessor for sorting/filtering
+    accessorKey: "stat.sum_2d" , //  transfer.account.countuse", // Use accessor for sorting/filtering
     header: () => (
       <div>
         전일입금액{/* Previous deposit amount */} (회수) {/* (recovery) */}
@@ -69,16 +70,20 @@ export const columns = [
     id: "상태",
     accessorKey: "info.status", // Keep the accessor for sorting/filtering
     header: "상태", //Situation
-    cell: ({ row }) => {
+    cell: ({ row }) => { console.log("row", row);
       const status = row.original["info.status"]; // User status
       const statusMapping = {
-        1: "입금처리대기",
-        0: "출금가능",
-        "-1": "출금완료",
+        1 : '정상',
+        2 : '정지',
+        3 : '주의',
+        4 : '이슈',
+        // 1: "입금처리대기",
+        // 0: "출금가능",
+        // "-1": "출금완료",
       };
       // const isRed = row.original["user.isred"]; // Warning flag
       // const complaintCount = row.original["user.countcomplaint"]; // Number of complaints
-
+      console.log("status", status);
       return (
         <div>
           <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}

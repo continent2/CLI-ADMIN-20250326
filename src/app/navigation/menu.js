@@ -25,7 +25,7 @@ export const menu = {
       path: path(ROOT_MENU, "/deposit"),
       type: NAV_TYPE_ITEM,
       title: "DepositList",
-      transKey: "사이트 입금",
+      transKey: "입금 내역",
       Icon: WalletIcon,
     },
     {
@@ -33,7 +33,7 @@ export const menu = {
       path: path(ROOT_MENU, "/member"),
       type: NAV_TYPE_ITEM,
       title: "MemberList",
-      transKey: "회원 입금",
+      transKey: "회원",
       Icon: HomeIcon,
     },
     {
@@ -49,7 +49,7 @@ export const menu = {
       path: path(ROOT_MENU, "/registerYourSite"),
       type: NAV_TYPE_ITEM,
       title: "",
-      transKey: "사이트를 등록하세요",
+      transKey: "사이트 등록",
       Icon: HomeIcon,
     },
     {
@@ -73,7 +73,7 @@ export const menu = {
       path: path(ROOT_MENU, "/siteAdministrator"),
       type: NAV_TYPE_ITEM,
       title: "",
-      transKey: "사이트 관리자",
+      transKey: "관리자", // 사이트 
       Icon: HomeIcon,
     },
     {
@@ -81,7 +81,7 @@ export const menu = {
       path: path(ROOT_MENU, "/addSiteAdminstratorForm"),
       type: NAV_TYPE_ITEM,
       title: "",
-      transKey: "사이트 관리자 양식 추가",
+      transKey: "관리자 추가", // 사이트 
       Icon: HomeIcon,
     },
     // {
@@ -97,7 +97,7 @@ export const menu = {
       path: path(ROOT_MENU, "/setting"),
       type: NAV_TYPE_ITEM,
       title: "",
-      transKey: "세팅",
+      transKey: "설정", // 세팅
       Icon: HomeIcon,
     },
   ],

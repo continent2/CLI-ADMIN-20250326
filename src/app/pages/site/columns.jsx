@@ -31,7 +31,8 @@ export const columns = [
     },
     {
         id:"벌집계정주소",
-        accessorKey: "account.id", // Keep the accessor for sorting/filtering
+        accessorKey: "info.account.address", 
+//        accessorKey: "account.id", // Keep the accessor for sorting/filtering
         header: "벌집계정주소",
         cell:AccountCell
     },

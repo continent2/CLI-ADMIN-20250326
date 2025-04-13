@@ -25,10 +25,10 @@ export const columns = [
     },
     {
         id:"수량 ,단위",
-        accessorKey: "info.siteurl", // Keep the accessor for sorting/filtering
+        accessorKey: "amount", // Keep the accessor for sorting/filtering
         header: () => (
             <div>
-                수량 ,단위
+                수량,단위
                 <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
                 환산금액
             </div>
@@ -38,7 +38,7 @@ export const columns = [
     {
         id:"TXHASH 발생수수료",
         accessorKey: "transfer.txhash", // Keep the accessor for sorting/filtering
-        header: "TXHASH 발생수수료",
+        header: "전송ID", // 발생수수료 
         cell: ({ row, table }) => {
             const txHash = row.original["transfer.txhash"];
             return (
@@ -95,13 +95,13 @@ export const columns = [
     {
         id:"보낸계정",
         accessorKey: "agency.name", // Keep the accessor for sorting/filtering
-        header: "보낸계정", //Sent account
+        header: "에이전시", //Sent account보낸계정
         cell: SendAccount
     },
     {
         id:"받은계정",
         accessorKey: "site.id", // Keep the accessor for sorting/filtering
-        header: "받은계정", //Received account
+        header: "사이트", //Received account 받은계정
         cell: ReceivedAccount
     },
     {
@@ -120,6 +120,33 @@ export const columns = [
         id:"상태",
         accessorKey: "status", // Keep the accessor for sorting/filtering
         header: "상태", //Situation
+
+        cell: ({ row }) => { // console.log("row", row);
+            const status = row.original["status"]; // User status
+            const statusMapping = {
+                0 : '대기' ,
+              1 : '완료',
+              2 : '실패',
+              3 : '이상',
+//              4 : '이슈',
+              // 1: "입금처리대기",
+              // 0: "출금가능",
+              // "-1": "출금완료",
+            };
+            // const isRed = row.original["user.isred"]; // Warning flag
+            // const complaintCount = row.original["user.countcomplaint"]; // Number of complaints
+//            console.log("status", status);
+            return (
+              <div>
+                <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}
+                {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
+                {/* <p>{isRed || "N/A"}</p> {/* Display warning status */}
+                {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
+                {/* <p>{complaintCount || "N/A"}</p> {/* Display Number of complaints */}{" "}
+              </div>
+            );
+          },
+              
     },
 ];
 

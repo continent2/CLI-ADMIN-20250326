@@ -201,10 +201,10 @@ export default function Deposit() {
   }, [list]);
 
   return (
-    <Page title="사이트 입금">
+    <Page title="입금 내역">
       <div className="transition-content w-full pb-5">
         <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
-          사이트 입금
+        입금 내역
         </h2>
         <div
           className={clsx(

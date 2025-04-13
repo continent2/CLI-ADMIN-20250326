@@ -215,10 +215,10 @@ export function Watchlist({ data }) {
       </div>
 
       <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
-        <DepositCard data={hourlyData} title="시간당 입금" timeUnit="24시간" />
+        <DepositCard data={hourlyData} title="시간대별 입금" timeUnit="(30일)" /> {/**시간당 24시간*/}
         <DepositCard
           data={formattedDailyData}
-          title="일일 예금"
+          title="일별 입금"
           timeUnit="날짜"
         />
 

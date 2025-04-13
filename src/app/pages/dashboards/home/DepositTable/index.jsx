@@ -111,7 +111,7 @@ export function ActivitiesTable() {
     <div>
       <div className="table-toolbar flex items-center justify-between">
         <h2 className="truncate text-base font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          암호화 활동 테이블
+        입금 
         </h2>
         <div className="flex">
           <CollapsibleSearch

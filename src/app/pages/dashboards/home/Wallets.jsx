@@ -85,7 +85,7 @@ export function Wallets({ data, isLoading }) {
 
             <div className="mt-4 flex items-end justify-between">
               <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                {data?.amount_withdraw_today}
+                {data?.count_withdraw_today}
               </p>
               {/* <p>$2,589.00</p> */}
             </div>

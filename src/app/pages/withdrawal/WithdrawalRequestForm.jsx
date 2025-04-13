@@ -258,7 +258,7 @@ export default function WithdrawalRequestForm() {
                           <Select
                             label="최근 받은 주소"
                             data={[
-                              { label: "은행을 선택해주세요", value: "" },
+                              { label: "주소를 선택하세요", value: "" },
                               ...(agencyBank || [])
                                 .filter((b) => b.address) // filters out falsy values like null, undefined, or empty string
                                 .map((b) => ({

@@ -31,14 +31,14 @@ export function Balance({ data }) {
   return (
     <div className="rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 px-4 pb-4 text-white sm:px-5">
       <div className="flex items-center justify-between py-3">
-        <h2 className="text-sm+ font-medium tracking-wide">귀하의 잔액</h2>
+        <h2 className="text-sm+ font-medium tracking-wide">현재 잔액</h2>
         <ActionMenu />
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:gap-6">
         <div>
           <div className="flex w-9/12 items-center gap-1">
             <p className="truncate text-xs text-white/80">
-              0x9CDBC28F0A6C13BB42ACBD3A3B366BFCAB07B8B1
+              { data?.address_recent_used } {/* 0x9CDBC28F0A6C13BB42ACBD3A3B366BFCAB07B8B1 */}
             </p>
 
             <CopyButton value="0x9CDBC28F0A6C13BB42ACBD3A3B366BFCAB07B8B1">
@@ -59,10 +59,11 @@ export function Balance({ data }) {
 
           {/* Display dynamic balance */}
           <div className="mt-3 text-3xl font-semibold">
-            ₩{withdrawableAmount}
+            {/** ₩{withdrawableAmount}*/}
+            {withdrawableAmount} USDT
           </div>
           <p className="mt-2 text-xs+ text-white/80">
-            {withdrawableAmountQuote}
+          ₩ {withdrawableAmountQuote}
           </p>
         </div>
 
@@ -74,7 +75,8 @@ export function Balance({ data }) {
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowUpIcon className="size-4" />
               </div>
-              <p className="text-base font-medium">₩{depositToday}</p>
+              <p className="text-base font-medium">{depositToday} USDT</p>
+              {/** <p className="text-base font-medium">₩{depositToday}</p>*/}
             </div>
             <Button
               unstyled
@@ -91,7 +93,8 @@ export function Balance({ data }) {
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowDownIcon className="size-4" />
               </div>
-              <p className="text-base font-medium">₩{withdrawToday}</p>
+              <p className="text-base font-medium">{withdrawToday} USDT</p>
+              {/** <p className="text-base font-medium">₩{withdrawToday}</p> */}
             </div>
             <Button
               unstyled

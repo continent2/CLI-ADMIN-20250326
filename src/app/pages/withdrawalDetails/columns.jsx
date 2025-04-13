@@ -40,7 +40,7 @@ export const columns = [
   {
     id: "TXHASH 발생수수료",
     accessorKey: "transfer.txhash", // Keep the accessor for sorting/filtering
-    header: "TXHASH 발생수수료",
+    header: "전송ID", // TXHASH  발생수수료
     cell: ({ row, table }) => {
       const txHash = row.original["transfer.txhash"];
       return (

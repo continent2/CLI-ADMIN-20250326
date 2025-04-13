@@ -203,10 +203,10 @@ export default function MemberList() {
   }, [list]);
 
   return (
-    <Page title="회원 입금">
+    <Page title="회원">
       <div className="transition-content w-full pb-5">
         <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
-          회원 입금
+          회원
         </h2>
 
         <div
