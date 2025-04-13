@@ -11,15 +11,14 @@ import { useLocaleContext } from "app/contexts/locale/context";
 import { DatePicker } from "../form/Datepicker";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
 import { ResponsiveFilter } from "./ResponsiveFilter";
+import { useState } from "react";
 
 // ----------------------------------------------------------------------
 
-export function DateFilter({ column, title, config }) {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => () => column?.setFilterValue(undefined), []);
-  const { smAndDown } = useBreakpointsContext();
-  const selectedValues = column?.getFilterValue();
+export function DateFilter({ title, config, onDateFilter }) {
+  const [selectedValues, setSelectedValues] = useState(null);
   const { locale } = useLocaleContext();
+  const { smAndDown } = useBreakpointsContext();
 
   return (
     <ResponsiveFilter
@@ -54,14 +53,13 @@ export function DateFilter({ column, title, config }) {
         </p>
         {selectedValues && (
           <Button
-            onClick={() => column?.setFilterValue(undefined)}
+            onClick={() => onDateFilter(null)}
             className="h-7 px-3 text-xs"
           >
             Clear
           </Button>
         )}
       </div>
-
       <div className="max-sm:mx-auto max-sm:[&_.is-calendar]:w-80 max-sm:[&_.is-calendar]:max-w-none">
         <DatePicker
           isCalendar
@@ -69,21 +67,16 @@ export function DateFilter({ column, title, config }) {
           readOnly
           onChange={(date) => {
             if (date.length === 0) {
-              column.setFilterValue([null, null]);
+              onDateFilter(null);
             }
             if (date.length === 2) {
-              column.setFilterValue([date[0].getTime(), date[1].getTime()]);
+              // Pass the actual Date objects to be formatted in the handler
+              onDateFilter([date[0], date[1]]);
             }
           }}
           options={config}
-        />
-      </div>
+        />{" "}
+      </div>{" "}
     </ResponsiveFilter>
   );
 }
-
-DateFilter.propTypes = {
-  column: PropTypes.object,
-  config: PropTypes.object,
-  title: PropTypes.string,
-};

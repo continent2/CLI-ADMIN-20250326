@@ -47,7 +47,7 @@ export function MenuAction() {
                 )}
               >
                 <ArrowUpTrayIcon className="size-4.5" />
-                <span>Export CVS</span>
+                <span>CVS 내보내기</span>
               </button>
             )}
           </MenuItem>
@@ -61,7 +61,7 @@ export function MenuAction() {
                 )}
               >
                 <ArrowUpTrayIcon className="size-4.5" />
-                <span>Export PDF</span>
+                <span>PDF 내보내기</span>
               </button>
             )}
           </MenuItem>
@@ -75,7 +75,7 @@ export function MenuAction() {
                 )}
               >
                 <CiViewTable className="size-4.5" />
-                <span>Save as view</span>
+                <span>보기로 저장</span>
               </button>
             )}
           </MenuItem>

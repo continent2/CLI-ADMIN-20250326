@@ -58,7 +58,7 @@ export function Header() {
                 <div className="flex items-center gap-2">
                   <MagnifyingGlassIcon className="size-4" />
                   <span className="text-gray-400 dark:text-dark-300">
-                    Search here...
+                    여기에서 검색하세요...
                   </span>
                 </div>
                 <SlashIcon />

@@ -25,7 +25,7 @@ export function Exchange() {
     <Card className="px-4 pb-5 sm:px-5">
       <div className="flex min-w-0 items-center justify-between py-3">
         <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          Exchange
+          교환
         </h2>
         <ActionMenu />
       </div>
@@ -47,7 +47,7 @@ export function Exchange() {
             }
           >
             <HiDownload className="size-4.5" />
-            <Label className="cursor-pointer">Receive</Label>
+            <Label className="cursor-pointer">받다</Label>
           </Radio>
           <Radio
             value="send"
@@ -61,14 +61,14 @@ export function Exchange() {
             }
           >
             <HiUpload className="size-4.5" />
-            <Label className="cursor-pointer">Send</Label>
+            <Label className="cursor-pointer">보내다</Label>
           </Radio>
         </RadioGroup>
       </div>
 
       <div className="relative">
         <div className="pt-4">
-          <p className="text-xs+">You send</p>
+          <p className="text-xs+">당신은 보낸다</p>
           <div className="mt-1 flex items-center justify-between gap-2 rounded-2xl bg-gray-150 p-1.5 dark:bg-dark-800">
             <Select
               classNames={{
@@ -89,13 +89,13 @@ export function Exchange() {
                 root: "w-full",
                 input: "bg-transparent px-2 text-end",
               }}
-              placeholder="Amount"
+              placeholder="양"
               type="text"
             />
           </div>
         </div>
         <div className="pt-4">
-          <p className="text-xs+">You receive</p>
+          <p className="text-xs+">당신은 받는다</p>
           <div className="mt-1 flex items-center justify-between gap-2 rounded-2xl bg-gray-150 p-1.5 dark:bg-dark-800">
             <Select
               classNames={{
@@ -116,7 +116,7 @@ export function Exchange() {
                 root: "w-full",
                 input: "bg-transparent px-2 text-end",
               }}
-              placeholder="Amount"
+              placeholder="양"
               type="text"
             />
           </div>
@@ -129,7 +129,7 @@ export function Exchange() {
       </div>
 
       <Button color="primary" className="mt-6 h-10 w-full">
-        Buy BTC
+        BTC 구매
       </Button>
     </Card>
   );
@@ -168,7 +168,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Action</span>
+                <span>행동</span>
               </button>
             )}
           </MenuItem>
@@ -181,7 +181,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Another action</span>
+                <span>또 다른 행동</span>
               </button>
             )}
           </MenuItem>
@@ -194,7 +194,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Other action</span>
+                <span>기타 조치</span>
               </button>
             )}
           </MenuItem>
@@ -210,7 +210,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Separated action</span>
+                <span>분리된 동작</span>
               </button>
             )}
           </MenuItem>

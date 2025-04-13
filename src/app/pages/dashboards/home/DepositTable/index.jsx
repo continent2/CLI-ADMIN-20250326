@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Import Dependencies
 import { CollapsibleSearch } from "components/shared/CollapsibleSearch";
@@ -22,27 +22,25 @@ import { PaginationSection } from "./PaginationSection";
 import { MenuAction } from "./MenuActions";
 import { columns } from "./columns.jsx";
 import { activityList } from "./fakeData";
-import {useAppDataContext} from "../../../../contexts/appData/context.js";
-import {useSearchParams} from "react-router";
+import { useAppDataContext } from "../../../../contexts/appData/context.js";
+import { useSearchParams } from "react-router";
 
 // ----------------------------------------------------------------------
 
 export function ActivitiesTable() {
-
-  const {dashboardDepositInfo, dashboardDeposit,dashboardDepositCount} = useAppDataContext();
+  const { dashboardDepositInfo, dashboardDeposit, dashboardDepositCount } =
+    useAppDataContext();
   const [depositList, setDepositList] = useState([]);
-
 
   const [searchParams] = useSearchParams();
   const pageIndex = searchParams.get("page") || 1; // Default to 1 if not provided
 
   const paginationData = {
-    fetchData : dashboardDepositInfo,
-    count :dashboardDepositCount,
+    fetchData: dashboardDepositInfo,
+    count: dashboardDepositCount,
     pageIndex,
-    name:""
+    name: "",
   };
-
 
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
   const theadRef = useRef();
@@ -99,10 +97,9 @@ export function ActivitiesTable() {
 
   useDidUpdate(() => table.resetRowSelection(), [activities]);
 
-  useEffect(()=>{
-    dashboardDepositInfo({offSet: 0, limit: 100});
-  },[])
-
+  useEffect(() => {
+    dashboardDepositInfo({ offSet: 0, limit: 100 });
+  }, []);
 
   useEffect(() => {
     if (dashboardDeposit && dashboardDeposit.length > 0) {
@@ -110,17 +107,15 @@ export function ActivitiesTable() {
     }
   }, [dashboardDeposit]);
 
-  console.log(dashboardDeposit);
-
   return (
     <div>
       <div className="table-toolbar flex items-center justify-between">
         <h2 className="truncate text-base font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          Crypto Activity Table
+          암호화 활동 테이블
         </h2>
         <div className="flex">
           <CollapsibleSearch
-            placeholder="Search here..."
+            placeholder="여기에서 검색하세요..."
             value={globalFilter ?? ""}
             onChange={(e) => setGlobalFilter(e.target.value)}
           />
@@ -193,7 +188,7 @@ export function ActivitiesTable() {
         </div>
         {table.getCoreRowModel().rows.length && (
           <div className="p-4 sm:px-5">
-            <PaginationSection table={table} paginationData={paginationData}/>
+            <PaginationSection table={table} paginationData={paginationData} />
           </div>
         )}{" "}
         <SelectedRowsActions table={table} height={theadHeight} />

@@ -59,13 +59,17 @@ const chartConfig = {
 
 export function WalletCard({ depositData }) {
   // Process the deposit data
-  const chartPoints = depositData?.map(item => item.sumamount / 1000) || [];
-  const totalAmount = depositData?.reduce((sum, item) => sum + item.sumamount, 0) || 0;
-  
+  const chartPoints = depositData?.map((item) => item.sumamount / 1000) || [];
+  const totalAmount =
+    depositData?.reduce((sum, item) => sum + item.sumamount, 0) || 0;
+
   // Calculate trend (percentage change from first to last point)
-  const trend = chartPoints.length > 1 
-    ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) / chartPoints[0]) * 100
-    : 0;
+  const trend =
+    chartPoints.length > 1
+      ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) /
+          chartPoints[0]) *
+        100
+      : 0;
 
   return (
     <Box className="flex w-72 shrink-0 flex-col">
@@ -83,7 +87,7 @@ export function WalletCard({ depositData }) {
           <Chart
             options={{
               ...chartConfig,
-              colors: ['#3B82F6'], // Blue color for deposit chart
+              colors: ["#3B82F6"], // Blue color for deposit chart
             }}
             series={[
               {
@@ -98,7 +102,7 @@ export function WalletCard({ depositData }) {
         </div>
         <div className="flex w-36 flex-col items-center rounded-lg bg-gray-100 py-2 dark:bg-surface-2">
           <p className="truncate text-xl font-medium text-gray-800 dark:text-dark-100">
-            ${totalAmount.toLocaleString()}
+            ${totalAmount}
           </p>
           <div
             className={clsx(
@@ -124,6 +128,6 @@ WalletCard.propTypes = {
     PropTypes.shape({
       sumamount: PropTypes.number,
       hourvalue: PropTypes.string,
-    })
+    }),
   ),
 };

@@ -130,7 +130,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Action</span>
+                <span>행동</span>
               </button>
             )}
           </MenuItem>
@@ -143,7 +143,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Another action</span>
+                <span>또 다른 행동</span>
               </button>
             )}
           </MenuItem>
@@ -156,7 +156,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Other action</span>
+                <span>기타 조치</span>
               </button>
             )}
           </MenuItem>
@@ -172,7 +172,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Separated action</span>
+                <span>분리된 동작</span>
               </button>
             )}
           </MenuItem>

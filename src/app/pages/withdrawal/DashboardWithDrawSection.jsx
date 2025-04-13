@@ -78,7 +78,6 @@ export default function WithdrawalRequestForm() {
 
   const isCrypto = getValues("isCrypto");
   const onSubmit = async (data) => {
-
     let payload = {
       amountfrom: "",
       currencyfrom: "",
@@ -93,7 +92,6 @@ export default function WithdrawalRequestForm() {
       nettype: "",
       quotesignature: data.isCrypto === 0 ? data.quoteSignature : "", //quoteSignature only if crypto
     };
-
 
     try {
       const response = await axios.post(`/withdraw/request`, payload, {
@@ -184,13 +182,13 @@ export default function WithdrawalRequestForm() {
 
   return (
     <Page title="출금 요청">
-      <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] pb-8">
+      <div className="transition-content grid w-full grid-rows-[auto_1fr] pb-8">
         <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
           출금 요청
         </h2>
 
         <div>
-          <div className="h-fit rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
+          <div className="h-fit rounded-lg border border-none border-gray-200 bg-white shadow-sm dark:bg-dark-700">
             <div>
               {/*Form*/}
               <form
@@ -322,7 +320,7 @@ export default function WithdrawalRequestForm() {
 
                         {/*Receiving bank*/}
                         <label className="-mb-4">
-                          받는은행 <span className="text-red-500">*</span>
+                          받는은행<span className="text-red-500">*</span>
                         </label>
                         <ReactSelect
                           options={bankOptions}
