@@ -29,7 +29,7 @@ const links = [
   },
   {
     id: "2",
-    title: "Settings",
+    title: "설정",
     description: "Webapp settings",
     to: "/settings/appearance",
     Icon: Cog6ToothIcon,

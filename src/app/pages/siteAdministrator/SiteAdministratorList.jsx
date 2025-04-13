@@ -200,10 +200,10 @@ export default function SiteAdministratorList() {
     // }
   }, [siteId]);
   return (
-    <Page title="사이트 관리자">
+    <Page title="관리자">
       <div className="transition-content w-full pb-5">
         <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
-          사이트 관리자
+          관리자
         </h2>
         <div
           className={clsx(

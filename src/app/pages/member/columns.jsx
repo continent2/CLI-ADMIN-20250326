@@ -70,8 +70,11 @@ export const columns = [
     id: "상태",
     accessorKey: "info.status", // Keep the accessor for sorting/filtering
     header: "상태", //Situation
-    cell: ({ row }) => { console.log("row", row);
-      const status = row.original["info.status"]; // User status
+    cell: ({ row }) => { // console.log("row", row);
+//      const status = row.original["info.status"]; // User status
+      const status = row.original?.info?.status;
+//      const status = row["info.status"]; // User status
+//      const status = row.original["status"]; 
       const statusMapping = {
         1 : '정상',
         2 : '정지',
@@ -83,7 +86,7 @@ export const columns = [
       };
       // const isRed = row.original["user.isred"]; // Warning flag
       // const complaintCount = row.original["user.countcomplaint"]; // Number of complaints
-      console.log("status", status);
+//      console.log("status", status);
       return (
         <div>
           <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}

@@ -219,11 +219,11 @@ export function Watchlist({ data }) {
         <DepositCard
           data={formattedDailyData}
           title="일별 입금"
-          timeUnit="날짜"
+          timeUnit="(30일)"
         />
 
         <div className="flex flex-col gap-2">
-          <h2>상위 3개 예금주</h2>
+          <h2>상위 입금자</h2>
           <ol className="space-y-3">
             {top3?.map((user, index) => (
               <li key={index} className="flex items-center gap-2">

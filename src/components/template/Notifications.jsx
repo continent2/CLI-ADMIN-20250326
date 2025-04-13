@@ -32,23 +32,23 @@ import GirlEmptyBox from "assets/illustrations/girl-empty-box.svg?react";
 // ----------------------------------------------------------------------
 
 const types = {
-  message: {
-    title: "Message",
-    Icon: EnvelopeIcon,
-    color: "info",
-  },
+  // message: {
+  //   title: "전체",
+  //   Icon: EnvelopeIcon,
+  //   color: "info",
+  // },
   task: {
-    title: "Task",
+    title: "입금",
     Icon: IoCheckmarkDoneOutline,
     color: "success",
   },
   log: {
-    title: "Log",
+    title: "출금",
     Icon: DocumentTextIcon,
     color: "neutral",
   },
   security: {
-    title: "Security",
+    title: "경고",
     Icon: ExclamationTriangleIcon,
     color: "error",
   },
@@ -123,7 +123,7 @@ export function Notifications() {
                 <div className="flex items-center justify-between px-4 pt-2">
                   <div className="flex items-center gap-2">
                     <h3 className="font-medium text-gray-800 dark:text-dark-100">
-                      Notifications
+                      알림 
                     </h3>
                     {notifications.length > 0 && (
                       <Badge
@@ -170,7 +170,7 @@ export function Notifications() {
                     as={Button}
                     unstyled
                   >
-                    All
+                    전체
                   </Tab>
                   {typesKey.map((key) => (
                     <Tab
@@ -234,7 +234,7 @@ export function Notifications() {
                     className="w-full rounded-t-none"
                     onClick={clearNotifications}
                   >
-                    <span>Archive all notifications</span>
+                    <span>확인</span> {/*Archive all notifications*/}
                   </Button>
                 </div>
               )}
@@ -257,7 +257,7 @@ function Empty() {
           style={{ "--primary": primary[500], "--dark": dark[500] }}
         />
         <div className="mt-6">
-          <p>No new notifications yet</p>
+          <p>새로운 알림이 없습니다</p> {/**No new notifications yet */}
         </div>
       </div>
     </div>

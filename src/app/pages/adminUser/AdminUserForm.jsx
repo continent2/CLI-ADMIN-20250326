@@ -224,10 +224,10 @@ const AdminUserForm = () => {
     }
   };
   return (
-    <Page title="관리자 양식">
+    <Page title="관리자 추가">
       <div className="transition-content px-[--margin-x] pb-6 pt-4">
         <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
-          관리자 양식
+        관리자 추가
         </h2>
 
         <div className="rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
@@ -291,6 +291,7 @@ const AdminUserForm = () => {
                   error={errors?.phoneCountryCode?.message}
                   defaultValue="+82"
                 /> */}
+                국가 코드
                 <ReactSelect
                   options={countryOptions}
                   components={{
@@ -403,7 +404,7 @@ const AdminUserForm = () => {
                 color="primary"
                 disabled={!isValid}
               >
-                구하다
+                확인
               </Button>
             </div>
           </form>

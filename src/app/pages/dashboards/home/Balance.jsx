@@ -10,7 +10,7 @@ import {
   DocumentDuplicateIcon,
   EllipsisHorizontalIcon,
 } from "@heroicons/react/20/solid";
-import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
+import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { Fragment } from "react";
 import { toast } from "sonner";
@@ -73,7 +73,7 @@ export function Balance({ data }) {
             <p className="text-white/90">당일 입금액</p>
             <div className="mt-1 flex items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
-                <ArrowUpIcon className="size-4" />
+                <ArrowRightIcon className="size-4" />
               </div>
               <p className="text-base font-medium">{depositToday} USDT</p>
               {/** <p className="text-base font-medium">₩{depositToday}</p>*/}
@@ -91,7 +91,7 @@ export function Balance({ data }) {
             <p className="text-white/90">당일 출금액</p>
             <div className="mt-1 flex items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
-                <ArrowDownIcon className="size-4" />
+                <ArrowRightIcon className="size-4" />
               </div>
               <p className="text-base font-medium">{withdrawToday} USDT</p>
               {/** <p className="text-base font-medium">₩{withdrawToday}</p> */}

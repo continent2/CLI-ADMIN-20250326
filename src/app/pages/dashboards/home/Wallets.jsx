@@ -113,7 +113,7 @@ export function Wallets({ data, isLoading }) {
         {/* </div> */}
       </div>
 
-      <div className="mt-2 px-4 sm:px-5">
+      {false && (<div className="mt-2 px-4 sm:px-5">
         <h2 className="font-medium tracking-wide text-gray-800 dark:text-dark-100">
           송금
         </h2>
@@ -178,7 +178,7 @@ export function Wallets({ data, isLoading }) {
         <Button color="primary" className="mt-4 h-10 w-full">
           송금
         </Button>
-      </div>
+      </div> )}
     </Card>
   );
 }

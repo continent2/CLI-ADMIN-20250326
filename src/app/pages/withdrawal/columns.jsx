@@ -40,7 +40,7 @@ export const columns = [
         accessorKey: "transfer.txhash", // Keep the accessor for sorting/filtering
         header: "전송ID", // 발생수수료 
         cell: ({ row, table }) => {
-            const txHash = row.original["transfer.txhash"];
+            const txHash = row.original["transfer.txhash"].toUpperCase();
             return (
                 <CopyableCellWithClick
                     getValue={() => txHash || "N/A"}
@@ -92,30 +92,30 @@ export const columns = [
             );
         },
     },
-    {
-        id:"보낸계정",
-        accessorKey: "agency.name", // Keep the accessor for sorting/filtering
-        header: "에이전시", //Sent account보낸계정
-        cell: SendAccount
-    },
-    {
-        id:"받은계정",
-        accessorKey: "site.id", // Keep the accessor for sorting/filtering
-        header: "사이트", //Received account 받은계정
-        cell: ReceivedAccount
-    },
-    {
-        id:"자동 신청",
-        accessorKey: "bankname", // Keep the accessor for sorting/filtering
-        header: () => (
-            <div>
-                자동 {/* Automatic*/}
-                <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
-                신청 {/*Application*/}
-            </div>
-        ),
-        cell: BankDetail
-    },
+    // {
+    //     id:"보낸계정",
+    //     accessorKey: "bankname", //agency.name Keep the accessor for sorting/filtering
+    //     header: "에이전시", //Sent account보낸계정
+    //     cell: SendAccount
+    // },
+    // {
+    //     id:"받은계정",
+    //     accessorKey: "bankaccount", //site.id Keep the accessor for sorting/filtering
+    //     header: "사이트", //Received account 받은계정
+    //     cell: ReceivedAccount
+    // },
+    // {
+    //     id:"자동 신청",
+    //     accessorKey: "bankname", // Keep the accessor for sorting/filtering
+    //     header: () => (
+    //         <div>
+    //             자동 {/* Automatic*/}
+    //             <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+    //             신청 {/*Application*/}
+    //         </div>
+    //     ),
+    //     cell: BankDetail
+    // },
     {
         id:"상태",
         accessorKey: "status", // Keep the accessor for sorting/filtering

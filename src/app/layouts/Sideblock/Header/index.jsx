@@ -40,7 +40,7 @@ export function Header() {
         <div className="flex-1">
           {pathname.includes("setting") ? (
             <h1 className="text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
-              세팅
+              설정
             </h1>
           ) : (
             <Search

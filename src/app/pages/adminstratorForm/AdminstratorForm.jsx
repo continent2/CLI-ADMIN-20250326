@@ -70,10 +70,10 @@ const AdminstrarorForm = () => {
     };
 
     return (
-        <Page title="관리자 양식">
+        <Page title="관리자 추가">
             <div className="transition-content px-[--margin-x] pb-6 pt-4 ">
                 <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 py-6 lg:text-2xl">
-                    관리자 양식
+                관리자 추가
                 </h2>
 
                 <div className="p-[24px] md:p-[38px] lg:p-[54px] bg-white dark:bg-dark-700 border border-gray-200 rounded-lg shadow-sm border-none">
@@ -201,7 +201,7 @@ const AdminstrarorForm = () => {
                         <div className="mt-[24px] md:mt-[38px] lg:mt-[54px] flex flex-col gap-5 lg:gap-7 md:flex-row justify-center items-center rtl:space-x-reverse">
                             <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">취소</Button>
                             <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium" color="primary">
-                                구하다
+                            확인
                             </Button>
                         </div>
                     </form>

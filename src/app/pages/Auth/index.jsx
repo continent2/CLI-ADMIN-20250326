@@ -46,13 +46,13 @@ export default function SignIn() {
       <main className="min-h-100vh grid w-full grow grid-cols-1 place-items-center">
         <div className="w-full max-w-[26rem] p-4 sm:px-5">
           <div className="text-center">
-            <img src={appLogo} alt="app_logo" className="size-16 rounded-[50%] mx-auto" />
+            <img src={appLogo} alt="app_logo" className="size-40 rounded-[50%] mx-auto" />
             <div className="mt-4">
               <h2 className="text-2xl font-semibold text-gray-600 dark:text-dark-100">
-                Welcome Back
+                TETHER24
               </h2>
               <p className="text-gray-400 dark:text-dark-300">
-                Please sign in to continue
+              로그인하세요
               </p>
             </div>
           </div>
@@ -107,11 +107,12 @@ export default function SignIn() {
                 </InputErrorMsg>
               </div>
 
-              <div className="mt-4 flex items-center justify-between space-x-2">
-                <Checkbox label="Remember me" />
+              <div className="mt-4 flex items-center justify-between space-x-2" >
+                <Checkbox label="이 기기 기억하기" />
                 <a
                   href="##"
                   className="text-xs text-gray-400 transition-colors hover:text-gray-800 focus:text-gray-800 dark:text-dark-300 dark:hover:text-dark-100 dark:focus:text-dark-100"
+                  style={{visibility:'hidden'}}
                 >
                   Forgot Password?
                 </a>
@@ -123,20 +124,20 @@ export default function SignIn() {
             </form>
             <div className="mt-4 text-center text-xs+">
               <p className="line-clamp-1">
-                <span>Dont have Account?</span>{" "}
+                {/* <span>가입 문의하기</span>{" "}*/}
                 <Link
                   className="text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-600"
                   to="/pages/sign-up-v1"
                 >
-                  Create account
+                  가입 문의하기
                 </Link>
               </p>
             </div>
           </Card>
           <div className="mt-8 flex justify-center text-xs text-gray-400 dark:text-dark-300">
-            <a href="##">Privacy Notice</a>
+            <a href="##">VER.2025-04-14 01:12</a>
             <div className="mx-2.5 my-0.5 w-px bg-gray-200 dark:bg-dark-500"></div>
-            <a href="##">Term of service</a>
+            <a href="##">이용약관</a>
           </div>
         </div>
       </main>

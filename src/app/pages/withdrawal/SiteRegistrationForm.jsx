@@ -81,10 +81,10 @@ export default function SiteRegistrationForm() {
                                 </div>
                                 {/*Action buttons*/}
                                 <div className="mt-[54px] flex justify-center space-x-3 rtl:space-x-reverse">
-                                    <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">해제</Button>
+                                    <Button className="min-w-[7rem] w-[250px] px-5 text-base font-medium">취소</Button>
                                     <Button type="submit" className="min-w-[7rem] w-[250px] text-base font-medium"
                                             color="primary">
-                                        확인하다
+                                        확인
                                     </Button>
                                 </div>
                             </form>

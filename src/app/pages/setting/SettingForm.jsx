@@ -343,7 +343,7 @@ export default function SettingForm() {
   }, []);
 
   return (
-    <Page title="세팅">
+    <Page title="설정">
       <div className="transition-content px-[--margin-x] pb-6 pt-4">
         {/* <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:py-6 lg:text-2xl">
           세팅
@@ -476,7 +476,7 @@ export default function SettingForm() {
                   {/*Action buttons*/}
                   <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                     <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
-                      해제
+                    취소
                     </Button>
                     <Button
                       type="submit"
@@ -484,7 +484,7 @@ export default function SettingForm() {
                       color="primary"
                       disabled={!registerAddressIsValid}
                     >
-                      확인하다
+                      확인
                     </Button>
                   </div>
                 </div>
@@ -550,7 +550,7 @@ export default function SettingForm() {
                   {/*Action buttons*/}
                   <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                     <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
-                      해제
+                    취소
                     </Button>
                     <Button
                       type="submit"
@@ -558,7 +558,7 @@ export default function SettingForm() {
                       color="primary"
                       disabled={!registerBankIsValid}
                     >
-                      확인하다
+                      확인
                     </Button>
                   </div>
                 </div>
