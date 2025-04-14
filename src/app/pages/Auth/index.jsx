@@ -46,14 +46,16 @@ export default function SignIn() {
       <main className="min-h-100vh grid w-full grow grid-cols-1 place-items-center">
         <div className="w-full max-w-[26rem] p-4 sm:px-5">
           <div className="text-center">
-            <img src={appLogo} alt="app_logo" className="size-40 rounded-[50%] mx-auto" />
+            <img
+              src={appLogo}
+              alt="app_logo"
+              className="mx-auto size-40 rounded-[50%]"
+            />
             <div className="mt-4">
               <h2 className="text-2xl font-semibold text-gray-600 dark:text-dark-100">
                 TETHER24
               </h2>
-              <p className="text-gray-400 dark:text-dark-300">
-              로그인하세요
-              </p>
+              <p className="text-gray-400 dark:text-dark-300">로그인하세요</p>
             </div>
           </div>
           <Card className="mt-5 rounded-lg p-5 lg:p-7">
@@ -83,14 +85,14 @@ export default function SignIn() {
                   }
                   suffix={
                     <Button
-                        variant="flat"
-                        className="pointer-events-auto size-6 shrink-0 rounded-full p-0"
-                        onClick={toggle}
+                      variant="flat"
+                      className="pointer-events-auto size-6 shrink-0 rounded-full p-0"
+                      onClick={toggle}
                     >
                       {show ? (
-                          <EyeSlashIcon className="size-4.5 text-gray-500 dark:text-dark-200" />
+                        <EyeSlashIcon className="size-4.5 text-gray-500 dark:text-dark-200" />
                       ) : (
-                          <EyeIcon className="size-4.5 text-gray-500 dark:text-dark-200" />
+                        <EyeIcon className="size-4.5 text-gray-500 dark:text-dark-200" />
                       )}
                     </Button>
                   }
@@ -107,12 +109,12 @@ export default function SignIn() {
                 </InputErrorMsg>
               </div>
 
-              <div className="mt-4 flex items-center justify-between space-x-2" >
+              <div className="mt-4 flex items-center justify-between space-x-2">
                 <Checkbox label="이 기기 기억하기" />
                 <a
                   href="##"
                   className="text-xs text-gray-400 transition-colors hover:text-gray-800 focus:text-gray-800 dark:text-dark-300 dark:hover:text-dark-100 dark:focus:text-dark-100"
-                  style={{visibility:'hidden'}}
+                  style={{ visibility: "hidden" }}
                 >
                   Forgot Password?
                 </a>
@@ -121,6 +123,14 @@ export default function SignIn() {
               <Button type="submit" className="mt-5 w-full" color="primary">
                 로그인 {/*Sign in*/}
               </Button>
+
+              <Link
+                to="https://t.me/+qX8-mKgD6vw5ZmRl"
+                target="_blank"
+                className="mt-5 block w-full text-center text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-600"
+              >
+                가입 문의하기
+              </Link>
             </form>
             <div className="mt-4 text-center text-xs+">
               <p className="line-clamp-1">

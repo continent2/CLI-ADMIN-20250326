@@ -24,7 +24,7 @@ const Tags = forwardRef(
     const [query, setQuery] = useState("");
 
     const onChangeList = (list) => {
-      if (list[list.length - 1].value !== "") {
+      if (list[list?.length - 1].value !== "") {
         onChange(list);
         setQuery("");
       }
@@ -56,7 +56,7 @@ const Tags = forwardRef(
                   )}
                 >
                   <ul className="flex flex-wrap gap-1.5">
-                    {selectedValue.length > 0 &&
+                    {selectedValue?.length > 0 &&
                       selectedValue.map((val) => (
                         <li key={val.id}>
                           <Tag component="button" type="button">
@@ -65,7 +65,7 @@ const Tags = forwardRef(
                         </li>
                       ))}
 
-                    {placeholder && value.length === 0 && query === "" && (
+                    {placeholder && value?.length === 0 && query === "" && (
                       <span className="pointer-events-none absolute top-1/2 -translate-y-1/2 px-3 py-2 ltr:left-0 rtl:right-0">
                         {placeholder}
                       </span>
@@ -80,7 +80,7 @@ const Tags = forwardRef(
                       displayValue={(item) => item.value}
                       autoComplete="off"
                       onKeyDown={(event) => {
-                        value.length > 0 &&
+                        value?.length > 0 &&
                           event.keyCode === 8 &&
                           event.target.value === "" &&
                           onChange(value.slice(0, -1));

@@ -1,4 +1,3 @@
-// Import Dependencies
 import {
   Popover,
   PopoverButton,
@@ -20,59 +19,116 @@ import {
 } from "@heroicons/react/24/outline";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import clsx from "clsx";
-import { Fragment, useState } from "react";
-import { Link } from "react-router";
-
-// Local Imports
+import { Fragment, useEffect, useState } from "react";
 import { Avatar, AvatarDot, Badge, Button } from "components/ui";
 import { useThemeContext } from "app/contexts/theme/context";
 import AlarmIcon from "assets/dualicons/alarm.svg?react";
 import GirlEmptyBox from "assets/illustrations/girl-empty-box.svg?react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Link } from "react-router";
+import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 
-// ----------------------------------------------------------------------
-
-const types = {
-  // message: {
-  //   title: "전체",
-  //   Icon: EnvelopeIcon,
-  //   color: "info",
-  // },
-  task: {
+const notificationTypes = {
+  all: {
+    title: "전체",
+    Icon: EnvelopeIcon,
+    color: "info",
+  },
+  deposit: {
     title: "입금",
     Icon: IoCheckmarkDoneOutline,
     color: "success",
   },
-  log: {
+  withdraw: {
     title: "출금",
     Icon: DocumentTextIcon,
     color: "neutral",
   },
-  security: {
+  alert: {
     title: "경고",
     Icon: ExclamationTriangleIcon,
     color: "error",
   },
 };
 
-const fakeNotifications = [
-  {
-    id: 1,
-    title: "Logged in",
-    description: "You have successfully logged in",
-    type: "log",
-    time: "few seconds ago",
-  },
-];
-
-const typesKey = Object.keys(types);
-
 export function Notifications() {
-  const [notifications, setNotifications] = useState(fakeNotifications);
   const [activeTab, setActiveTab] = useState(0);
 
-  const filteredNotifications = notifications.filter(
-    (notification) => notification.type === Object.keys(types)[activeTab - 1],
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ["wallet-data"],
+    queryFn: async () => {
+      const response = await axios.get(
+        `https://testnet.cdeposit.online:50825/dash/agency`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("authToken"),
+          },
+        },
+      );
+      return response.data;
+    },
+  });
+
+  const [depositValue, setDepositValue] = useState(0);
+  const [withDrawValue, setWithDrawValue] = useState(0);
+
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: "입금 완료",
+      description: "", // Will be set in useEffect
+      type: "deposit",
+    },
+    {
+      id: 2,
+      title: "출금 요청",
+      description: "", // Will be set in useEffect
+      type: "withdraw",
+    },
+    {
+      id: 3,
+      title: "시스템 경고",
+      description: "경고",
+      type: "alert",
+    },
+  ]);
+
+  useEffect(() => {
+    if (data) {
+      const formattedDeposit = formatNumberWithCommas(
+        data?.amount_deposit_today_in_quote.toFixed(2),
+      );
+      const formattedWithdraw = formatNumberWithCommas(
+        data?.amount_withdraw_today_in_quote.toFixed(2),
+      );
+
+      setDepositValue(formattedDeposit);
+      setWithDrawValue(formattedWithdraw);
+
+      // Update notifications with the new values
+      setNotifications((prev) => [
+        {
+          ...prev[0],
+          description: `${formattedDeposit} 원이 입금되었습니다`,
+        },
+        {
+          ...prev[1],
+          description: `${formattedWithdraw} 원 출금이 처리중입니다`,
+        },
+        prev[2], // Keep the alert notification unchanged
+      ]);
+    }
+  }, [data]); // Removed activeTab from dependencies since it's not used in the effect
+
+  const tabKeys = Object.keys(notificationTypes);
+
+  const filteredNotifications =
+    activeTab === 0
+      ? notifications
+      : notifications.filter(
+          (notification) => notification.type === tabKeys[activeTab],
+        );
 
   const removeNotification = (id) => {
     setNotifications((n) => n.filter((n) => n.id !== id));
@@ -82,9 +138,7 @@ export function Notifications() {
     if (activeTab === 0) {
       setNotifications([]);
     } else {
-      setNotifications((n) =>
-        n.filter((n) => n.type !== typesKey[activeTab - 1]),
-      );
+      setNotifications((n) => n.filter((n) => n.type !== tabKeys[activeTab]));
     }
   };
 
@@ -97,7 +151,7 @@ export function Notifications() {
         className="relative size-9 rounded-full"
       >
         <AlarmIcon className="size-6 text-gray-900 dark:text-dark-100" />
-        {notifications.length > 0 && (
+        {notifications?.length > 0 && (
           <AvatarDot
             color="error"
             isPing
@@ -105,17 +159,18 @@ export function Notifications() {
           />
         )}
       </PopoverButton>
+
       <Transition
-        enter="transition ease-out"
-        enterFrom="opacity-0 translate-y-2"
+        enter="transition ease-out duration-200"
+        enterFrom="opacity-0 translate-y-1"
         enterTo="opacity-100 translate-y-0"
-        leave="transition ease-in"
+        leave="transition ease-in duration-150"
         leaveFrom="opacity-100 translate-y-0"
-        leaveTo="opacity-0 translate-y-2"
+        leaveTo="opacity-0 translate-y-1"
       >
         <PopoverPanel
           anchor={{ to: "bottom end", gap: 8 }}
-          className="z-[70] mx-4 flex h-[min(32rem,calc(100vh-6rem))] w-[calc(100vw-2rem)] flex-col rounded-lg border border-gray-150 bg-white shadow-soft dark:border-dark-800 dark:bg-dark-700 dark:shadow-soft-dark sm:m-0 sm:w-80"
+          className="z-[70] mx-4 flex h-[min(32rem,calc(100vh-6rem))] w-[calc(100vw-2rem)] flex-col rounded-lg border border-gray-150 bg-white shadow-soft dark:border-dark-800 dark:bg-dark-700 dark:shadow-soft-dark sm:m-0 sm:w-96"
         >
           {({ close }) => (
             <div className="flex grow flex-col overflow-hidden">
@@ -123,15 +178,15 @@ export function Notifications() {
                 <div className="flex items-center justify-between px-4 pt-2">
                   <div className="flex items-center gap-2">
                     <h3 className="font-medium text-gray-800 dark:text-dark-100">
-                      알림 
+                      알림
                     </h3>
-                    {notifications.length > 0 && (
+                    {notifications?.length > 0 && (
                       <Badge
                         color="primary"
                         className="h-5 rounded-full px-1.5"
                         variant="soft"
                       >
-                        {notifications.length}
+                        {notifications?.length}
                       </Badge>
                     )}
                   </div>
@@ -146,95 +201,61 @@ export function Notifications() {
                     <Cog6ToothIcon className="size-4.5" />
                   </Button>
                 </div>
-              </div>
-              <TabGroup
-                as={Fragment}
-                selectedIndex={activeTab}
-                onChange={setActiveTab}
-              >
-                <TabList className="hide-scrollbar flex shrink-0 overflow-x-auto scroll-smooth bg-gray-100 px-3 dark:bg-dark-800">
-                  <Tab
-                    onFocus={(e) => {
-                      e.target.parentNode.scrollLeft =
-                        e.target.offsetLeft -
-                        e.target.parentNode.offsetWidth / 2;
-                    }}
-                    className={({ selected }) =>
-                      clsx(
-                        "shrink-0 scroll-mx-16 whitespace-nowrap border-b-2 px-3 py-2 font-medium",
-                        selected
-                          ? "border-primary-600 text-primary-600 dark:border-primary-500 dark:text-primary-400"
-                          : "border-transparent hover:text-gray-800 focus:text-gray-800 dark:hover:text-dark-100 dark:focus:text-dark-100",
-                      )
-                    }
-                    as={Button}
-                    unstyled
-                  >
-                    전체
-                  </Tab>
-                  {typesKey.map((key) => (
-                    <Tab
-                      onFocus={(e) => {
-                        e.target.parentNode.scrollLeft =
-                          e.target.offsetLeft -
-                          e.target.parentNode.offsetWidth / 2;
-                      }}
-                      key={key}
-                      className={({ selected }) =>
-                        clsx(
-                          "shrink-0 scroll-mx-16 whitespace-nowrap border-b-2 px-3 py-2 font-medium",
-                          selected
-                            ? "border-primary-600 text-primary-600 dark:border-primary-500 dark:text-primary-400"
-                            : "border-transparent hover:text-gray-800 focus:text-gray-800 dark:hover:text-dark-100 dark:focus:text-dark-100",
-                        )
-                      }
-                      as={Button}
-                      unstyled
-                    >
-                      {types[key].title}
-                    </Tab>
-                  ))}
-                </TabList>
-                {(notifications.length > 0 && activeTab === 0) ||
-                filteredNotifications.length > 0 ? (
-                  <TabPanels as={Fragment}>
-                    <TabPanel className="custom-scrollbar grow space-y-4 overflow-y-auto overflow-x-hidden p-4 outline-none">
-                      {notifications.map((item) => (
-                        <NotificationItem
-                          key={item.id}
-                          remove={removeNotification}
-                          data={item}
-                        />
-                      ))}
-                    </TabPanel>
-                    {typesKey.map((key) => (
-                      <TabPanel
+
+                <TabGroup selectedIndex={activeTab} onChange={setActiveTab}>
+                  <TabList className="hide-scrollbar flex shrink-0 overflow-x-auto scroll-smooth px-3">
+                    {tabKeys.map((key, index) => (
+                      <Tab
                         key={key}
-                        className="custom-scrollbar scrollbar-hide grow space-y-4 overflow-y-auto overflow-x-hidden p-4"
+                        onFocus={(e) => {
+                          e.target.parentNode.scrollLeft =
+                            e.target.offsetLeft -
+                            e.target.parentNode.offsetWidth / 2;
+                        }}
+                        className={({ selected }) =>
+                          clsx(
+                            "shrink-0 scroll-mx-16 whitespace-nowrap border-b-2 px-3 py-2 font-medium",
+                            selected
+                              ? "border-primary-600 text-primary-600 dark:border-primary-500 dark:text-primary-400"
+                              : "border-transparent hover:text-gray-800 focus:text-gray-800 dark:hover:text-dark-100 dark:focus:text-dark-100",
+                          )
+                        }
+                        as={Button}
+                        unstyled
                       >
-                        {filteredNotifications.map((item) => (
-                          <NotificationItem
-                            key={item.id}
-                            remove={removeNotification}
-                            data={item}
-                          />
-                        ))}
+                        {notificationTypes[key].title}
+                      </Tab>
+                    ))}
+                  </TabList>
+                  <TabPanels className="flex-1 overflow-y-auto">
+                    {tabKeys.map((key, index) => (
+                      <TabPanel key={key} className="h-full p-4">
+                        {!isLoading && filteredNotifications?.length > 0 ? (
+                          <div className="space-y-4">
+                            {filteredNotifications.map((item) => (
+                              <NotificationItem
+                                key={item.id}
+                                remove={removeNotification}
+                                data={item}
+                              />
+                            ))}
+                          </div>
+                        ) : (
+                          <Empty />
+                        )}
                       </TabPanel>
                     ))}
                   </TabPanels>
-                ) : (
-                  <Empty />
-                )}
-              </TabGroup>
-              {((notifications.length > 0 && activeTab === 0) ||
-                filteredNotifications.length > 0) && (
+                </TabGroup>
+              </div>
+
+              {filteredNotifications?.length > 0 && (
                 <div className="shrink-0 overflow-hidden rounded-b-lg bg-gray-100 dark:bg-dark-800">
                   <Button
-                    // variant="flat"
                     className="w-full rounded-t-none"
                     onClick={clearNotifications}
                   >
-                    <span>확인</span> {/*Archive all notifications*/}
+                    <span>모두 확인</span>
                   </Button>
                 </div>
               )}
@@ -250,14 +271,14 @@ function Empty() {
   const { primaryColorScheme: primary, darkColorScheme: dark } =
     useThemeContext();
   return (
-    <div className="grid grow place-items-center text-center">
-      <div className="">
+    <div className="grid h-full place-items-center text-center">
+      <div className="px-4">
         <GirlEmptyBox
           className="mx-auto w-40"
           style={{ "--primary": primary[500], "--dark": dark[500] }}
         />
         <div className="mt-6">
-          <p>새로운 알림이 없습니다</p> {/**No new notifications yet */}
+          <p>새로운 알림이 없습니다</p>
         </div>
       </div>
     </div>
@@ -265,22 +286,22 @@ function Empty() {
 }
 
 function NotificationItem({ data, remove }) {
-  const Icon = types[data.type].Icon;
+  const typeConfig = notificationTypes[data.type] || notificationTypes.all;
   return (
-    <div className="group flex items-center justify-between gap-3">
+    <div className="group flex items-center justify-between gap-3 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-dark-600">
       <div className="flex min-w-0 gap-3">
         <Avatar
           size={10}
-          initialColor={types[data.type].color}
+          initialColor={typeConfig.color}
           classNames={{ display: "rounded-lg" }}
         >
-          <Icon className="size-4.5" />
+          <typeConfig.Icon className="size-4.5" />
         </Avatar>
         <div className="min-w-0">
           <p className="-mt-0.5 truncate font-medium text-gray-800 dark:text-dark-100">
             {data.title}
           </p>
-          <div className="mt-0.5 truncate text-xs">{data.description}</div>
+          <div className="mt-0.5 truncate text-sm">{data.description}</div>
           <div className="mt-1 truncate text-xs text-gray-400 dark:text-dark-300">
             {data.time}
           </div>
@@ -290,7 +311,7 @@ function NotificationItem({ data, remove }) {
         variant="flat"
         isIcon
         onClick={() => remove(data.id)}
-        className="size-7 rounded-full opacity-0 group-hover:opacity-100 ltr:-mr-2 rtl:-ml-2"
+        className="size-7 rounded-full opacity-0 group-hover:opacity-100"
       >
         <ArchiveBoxXMarkIcon className="size-4" />
       </Button>

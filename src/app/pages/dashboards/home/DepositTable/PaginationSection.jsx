@@ -33,8 +33,8 @@ export function PaginationSection({ table }) {
       </div>
       <div className="truncate text-xs+">
         {paginationState.pageIndex * paginationState.pageSize + 1} -{" "}
-        {table.getRowModel().rows.length} of{" "}
-        {table.getCoreRowModel().rows.length} entries
+        {table.getRowModel().rows?.length} of{" "}
+        {table.getCoreRowModel().rows?.length} entries
       </div>
     </div>
   );

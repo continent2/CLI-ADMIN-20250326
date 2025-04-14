@@ -13,6 +13,7 @@ import { Fragment } from "react";
 
 // Local Imports
 import { Avatar, Button, Card, Input, Select } from "components/ui";
+import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 
 // ----------------------------------------------------------------------
 
@@ -66,7 +67,7 @@ export function Wallets({ data, isLoading }) {
 
             <div className="mt-4 flex items-end justify-between">
               <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                {data?.count_deposit_today}
+                {formatNumberWithCommas(data?.count_deposit_today)}
               </p>
             </div>
           </div>
@@ -85,7 +86,7 @@ export function Wallets({ data, isLoading }) {
 
             <div className="mt-4 flex items-end justify-between">
               <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                {data?.count_withdraw_today}
+                {formatNumberWithCommas(data?.amount_withdraw_today)}
               </p>
               {/* <p>$2,589.00</p> */}
             </div>
@@ -113,72 +114,74 @@ export function Wallets({ data, isLoading }) {
         {/* </div> */}
       </div>
 
-      {false && (<div className="mt-2 px-4 sm:px-5">
-        <h2 className="font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          송금
-        </h2>
+      {false && (
+        <div className="mt-2 px-4 sm:px-5">
+          <h2 className="font-medium tracking-wide text-gray-800 dark:text-dark-100">
+            송금
+          </h2>
 
-        <div className="mt-3 flex gap-2">
-          {contacts.map((contact) => (
-            <Avatar
-              key={contact.uid}
-              size={8}
-              name={contact.name}
-              src={contact.avatar}
-              initialColor="auto"
-              classNames={{
-                display: "text-xs+",
-              }}
-            />
-          ))}
-        </div>
-
-        <a
-          href="##"
-          className="mt-3 inline-flex items-center gap-2 hover:opacity-80"
-        >
-          <p>모든 연락처 보기</p>
-          <ArrowRightIcon className="size-4" />
-        </a>
-
-        <div className="mt-4">
-          <label htmlFor="amount">양</label>
-          <div className="mt-1.5 flex -space-x-px rtl:space-x-reverse">
-            <Select
-              classNames={{
-                root: "relative hover:z-1 focus:z-1",
-                select: "ltr:rounded-r-none rtl:rounded-l-none",
-              }}
-            >
-              <option>$</option>
-              <option>€</option>
-              <option>£</option>
-            </Select>
-            <Input
-              id="amount"
-              placeholder="금액 입력"
-              classNames={{
-                root: "relative flex-1 hover:z-1 focus:z-1",
-                input: "ltr:rounded-l-none rtl:rounded-r-none",
-              }}
-            />
+          <div className="mt-3 flex gap-2">
+            {contacts.map((contact) => (
+              <Avatar
+                key={contact.uid}
+                size={8}
+                name={contact.name}
+                src={contact.avatar}
+                initialColor="auto"
+                classNames={{
+                  display: "text-xs+",
+                }}
+              />
+            ))}
           </div>
-        </div>
 
-        <div className="mt-5 flex justify-between text-gray-400 dark:text-dark-300">
-          <p className="text-xs+">수수료:</p>
-          <p>3$</p>
-        </div>
+          <a
+            href="##"
+            className="mt-3 inline-flex items-center gap-2 hover:opacity-80"
+          >
+            <p>모든 연락처 보기</p>
+            <ArrowRightIcon className="size-4" />
+          </a>
 
-        <div className="mt-2 flex justify-between">
-          <p>총:</p>
-          <p className="font-medium text-gray-800 dark:text-dark-100">3$</p>
-        </div>
+          <div className="mt-4">
+            <label htmlFor="amount">양</label>
+            <div className="mt-1.5 flex -space-x-px rtl:space-x-reverse">
+              <Select
+                classNames={{
+                  root: "relative hover:z-1 focus:z-1",
+                  select: "ltr:rounded-r-none rtl:rounded-l-none",
+                }}
+              >
+                <option>$</option>
+                <option>€</option>
+                <option>£</option>
+              </Select>
+              <Input
+                id="amount"
+                placeholder="금액 입력"
+                classNames={{
+                  root: "relative flex-1 hover:z-1 focus:z-1",
+                  input: "ltr:rounded-l-none rtl:rounded-r-none",
+                }}
+              />
+            </div>
+          </div>
 
-        <Button color="primary" className="mt-4 h-10 w-full">
-          송금
-        </Button>
-      </div> )}
+          <div className="mt-5 flex justify-between text-gray-400 dark:text-dark-300">
+            <p className="text-xs+">수수료:</p>
+            <p>3$</p>
+          </div>
+
+          <div className="mt-2 flex justify-between">
+            <p>총:</p>
+            <p className="font-medium text-gray-800 dark:text-dark-100">3$</p>
+          </div>
+
+          <Button color="primary" className="mt-4 h-10 w-full">
+            송금
+          </Button>
+        </div>
+      )}
     </Card>
   );
 }

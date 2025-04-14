@@ -197,17 +197,17 @@ export default function MemberList() {
 
   // Update the `deposit` state when `list` changes
   useEffect(() => {
-    // if (list && list.length > 0) {
+    // if (list && list?.length > 0) {
     setMember(list);
     // }
   }, [list]);
 
   return (
     <Page title="회원">
-      <div className="transition-content w-full pb-5">
-        <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
+      <div className="transition-content w-full py-5">
+        {/* <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
           회원
-        </h2>
+        </h2> */}
 
         <div
           className={clsx(
@@ -237,7 +237,7 @@ export default function MemberList() {
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 
-              {table.getCoreRowModel().rows.length && (
+              {table.getCoreRowModel().rows?.length && (
                 <div
                   className={clsx(
                     "pb-4 sm:pt-4",

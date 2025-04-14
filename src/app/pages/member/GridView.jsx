@@ -13,6 +13,7 @@ import {
 import {
   EllipsisHorizontalIcon,
   EnvelopeIcon,
+  ArrowPathIcon,
   EyeIcon,
   PencilIcon,
   PhoneIcon,

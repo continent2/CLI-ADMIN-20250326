@@ -8,6 +8,7 @@ import {
   tronScan_Transaction,
   tronScan_Address,
 } from "../../../constants/app.constant.js";
+import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 //
 // import { HighlightableCell } from "components/shared/table/HighlightableCell";
 // // ----------------------------------------------------------------------
@@ -19,13 +20,48 @@ export const columns = [
     id: "생성시간",
     accessorKey: "transfer.timestamp",
     header: "생성시간", //creation time
-    cell: DateCell,
+    cell: (info) => {
+      const timestamp = info.row.original?.["createdat"];
+      return timestamp ? new Date(timestamp).toLocaleString() : "-";
+    },
     filterFn: "inNumberRange",
   },
   {
     id: "아이디",
     accessorKey: "id",
     header: "아이디", //id
+  },
+  {
+    id: "회원아이디",
+    accessorKey: "user.externaluserid", // Keep the accessor for sorting/filtering
+    header: () => (
+      <div>
+        사용자 이름
+        <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+        외부 사용자 ID
+      </div>
+    ),
+    cell: ({ row }) => {
+      const userName = row.original["user.username"];
+      const externalUserId = row.original["user.externaluserid"];
+
+      return (
+        <div>
+          <a
+            href={userName || "#"} // Corrected link to use userName
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 no-underline dark:text-gray-500" // Add style if needed
+          >
+            {userName.replace(/^https?:\/\//, "") || "N/A"}{" "}
+            {/* Display site URL or "-" if not available */}
+          </a>
+          <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+          <p>{externalUserId || "N/A"}</p>{" "}
+          {/* Display SiteList ID or "N/A" if not available */}
+        </div>
+      );
+    },
   },
   {
     id: "사이트 URL",
@@ -63,20 +99,22 @@ export const columns = [
     accessorKey: "amount", // Keep the accessor for sorting/filtering
     header: () => (
       <div>
-        거래금액 {/* Transaction amount */}
+        거래금액{/* Transaction amount */}
         <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-         {/* 거래화폐 Transaction currency */}
+        {/* 거래화폐 Transaction currency */}
         환산금액
       </div>
     ),
     cell: ({ row }) => {
       const amount = row.original["amount"]; // Get transfer amount
       const currency = row.original["currency"]; // Get transfer currency
-//      const convrate = row.original["convrate"]; // Get transfer currency
+      //      const convrate = row.original["convrate"]; // Get transfer currency
       const convrate = row.original["convamount"]; // Get transfer currency
       return (
         <div>
-          <p>{amount || "N/A"} {currency || "N/A"}</p>
+          <p>
+            {formatNumberWithCommas(amount) || "N/A"} {currency || "N/A"}
+          </p>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
           <p>{convrate || "N/A"}</p>
         </div>
@@ -99,7 +137,9 @@ export const columns = [
       return (
         <div>
           <CopyableCellWithClick
-            getValue={() => row.original["transfer.txhash"].toUpperCase() || "N/A" }
+            getValue={() =>
+              row.original["transfer.txhash"].toUpperCase() || "N/A"
+            }
             table={table}
             onClick={() => {
               const txHash = row.original["transfer.txhash"];
@@ -293,7 +333,7 @@ export const columns = [
   //     },
   // },
   {
-//    id: "상태", // 
+    //    id: "상태", //
     id: "사용자 상태",
     accessorKey: "user.status", // Use accessor for sorting/filtering
     header: () => (
@@ -307,17 +347,17 @@ export const columns = [
       </div>
     ),
     cell: ({ row }) => {
-//      const status = row.original["user.status"]; // User status
+      //      const status = row.original["user.status"]; // User status
       const status = row.original["status"]; // User status
       const statusMapping = {
-0: "대기", // Normal
-1: "완료", // Stop
-2: "실패", // Caution
-3: "이상", // Issue
-//         1: "처리대기",
-// //        1: "입금처리대기",
-//         0: "출금가능",
-//         "-1": "출금완료",
+        0: "대기", // Normal
+        1: "완료", // Stop
+        2: "실패", // Caution
+        3: "이상", // Issue
+        //         1: "처리대기",
+        // //        1: "입금처리대기",
+        //         0: "출금가능",
+        //         "-1": "출금완료",
       };
       // const isRed = row.original["user.isred"]; // Warning flag
       // const complaintCount = row.original["user.countcomplaint"]; // Number of complaints

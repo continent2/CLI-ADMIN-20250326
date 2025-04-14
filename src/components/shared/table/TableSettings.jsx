@@ -12,7 +12,7 @@ export function TableSettings({ table }) {
   const setTableSettings = table.options.meta.setTableSettings;
   return (
     <>
-      {Object.keys(tableSettings).length > 0 && (
+      {Object.keys(tableSettings)?.length > 0 && (
         <div className="mb-4 mt-3 flex flex-col items-start space-y-2 px-3 text-gray-600 dark:text-dark-100">
           {Object.prototype.hasOwnProperty.call(
             tableSettings,

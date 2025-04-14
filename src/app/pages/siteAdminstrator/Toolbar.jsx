@@ -23,7 +23,7 @@ export function Toolbar({ table }) {
 
   // Update the `deposit` state when `list` changes
   useEffect(() => {
-    if (siteList && siteList.length > 0) {
+    if (siteList && siteList?.length > 0) {
       setsiteOption(siteList);
     }
   }, [siteList]);

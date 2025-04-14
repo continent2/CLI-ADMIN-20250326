@@ -24,6 +24,48 @@ export function Header() {
   const { cardSkin } = useThemeContext();
   const { themeMode, setThemeMode } = useThemeContext();
   const { pathname } = useLocation();
+  const allPathnames = [
+    {
+      path: "/",
+      label: "대시보드",
+    },
+    {
+      path: "/deposit",
+      label: "입금 내역",
+    },
+    {
+      path: "/member",
+      label: "회원",
+    },
+    {
+      path: "/site",
+      label: "사이트",
+    },
+    {
+      path: "/registerYourSite",
+      label: "사이트 등록",
+    },
+    {
+      path: "/withdrawalDetail",
+      label: "출금 내역",
+    },
+    {
+      path: "/withdrawalRequest",
+      label: "출금 요청",
+    },
+    {
+      path: "/siteAdministrator",
+      label: "관리자",
+    },
+    {
+      path: "/addSiteAdminstratorForm",
+      label: "관리자 추가",
+    },
+    {
+      path: "/setting",
+      label: "설정",
+    },
+  ];
 
   return (
     <header
@@ -38,7 +80,10 @@ export function Header() {
 
       <div className="flex items-center gap-2 sm:flex-1">
         <div className="flex-1">
-          {pathname.includes("setting") ? (
+          <h1 className="text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
+            {allPathnames.find((val) => val.path === pathname)?.label}
+          </h1>
+          {/* {pathname.includes("setting") ? (
             <h1 className="text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
               설정
             </h1>
@@ -85,7 +130,7 @@ export function Header() {
                 </>
               )}
             />
-          )}
+          )} */}
         </div>
         <Notifications />
         <RightSidebar />

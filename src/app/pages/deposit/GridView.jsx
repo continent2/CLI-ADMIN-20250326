@@ -18,6 +18,7 @@ import {
   PhoneIcon,
   TrashIcon,
   UserIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/20/solid";
 
 // Local Imports

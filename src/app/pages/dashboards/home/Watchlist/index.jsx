@@ -18,6 +18,7 @@ import PropTypes from "prop-types";
 
 // Local Imports
 import { Button, Card, Box } from "components/ui";
+import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 
 // Chart Configuration
 const chartConfig = {
@@ -48,14 +49,14 @@ function DepositCard({ data, title, timeUnit }) {
   const totalAmount = data?.reduce((sum, item) => sum + item.sumamount, 0) || 0;
 
   const trend =
-    chartPoints.length > 1
-      ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) /
+    chartPoints?.length > 1
+      ? ((chartPoints[chartPoints?.length - 1] - chartPoints[0]) /
           (chartPoints[0] || 1)) *
         100
       : 0;
 
   return (
-    <Box className="flex w-72 shrink-0 flex-col">
+    <Box className="flex w-52 shrink-0 flex-col">
       <div className="flex items-center gap-2">
         <div
           className={`size-6 rounded-full ${
@@ -71,20 +72,22 @@ function DepositCard({ data, title, timeUnit }) {
           </span>
         </div>
       </div>
-      <div className="mt-2.5 flex justify-between rounded-lg bg-gray-50 py-3 dark:bg-surface-3 ltr:pr-3 rtl:pl-3">
-        <div className="ax-transparent-gridline">
-          <Chart
-            options={{ ...chartConfig, colors: ["#3B82F6"] }}
-            series={[{ name: "Deposits", data: chartPoints }]}
-            height="60"
-            width="120"
-            type="line"
-          />
-        </div>
-        <div className="flex w-36 flex-col items-center rounded-lg bg-gray-100 py-2 dark:bg-surface-2">
-          <p className="truncate text-xl font-medium text-gray-800 dark:text-dark-100">
-            ${totalAmount}
+      <div className="mt-2.5 flex w-full justify-between rounded-lg bg-gray-50 py-3 dark:bg-surface-3 ltr:pr-3 rtl:pl-3">
+        <div className="flex w-full flex-col">
+          <div className="ax-transparent-gridline">
+            <Chart
+              options={{ ...chartConfig, colors: ["#3B82F6"] }}
+              series={[{ name: "Deposits", data: chartPoints }]}
+              height="60"
+              width="140"
+              type="line"
+            />
+          </div>
+          <p className="relative -top-3 truncate text-center text-xs font-medium text-gray-800 dark:text-dark-100">
+            ${formatNumberWithCommas(totalAmount)}
           </p>
+        </div>
+        <div className="flex flex-col items-center">
           <div
             className={clsx(
               `this:${trend > 0 ? "success" : "error"}`,
@@ -204,7 +207,6 @@ export function Watchlist({ data }) {
     ...item,
     datevalue: `${item.datevalue.slice(4, 6)}/${item.datevalue.slice(6, 8)}`,
   }));
-
   return (
     <Card>
       <div className="flex items-center justify-between px-4 py-3 sm:px-5">
@@ -215,15 +217,15 @@ export function Watchlist({ data }) {
       </div>
 
       <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
-        <DepositCard data={hourlyData} title="시간대별 입금" timeUnit="(30일)" /> {/**시간당 24시간*/}
+        <DepositCard data={hourlyData} title="시간당 입금" timeUnit="24시간" />
         <DepositCard
           data={formattedDailyData}
-          title="일별 입금"
-          timeUnit="(30일)"
+          title="일일 예금"
+          timeUnit="날짜"
         />
 
         <div className="flex flex-col gap-2">
-          <h2>상위 입금자</h2>
+          <h2 className="w-28">상위 3개 예금주</h2>
           <ol className="space-y-3">
             {top3?.map((user, index) => (
               <li key={index} className="flex items-center gap-2">
@@ -231,9 +233,12 @@ export function Watchlist({ data }) {
                   <span className="font-bold text-gray-700 dark:text-dark-100">
                     #{index + 1}
                   </span>
-                  {/* <span className="text-gray-600 dark:text-dark-200"> */}
-                  {/*   {user.username} */}
-                  {/* </span> */}
+                  <span className="text-gray-600 dark:text-dark-200">
+                    {user.username}
+                  </span>
+                  <span className="text-gray-600 dark:text-dark-200">
+                    {user.externaluserid}
+                  </span>
                 </div>
                 <span className="font-medium text-green-600 dark:text-green-400">
                   ${user?.sumamount?.toFixed(0)}

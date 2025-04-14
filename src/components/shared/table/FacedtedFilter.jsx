@@ -47,11 +47,11 @@ export function FacedtedFilter({
           {selectedItems?.length > 0 && (
             <>
               <div className="h-full w-px bg-gray-300 dark:bg-dark-450" />
-              <Badge className="lg:hidden">{selectedItems.length}</Badge>
+              <Badge className="lg:hidden">{selectedItems?.length}</Badge>
 
-              {selectedItems.length > 2 ? (
+              {selectedItems?.length > 2 ? (
                 <Badge className="max-lg:hidden">
-                  {selectedItems.length} selected
+                  {selectedItems?.length} selected
                 </Badge>
               ) : (
                 <div className="hidden gap-1 lg:flex">
@@ -139,7 +139,7 @@ function ComboboxFilter({
           static
           className="h-auto w-full overflow-y-auto py-1 outline-none"
         >
-          {filteredItems.length === 0 && query !== "" ? (
+          {filteredItems?.length === 0 && query !== "" ? (
             <div className="relative cursor-default select-none px-2.5 py-2 text-gray-800 dark:text-dark-100">
               Nothing found for {query}
             </div>

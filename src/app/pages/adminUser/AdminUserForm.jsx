@@ -225,10 +225,10 @@ const AdminUserForm = () => {
   };
   return (
     <Page title="관리자 추가">
-      <div className="transition-content px-[--margin-x] pb-6 pt-4">
-        <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
+      <div className="transition-content px-[--margin-x] py-5">
+        {/* <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
         관리자 추가
-        </h2>
+        </h2> */}
 
         <div className="rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
           <form
@@ -248,7 +248,6 @@ const AdminUserForm = () => {
                   {...register("username")}
                   error={errors?.username?.message}
                 />
-
                 {/*Password*/}
                 <Input
                   label={
@@ -279,7 +278,6 @@ const AdminUserForm = () => {
                   메모: 비밀번호는 8자 이상 20자 이하이며, 숫자와 특수문자를
                   각각 최소 1개 이상 포함해야 합니다.
                 </p>
-
                 {/* <Input
                   label={
                     <>
@@ -348,7 +346,6 @@ const AdminUserForm = () => {
                     }),
                   }}
                 />
-
                 <Input
                   label={
                     <>

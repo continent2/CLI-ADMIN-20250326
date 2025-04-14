@@ -29,7 +29,7 @@ function Breadcrumbs({ items = [], className, ...rest }) {
               >
                 {item.title}
               </NavLink>
-              {i < items.length - 1 && <SeparatorIcon className="size-5" />}
+              {i < items?.length - 1 && <SeparatorIcon className="size-5" />}
             </>
           ) : (
             <span className="tracking-wide"> {item.title}</span>
