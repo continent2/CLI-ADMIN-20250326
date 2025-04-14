@@ -44,7 +44,7 @@ export function Wallets({ data, isLoading }) {
     <Card className="col-span-12 pb-5 lg:col-span-4">
       <div className="flex items-center justify-between px-4 py-3 sm:px-5">
         <h2 className="font-medium tracking-wide text-dark-700 dark:text-gray-100">
-          Wallets
+          지갑
         </h2>
         <ActionMenu />
       </div>
@@ -66,7 +66,7 @@ export function Wallets({ data, isLoading }) {
 
             <div className="mt-4 flex items-end justify-between">
               <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                {data?.count_deposit_today}              
+                {data?.count_deposit_today}
               </p>
             </div>
           </div>
@@ -75,9 +75,7 @@ export function Wallets({ data, isLoading }) {
         <div className="w-48 shrink-0 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 p-[3px]">
           <div className="rounded-lg bg-white p-3 dark:bg-dark-700">
             <div className="flex items-center justify-between">
-              <p>
-        당일출금건수
-              </p>
+              <p>당일출금건수</p>
               {/* <img */}
               {/*   src="/images/100x100.png" */}
               {/*   className="size-6" */}
@@ -87,7 +85,7 @@ export function Wallets({ data, isLoading }) {
 
             <div className="mt-4 flex items-end justify-between">
               <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                  {data?.amount_withdraw_today.toLocaleString()}
+                {data?.count_withdraw_today}
               </p>
               {/* <p>$2,589.00</p> */}
             </div>
@@ -117,7 +115,7 @@ export function Wallets({ data, isLoading }) {
 
       <div className="mt-2 px-4 sm:px-5">
         <h2 className="font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          Send Money
+          송금
         </h2>
 
         <div className="mt-3 flex gap-2">
@@ -139,12 +137,12 @@ export function Wallets({ data, isLoading }) {
           href="##"
           className="mt-3 inline-flex items-center gap-2 hover:opacity-80"
         >
-          <p>View All Contacts</p>
+          <p>모든 연락처 보기</p>
           <ArrowRightIcon className="size-4" />
         </a>
 
         <div className="mt-4">
-          <label htmlFor="amount">Amount</label>
+          <label htmlFor="amount">양</label>
           <div className="mt-1.5 flex -space-x-px rtl:space-x-reverse">
             <Select
               classNames={{
@@ -158,7 +156,7 @@ export function Wallets({ data, isLoading }) {
             </Select>
             <Input
               id="amount"
-              placeholder="Enter Amount"
+              placeholder="금액 입력"
               classNames={{
                 root: "relative flex-1 hover:z-1 focus:z-1",
                 input: "ltr:rounded-l-none rtl:rounded-r-none",
@@ -168,17 +166,17 @@ export function Wallets({ data, isLoading }) {
         </div>
 
         <div className="mt-5 flex justify-between text-gray-400 dark:text-dark-300">
-          <p className="text-xs+">Commission:</p>
+          <p className="text-xs+">수수료:</p>
           <p>3$</p>
         </div>
 
         <div className="mt-2 flex justify-between">
-          <p>Total:</p>
+          <p>총:</p>
           <p className="font-medium text-gray-800 dark:text-dark-100">3$</p>
         </div>
 
         <Button color="primary" className="mt-4 h-10 w-full">
-          Send Money
+          송금
         </Button>
       </div>
     </Card>
@@ -218,7 +216,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Action</span>
+                <span>행동</span>
               </button>
             )}
           </MenuItem>
@@ -231,7 +229,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Another action</span>
+                <span>또 다른 행동</span>
               </button>
             )}
           </MenuItem>
@@ -244,7 +242,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Other action</span>
+                <span>기타 조치</span>
               </button>
             )}
           </MenuItem>
@@ -260,7 +258,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Separated action</span>
+                <span>분리된 동작</span>
               </button>
             )}
           </MenuItem>

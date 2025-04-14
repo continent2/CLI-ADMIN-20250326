@@ -6,7 +6,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useRef, useState } from "react";
 import axios from "axios";
@@ -25,7 +25,8 @@ import { useBoxSize, useDidUpdate } from "hooks";
 import { fuzzyFilter } from "utils/react-table/fuzzyFilter";
 import { useSkipper } from "utils/react-table/useSkipper";
 
-const API_URL = "https://testnet.cdeposit.online:50825/query/list/custom/deposit/_/_/id/DESC";
+const API_URL =
+  "https://testnet.cdeposit.online:50825/query/list/custom/deposit/_/_/id/DESC";
 
 export function ActivitiesTable() {
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
@@ -43,34 +44,35 @@ export function ActivitiesTable() {
   const [offset, setOffset] = useState(0);
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['deposits', pagination.pageIndex, pagination.pageSize],
+    queryKey: ["deposits", pagination.pageIndex, pagination.pageSize],
     queryFn: async () => {
       const offset = pagination.pageIndex * pagination.pageSize;
-      const response = await axios.get(`${API_URL}/${offset}/${pagination.pageSize}`, {
+      const response = await axios.get(
+        `${API_URL}/${offset}/${pagination.pageSize}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("authToken"),
+          },
+        },
+      );
 
-        headers: {
-          Authorization: localStorage.getItem("authToken")
-        }
-      });
-      
-      console.log(pagination.pageIndex, pagination.pageSize);
       const currentCount = response.data.list.length;
       setTotalItems(offset + currentCount);
       setHasMore(currentCount === pagination.pageSize);
 
       return {
-        list: response.data.list.map(item => ({
+        list: response.data.list.map((item) => ({
           activity_id: item.id,
           activity_name: item["user.username"],
           activity_type: {
             key: "deposit",
-            title: "Deposit"
+            title: "Deposit",
           },
           account_name: item["transfer.currency"],
           transaction_date: item["transfer.timestamp"],
           amount: item["transfer.amount"],
-          site_name: item["site.siteurl"] || item["site.name"]
-        }))
+          site_name: item["site.siteurl"] || item["site.name"],
+        })),
       };
     },
     keepPreviousData: true,
@@ -105,12 +107,13 @@ export function ActivitiesTable() {
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-       onPaginationChange: (updater) => {
-    setPagination((prev) => {
-      const newState = typeof updater === 'function' ? updater(prev) : updater;
-      return newState;
-    });
-  },
+    onPaginationChange: (updater) => {
+      setPagination((prev) => {
+        const newState =
+          typeof updater === "function" ? updater(prev) : updater;
+        return newState;
+      });
+    },
     manualPagination: true,
     pageCount: hasMore ? pagination.pageIndex + 2 : pagination.pageIndex + 1,
     autoResetPageIndex,
@@ -126,7 +129,7 @@ export function ActivitiesTable() {
         </h2>
         <div className="flex">
           <CollapsibleSearch
-            placeholder="Search here..."
+            placeholder="여기에서 검색하세요..."
             value={globalFilter ?? ""}
             onChange={(e) => setGlobalFilter(e.target.value)}
           />
@@ -163,7 +166,9 @@ export function ActivitiesTable() {
                                       header.getContext(),
                                     )}
                               </span>
-                              <TableSortIcon sorted={header.column.getIsSorted()} />
+                              <TableSortIcon
+                                sorted={header.column.getIsSorted()}
+                              />
                             </div>
                           ) : header.isPlaceholder ? null : (
                             flexRender(
@@ -201,8 +206,8 @@ export function ActivitiesTable() {
             </div>
             {table.getCoreRowModel().rows.length > 0 && (
               <div className="p-4 sm:px-5">
-                <PaginationSection 
-                  table={table} 
+                <PaginationSection
+                  table={table}
                   hasMore={hasMore}
                   totalItems={totalItems}
                 />

@@ -32,7 +32,7 @@ const protectedRoutes = {
             {
               path: "deposit",
               lazy: async () => ({
-                Component: (await import("app/pages/deposit/DepositList.jsx")).default,
+                Component: (await import("app/pages/deposit/Deposit.jsx")).default,
               }),
             },
             {

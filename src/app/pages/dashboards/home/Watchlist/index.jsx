@@ -83,7 +83,7 @@ function DepositCard({ data, title, timeUnit }) {
         </div>
         <div className="flex w-36 flex-col items-center rounded-lg bg-gray-100 py-2 dark:bg-surface-2">
           <p className="truncate text-xl font-medium text-gray-800 dark:text-dark-100">
-            ${totalAmount.toLocaleString()}
+            ${totalAmount}
           </p>
           <div
             className={clsx(
@@ -166,7 +166,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Refresh Data</span>
+                <span>데이터 새로 고침</span>
               </button>
             )}
           </MenuItem>
@@ -179,7 +179,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Export</span>
+                <span>내보내다</span>
               </button>
             )}
           </MenuItem>
@@ -209,21 +209,21 @@ export function Watchlist({ data }) {
     <Card>
       <div className="flex items-center justify-between px-4 py-3 sm:px-5">
         <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          Deposit Statistics
+          예금통계
         </h2>
         <ActionMenu />
       </div>
 
       <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
-        <DepositCard data={hourlyData} title="Hourly Deposits" timeUnit="24H" />
+        <DepositCard data={hourlyData} title="시간대별 입금" timeUnit="(30일)" /> {/**시간당 24시간*/}
         <DepositCard
           data={formattedDailyData}
-          title="Daily Deposits"
-          timeUnit="DATE"
+          title="일별 입금"
+          timeUnit="날짜"
         />
 
         <div className="flex flex-col gap-2">
-          <h2>Top 3 Depositors</h2>
+          <h2>상위 3개 예금주</h2>
           <ol className="space-y-3">
             {top3?.map((user, index) => (
               <li key={index} className="flex items-center gap-2">
@@ -236,7 +236,7 @@ export function Watchlist({ data }) {
                   {/* </span> */}
                 </div>
                 <span className="font-medium text-green-600 dark:text-green-400">
-                  ${user?.sumamount.toFixed(0).toLocaleString()}
+                  ${user?.sumamount?.toFixed(0)}
                 </span>
               </li>
             ))}

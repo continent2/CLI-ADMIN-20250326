@@ -5,22 +5,26 @@ import PropTypes from "prop-types";
 // Local Imports
 import { Button } from "components/ui";
 import { createScopedKeydownHandler } from "utils/dom/createScopedKeydownHandler";
+import { useState } from "react";
 
 // ----------------------------------------------------------------------
 
-export function RoleFilter({ column, options }) {
-  const selectedValue = column?.getFilterValue() || "";
+export function RoleFilter({ table, options }) {
+  const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <div
       data-tab
-      className="flex rounded-md overflow-auto bg-gray-200 px-3 py-2 text-xs+ text-gray-800 dark:bg-dark-700 dark:text-dark-200"
+      className="flex max-w-[80%] overflow-auto rounded-md bg-gray-200 px-3 py-2 text-xs+ text-gray-800 dark:bg-dark-700 dark:text-dark-200"
     >
       <Button
         data-tab-item
-        onClick={() => column.setFilterValue("")}
+        onClick={() => {
+          setSelectedValue("");
+          table.options?.meta.handleSiteChange("");
+        }}
         className={clsx(
-          "shrink-0 whitespace-nowrap rounded min-w-[10%] text-xs px-5 py-2 font-medium",
+          "min-w-[10%] shrink-0 whitespace-nowrap rounded px-5 py-2 text-base font-medium",
           selectedValue === ""
             ? "bg-white shadow dark:bg-dark-500 dark:text-dark-100"
             : "hover:text-gray-900 focus:text-gray-900 dark:hover:text-dark-100 dark:focus:text-dark-100",
@@ -36,34 +40,43 @@ export function RoleFilter({ column, options }) {
       >
         All
       </Button>
-      {options.map((option) => (
-        <Button
-          data-tab-item
-          onClick={() => column.setFilterValue(option.value)}
-          key={option.value}
-          className={clsx(
-            "shrink-0 whitespace-nowrap rounded text-base min-w-[10%] px-5 py-2 font-medium",
-            selectedValue === option.value
-              ? "bg-white shadow dark:bg-dark-500 dark:text-dark-100"
-              : "hover:text-gray-900 focus:text-gray-900 dark:hover:text-dark-100 dark:focus:text-dark-100",
-          )}
-          unstyled
-          onKeyDown={createScopedKeydownHandler({
-            siblingSelector: "[data-tab-item]",
-            parentSelector: "[data-tab]",
-            activateOnFocus: true,
-            loop: false,
-            orientation: "horizontal",
-          })}
-        >
-          {option.label}
-        </Button>
-      ))}
+      {Array.isArray(options) &&
+        options.map((option) => {
+          if (!option.siteurl) return null; // Skip if siteurl is empty or falsy
+
+          return (
+            <Button
+              data-tab-item
+              onClick={() => {
+                setSelectedValue(option.id);
+                table.options?.meta.handleSiteChange(option.id);
+              }}
+              key={option.id}
+              className={clsx(
+                "flex min-w-[10%] shrink-0 flex-col whitespace-nowrap rounded px-5 py-2 text-xs font-medium",
+                selectedValue === option.id
+                  ? "bg-white shadow dark:bg-dark-500 dark:text-dark-100"
+                  : "hover:text-gray-900 focus:text-gray-900 dark:hover:text-dark-100 dark:focus:text-dark-100",
+              )}
+              unstyled
+              onKeyDown={createScopedKeydownHandler({
+                siblingSelector: "[data-tab-item]",
+                parentSelector: "[data-tab]",
+                activateOnFocus: true,
+                loop: false,
+                orientation: "horizontal",
+              })}
+            >
+              <p>{option.siteurl.replace(/^https?:\/\//, "").toUpperCase()}</p>
+              <p>{option.id}</p>
+            </Button>
+          );
+        })}
     </div>
   );
 }
 
 RoleFilter.propTypes = {
-  column: PropTypes.object,
+  table: PropTypes.object,
   options: PropTypes.array,
 };

@@ -20,28 +20,25 @@ import { Button, CopyButton } from "components/ui";
 
 // ----------------------------------------------------------------------
 
-
-
 export function Balance({ data }) {
-  console.log('data:', data);
-  
   // Optional fallback if data is still loading or undefined
-  const depositToday = data?.amount_deposit_today ?? 0;
-  const withdrawToday = data?.amount_withdraw_today ?? 0;
-  const withdrawableAmountQuote = data?.withdrawable?.withdrawableamount_in_quote ?? 0;
-  const withdrawableAmount = data?.withdrawable?.withdrawableamount ?? 0;
+  const depositToday = data?.amount_deposit_today || 0;
+  const withdrawToday = data?.amount_withdraw_today || 0;
+  const withdrawableAmountQuote =
+    data?.withdrawable?.withdrawableamount_in_quote || 0;
+  const withdrawableAmount = data?.withdrawable?.withdrawableamount || 0;
 
   return (
     <div className="rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 px-4 pb-4 text-white sm:px-5">
       <div className="flex items-center justify-between py-3">
-        <h2 className="text-sm+ font-medium tracking-wide">Your Balance</h2>
+        <h2 className="text-sm+ font-medium tracking-wide">현재 잔액</h2>
         <ActionMenu />
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:gap-6">
         <div>
           <div className="flex w-9/12 items-center gap-1">
             <p className="truncate text-xs text-white/80">
-              0x9CDBC28F0A6C13BB42ACBD3A3B366BFCAB07B8B1
+              { data?.address_recent_used } {/* 0x9CDBC28F0A6C13BB42ACBD3A3B366BFCAB07B8B1 */}
             </p>
 
             <CopyButton value="0x9CDBC28F0A6C13BB42ACBD3A3B366BFCAB07B8B1">
@@ -62,9 +59,12 @@ export function Balance({ data }) {
 
           {/* Display dynamic balance */}
           <div className="mt-3 text-3xl font-semibold">
-            ₩{withdrawableAmount.toLocaleString()}
+            {/** ₩{withdrawableAmount}*/}
+            {withdrawableAmount} USDT
           </div>
-          <p className="mt-2 text-xs+ text-white/80">{withdrawableAmountQuote}</p>
+          <p className="mt-2 text-xs+ text-white/80">
+          ₩ {withdrawableAmountQuote}
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
@@ -75,15 +75,15 @@ export function Balance({ data }) {
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowUpIcon className="size-4" />
               </div>
-              <p className="text-base font-medium">
-                ₩{depositToday.toLocaleString()}
-              </p>
+              <p className="text-base font-medium">{depositToday} USDT</p>
+              {/** <p className="text-base font-medium">₩{depositToday}</p>*/}
             </div>
             <Button
               unstyled
               className="mt-3 w-full rounded-lg border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
             >
-              입금            </Button>
+              입금{" "}
+            </Button>
           </div>
 
           {/* Expense */}
@@ -93,20 +93,20 @@ export function Balance({ data }) {
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowDownIcon className="size-4" />
               </div>
-              <p className="text-base font-medium">
-                ₩{withdrawToday.toLocaleString()}
-              </p>
+              <p className="text-base font-medium">{withdrawToday} USDT</p>
+              {/** <p className="text-base font-medium">₩{withdrawToday}</p> */}
             </div>
             <Button
               unstyled
               className="mt-3 w-full rounded-lg border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
             >
-출금
+              출금
             </Button>
           </div>
         </div>
       </div>
-    </div>  );
+    </div>
+  );
 }
 
 function ActionMenu() {
@@ -117,8 +117,9 @@ function ActionMenu() {
     >
       <MenuButton
         as={Button}
-        unstyled
-        className="size-8 rounded-full hover:bg-white/20 focus:bg-white/20 active:bg-white/25"
+        variant="flat"
+        isIcon
+        className="size-8 rounded-full"
       >
         <EllipsisHorizontalIcon className="size-5" />
       </MenuButton>
@@ -131,7 +132,7 @@ function ActionMenu() {
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 translate-y-2"
       >
-        <MenuItems className="absolute z-[100] mt-1.5 min-w-[10rem] rounded-lg border border-gray-300 bg-white py-1 text-gray-600 shadow-lg shadow-gray-200/50 outline-none focus-visible:outline-none dark:border-dark-500 dark:bg-dark-700 dark:text-dark-200 dark:shadow-none ltr:right-0 rtl:left-0">
+        <MenuItems className="absolute z-[100] mt-1.5 min-w-[10rem] rounded-lg border border-gray-300 bg-white py-1 shadow-lg shadow-gray-200/50 outline-none focus-visible:outline-none dark:border-dark-500 dark:bg-dark-700 dark:shadow-none ltr:right-0 rtl:left-0">
           <MenuItem>
             {({ focus }) => (
               <button
@@ -141,7 +142,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Action</span>
+                <span>행동</span>
               </button>
             )}
           </MenuItem>
@@ -154,7 +155,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Another action</span>
+                <span>또 다른 행동</span>
               </button>
             )}
           </MenuItem>
@@ -167,7 +168,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Other action</span>
+                <span>기타 조치</span>
               </button>
             )}
           </MenuItem>
@@ -183,7 +184,7 @@ function ActionMenu() {
                     "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
-                <span>Separated action</span>
+                <span>분리된 동작</span>
               </button>
             )}
           </MenuItem>
