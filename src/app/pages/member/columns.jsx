@@ -24,11 +24,43 @@ export const columns = [
     ),
     cell: CreateUpdateCell,
   },
+  // {
+  //   id: "회원아이디",
+  //   accessorKey: "info.externaluserid", // Keep the accessor for sorting/filtering
+  //   //    accessorKey: "info.id", // Keep the accessor for sorting/filtering
+  //   header: "회원ID",
+  // },
   {
     id: "회원아이디",
     accessorKey: "info.externaluserid", // Keep the accessor for sorting/filtering
-//    accessorKey: "info.id", // Keep the accessor for sorting/filtering
-    header: "회원ID",
+    header: () => (
+      <div>
+        사용자 이름
+        <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+        회원ID
+      </div>
+    ),
+    cell: ({ row }) => {
+      const userName = row.original.info["username"];
+      const externalUserId = row.original.info["externaluserid"];
+      console.log(row);
+
+      return (
+        <div>
+          <a
+            href={userName || "#"} // Corrected link to use userName
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 no-underline dark:text-gray-500" // Add style if needed
+          >
+            {userName || "N/A"} {/* Display site URL or "-" if not available */}
+          </a>
+          <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+          <p>{externalUserId || "N/A"}</p>{" "}
+          {/* Display SiteList ID or "N/A" if not available */}
+        </div>
+      );
+    },
   },
   {
     id: "사이트",
@@ -44,10 +76,10 @@ export const columns = [
   },
   {
     id: "전일입금액",
-    accessorKey: "stat.sum_2d" , //  transfer.account.countuse", // Use accessor for sorting/filtering
+    accessorKey: "stat.sum_2d", //  transfer.account.countuse", // Use accessor for sorting/filtering
     header: () => (
       <div>
-        전일입금액{/* Previous deposit amount */} (회수) {/* (recovery) */}
+        전일입금액{/* Previous deposit amount */} (회수){/* (recovery) */}
         <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
         환산금액 {/* Conversion amount */}
       </div>
@@ -70,20 +102,24 @@ export const columns = [
     id: "상태",
     accessorKey: "info.status", // Keep the accessor for sorting/filtering
     header: "상태", //Situation
-    cell: ({ row }) => { console.log("row", row);
-      const status = row.original["info.status"]; // User status
+    cell: ({ row }) => {
+      // console.log("row", row);
+      //      const status = row.original["info.status"]; // User status
+      const status = row.original?.info?.status;
+      //      const status = row["info.status"]; // User status
+      //      const status = row.original["status"];
       const statusMapping = {
-        1 : '정상',
-        2 : '정지',
-        3 : '주의',
-        4 : '이슈',
+        1: "정상",
+        2: "정지",
+        3: "주의",
+        4: "이슈",
         // 1: "입금처리대기",
         // 0: "출금가능",
         // "-1": "출금완료",
       };
       // const isRed = row.original["user.isred"]; // Warning flag
       // const complaintCount = row.original["user.countcomplaint"]; // Number of complaints
-      console.log("status", status);
+      //      console.log("status", status);
       return (
         <div>
           <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}

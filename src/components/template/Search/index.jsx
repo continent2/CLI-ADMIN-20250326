@@ -121,7 +121,7 @@ export function SearchDialog({ close }) {
         </div>
       </div>
 
-      {result.length === 0 && query !== "" && (
+      {result?.length === 0 && query !== "" && (
         <div className="flex flex-col overflow-y-auto py-4">
           <h3 className="px-4 text-gray-800 dark:text-dark-50 sm:px-5">
             No Result Found
@@ -129,7 +129,7 @@ export function SearchDialog({ close }) {
         </div>
       )}
 
-      {result.length > 0 && (
+      {result?.length > 0 && (
         <div className="flex flex-col overflow-y-auto py-4">
           <h3 className="px-4 text-gray-800 dark:text-dark-50 sm:px-5">
             Search Result

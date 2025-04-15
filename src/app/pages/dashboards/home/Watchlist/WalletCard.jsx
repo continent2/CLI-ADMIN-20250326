@@ -65,8 +65,8 @@ export function WalletCard({ depositData }) {
 
   // Calculate trend (percentage change from first to last point)
   const trend =
-    chartPoints.length > 1
-      ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) /
+    chartPoints?.length > 1
+      ? ((chartPoints[chartPoints?.length - 1] - chartPoints[0]) /
           chartPoints[0]) *
         100
       : 0;

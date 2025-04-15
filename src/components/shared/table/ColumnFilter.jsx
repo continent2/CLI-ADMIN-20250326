@@ -28,10 +28,10 @@ export function ColumnFilter({ column }) {
           value={columnFilterValue ?? ""}
           readOnly
           onChange={(date) => {
-            if (date.length === 0) {
+            if (date?.length === 0) {
               column.setFilterValue([null, null]);
             }
-            if (date.length === 2) {
+            if (date?.length === 2) {
               column.setFilterValue([date[0].getTime(), date[1].getTime()]);
             }
           }}
@@ -115,7 +115,7 @@ export function ColumnFilter({ column }) {
                     : "border-gray-300 hover:border-gray-400 dark:border-dark-450 dark:hover:border-dark-400",
                 )}
               >
-                {columnFilterValue && columnFilterValue.length > 0 ? (
+                {columnFilterValue && columnFilterValue?.length > 0 ? (
                   <span className="block truncate capitalize">
                     {columnFilterValue.map((val) => val).join(", ")}
                   </span>

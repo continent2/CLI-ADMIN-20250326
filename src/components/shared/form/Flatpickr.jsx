@@ -60,7 +60,7 @@ export class Flatpickr extends Component {
     prevOptions = mergeHooks(prevOptions, prevProps);
 
     const optionsKeys = Object.getOwnPropertyNames(options);
-    for (let index = optionsKeys.length - 1; index >= 0; index--) {
+    for (let index = optionsKeys?.length - 1; index >= 0; index--) {
       const key = optionsKeys[index];
       let value = options[key];
 

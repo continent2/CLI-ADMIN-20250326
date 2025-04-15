@@ -184,7 +184,7 @@ export default function Member() {
 
   // Update the `deposit` state when `list` changes
   useEffect(() => {
-    if (list && list.length > 0) {
+    if (list && list?.length > 0) {
       setMember(list);
     }
   }, [list]);
@@ -224,7 +224,7 @@ export default function Member() {
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 
-              {table.getCoreRowModel().rows.length && (
+              {table.getCoreRowModel().rows?.length && (
                 <div
                   className={clsx(
                     "pb-4 sm:pt-4",

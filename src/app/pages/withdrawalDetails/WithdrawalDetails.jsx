@@ -154,7 +154,7 @@ export default function WithdrawalDetails() {
 
   // Update the `deposit` state when `list` changes
   useEffect(() => {
-    if (list && list.length > 0) {
+    if (list && list?.length > 0) {
       setWithdraw(list);
     }
   }, [list]);
@@ -193,7 +193,7 @@ export default function WithdrawalDetails() {
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 
-              {table.getCoreRowModel().rows.length && (
+              {table.getCoreRowModel().rows?.length && (
                 <div
                   className={clsx(
                     "pb-4 sm:pt-4",

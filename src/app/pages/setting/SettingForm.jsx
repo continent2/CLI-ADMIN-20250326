@@ -1,5 +1,5 @@
 import { Page } from "components/shared/Page";
-import { Button, Input } from "../../../components/ui/index.js";
+import { Button, Input, Select } from "../../../components/ui/index.js";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { bankSchema, userUpdateSchema, addressSchema } from "./schema.js";
@@ -321,6 +321,9 @@ export default function SettingForm() {
     }
   };
 
+  const [notificationDuration, setNotificationDuration] = useState(
+    localStorage.getItem("notification-duration") || "",
+  );
   //used for select option for bank
   useEffect(() => {
     if (bankOptions?.length > 0) {
@@ -332,7 +335,7 @@ export default function SettingForm() {
 
   //set banks to bankdetails
   useEffect(() => {
-    if (banks && banks.length > 0) {
+    if (banks && banks?.length > 0) {
       setBanksDetail(banks);
     }
   }, [banks]);
@@ -343,7 +346,7 @@ export default function SettingForm() {
   }, []);
 
   return (
-    <Page title="세팅">
+    <Page title="설정">
       <div className="transition-content px-[--margin-x] pb-6 pt-4">
         {/* <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:py-6 lg:text-2xl">
           세팅
@@ -476,7 +479,7 @@ export default function SettingForm() {
                   {/*Action buttons*/}
                   <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                     <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
-                      해제
+                      취소
                     </Button>
                     <Button
                       type="submit"
@@ -484,12 +487,33 @@ export default function SettingForm() {
                       color="primary"
                       disabled={!registerAddressIsValid}
                     >
-                      확인하다
+                      확인
                     </Button>
                   </div>
                 </div>
               </form>
+              <div className="pt-6">
+                <Select
+                  label="알림주기"
+                  data={[
+                    { label: "기간 선택", value: "" },
+                    { label: "30 초", value: "30000" },
+                    { label: "50 초", value: "50000" },
+                    { label: "100 초", value: "100000" },
+                  ]}
+                  value={notificationDuration}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setNotificationDuration(val);
+                    localStorage.setItem(
+                      "notification-duration",
+                      val ? val : "30000",
+                    );
+                  }}
+                />
+              </div>
             </div>
+
             <div className="col-span-12 md:col-span-6">
               <form
                 autoComplete="off"
@@ -550,7 +574,7 @@ export default function SettingForm() {
                   {/*Action buttons*/}
                   <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                     <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
-                      해제
+                      취소
                     </Button>
                     <Button
                       type="submit"
@@ -558,7 +582,7 @@ export default function SettingForm() {
                       color="primary"
                       disabled={!registerBankIsValid}
                     >
-                      확인하다
+                      확인
                     </Button>
                   </div>
                 </div>

@@ -30,7 +30,7 @@ export function RangeFilter({
 
           <span> {title}</span>
 
-          {selectedValues && selectedValues.length > 0 && (
+          {selectedValues && selectedValues?.length > 0 && (
             <>
               <div className="h-full w-px bg-gray-300 dark:bg-dark-450" />
               <span>

@@ -96,7 +96,7 @@ function Content({ table, options }) {
           static
           className="max-h-72 w-full overflow-y-auto py-1 outline-none"
         >
-          {filteredItems.length === 0 && query !== "" ? (
+          {filteredItems?.length === 0 && query !== "" ? (
             <div className="relative cursor-default select-none px-2.5 py-2 text-gray-800 dark:text-dark-100">
               Nothing found for {query}
             </div>

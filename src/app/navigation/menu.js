@@ -1,5 +1,21 @@
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { WalletIcon } from "@heroicons/react/24/outline";
+import { ArrowDownOnSquareIcon } from "@heroicons/react/24/outline";
+import { 
+  ArrowLeftEndOnRectangleIcon , 
+  ArrowRightEndOnRectangleIcon ,
+  ArrowRightStartOnRectangleIcon ,
+  ArrowUpOnSquareIcon ,
+  BuildingLibraryIcon ,
+  ChartBarIcon ,
+  CloudIcon ,
+  UserCircleIcon ,
+  UserIcon ,
+  LockClosedIcon, AcademicCapIcon , CubeIcon 
+, Cog6ToothIcon
+
+} from "@heroicons/react/24/outline";
+
 import { NAV_TYPE_ROOT, NAV_TYPE_ITEM } from "constants/app.constant";
 
 const ROOT_MENU = "";
@@ -18,7 +34,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "Dashboard",
       transKey: "대시보드", //대시보드
-      Icon: HomeIcon,
+      Icon : ChartBarIcon , // HomeIcon,
     },
     {
       id: "menu.deposit",
@@ -26,7 +42,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "DepositList",
       transKey: "입금 내역",
-      Icon: WalletIcon,
+      Icon: ArrowRightEndOnRectangleIcon , // ArrowLeftEndOnRectangleIcon, //  ArrowDownOnSquareIcon
     },
     {
       id: "menu.member",
@@ -34,7 +50,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "MemberList",
       transKey: "회원",
-      Icon: HomeIcon,
+      Icon: UserIcon , // UserCircleIcon,
     },
     {
       id: "menu.site",
@@ -42,7 +58,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "사이트",
-      Icon: HomeIcon,
+      Icon: BuildingLibraryIcon , // CloudIcon , // LockClosedIcon,
     },
     {
       id: "menu.registerYourSite",
@@ -50,7 +66,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "사이트 등록",
-      Icon: HomeIcon,
+      Icon: BuildingLibraryIcon , //  HomeIcon,
     },
     {
       id: "menu.withdrawalDetail",
@@ -58,7 +74,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "출금 내역",
-      Icon: HomeIcon,
+      Icon: ArrowRightStartOnRectangleIcon, //  ArrowUpOnSquareIcon
     },
     {
       id: "menu.withdrawalRequest",
@@ -66,7 +82,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "출금 요청",
-      Icon: HomeIcon,
+      Icon: ArrowRightStartOnRectangleIcon,
     },
     {
       id: "menu.siteAdministrator",
@@ -74,7 +90,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "관리자", // 사이트 
-      Icon: HomeIcon,
+      Icon: AcademicCapIcon ,
     },
     {
       id: "menu.addSiteAdminstratorForm ",
@@ -82,7 +98,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "관리자 추가", // 사이트 
-      Icon: HomeIcon,
+      Icon: AcademicCapIcon , // HomeIcon,
     },
     // {
     //     id: 'menu.adminstratorForm ',
@@ -98,7 +114,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "설정", // 세팅
-      Icon: HomeIcon,
+      Icon: Cog6ToothIcon,
     },
   ],
 };

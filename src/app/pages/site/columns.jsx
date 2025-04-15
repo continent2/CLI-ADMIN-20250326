@@ -52,5 +52,24 @@ export const columns = [
         id:"상태",
         accessorKey: "info.status", // Keep the accessor for sorting/filtering
         header: "상태", //Situation
+
+        cell: ({ row }) => { // console.log("row", row);
+//            const status = row.original[ "info.status" ]; // User status
+            const status = row?.original?.info?.status; 
+            const statusMapping = {
+                0 : '대기' ,
+              1 : '정상',
+              2 : '정지',
+              3 : '주의',
+              4 : '이슈',
+//              5 : '정지해제',
+            };
+            return (
+              <div>
+                <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}
+              </div>
+            );
+          },
+
     },
 ];

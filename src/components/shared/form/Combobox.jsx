@@ -82,7 +82,7 @@ const CustomCombobox = forwardRef(
                         )}
                       >
                         <div className="flex flex-wrap justify-start gap-2 px-3 py-2 ltr:pr-9 rtl:pl-9">
-                          {selectedValue.length > 0 && (
+                          {selectedValue?.length > 0 && (
                             <div>
                               {selectedValue
                                 .map((val) => val?.[displayField])
@@ -100,7 +100,7 @@ const CustomCombobox = forwardRef(
                             displayValue={(val) => val?.item?.[displayField]}
                             autoComplete="new"
                             placeholder={
-                              selectedValue.length === 0 && query === ""
+                              selectedValue?.length === 0 && query === ""
                                 ? placeholder
                                 : undefined
                             }
@@ -170,7 +170,7 @@ const CustomCombobox = forwardRef(
                         multiple && "mt-2",
                       )}
                     >
-                      {filteredData.length === 0 && query !== "" ? (
+                      {filteredData?.length === 0 && query !== "" ? (
                         <div className="relative cursor-default select-none px-4 py-2 text-gray-800 dark:text-dark-100">
                           Nothing found for {query}
                         </div>

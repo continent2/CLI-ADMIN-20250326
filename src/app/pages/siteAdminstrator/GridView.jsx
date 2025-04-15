@@ -13,11 +13,12 @@ import {
 import {
   EllipsisHorizontalIcon,
   EnvelopeIcon,
-  EyeIcon,
+  ArrowPathIcon,
   PencilIcon,
   PhoneIcon,
   TrashIcon,
   UserIcon,
+  EyeIcon
 } from "@heroicons/react/20/solid";
 
 // Local Imports

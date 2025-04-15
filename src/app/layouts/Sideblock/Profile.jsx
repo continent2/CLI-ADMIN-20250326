@@ -19,18 +19,18 @@ import {useAuthContext} from "../../contexts/auth/context.js";
 // ----------------------------------------------------------------------
 
 const links = [
-  {
-    id: "1",
-    title: "Profile",
-    description: "Your profile Setting",
-    to: "/settings/general",
-    Icon: TbUser,
-    color: "warning",
-  },
+  // {
+  //   id: "1",
+  //   title: "Profile",
+  //   description: "Your profile Setting",
+  //   to: "/settings/general",
+  //   Icon: TbUser,
+  //   color: "warning",
+  // },
   {
     id: "2",
-    title: "Settings",
-    description: "Webapp settings",
+    title: "설정",
+    description: "웹앱 설정", // Webapp settings
     to: "/setting",
     Icon: Cog6ToothIcon,
     color: "success",
@@ -117,7 +117,7 @@ export function Profile() {
                 <div className="px-4 pt-4">
                   <Button className="w-full gap-2" onClick={logoutHandler}>
                     <ArrowLeftStartOnRectangleIcon className="size-4.5" />
-                    <span>Logout</span>
+                    <span>로그아웃</span>
                   </Button>
                 </div>
               </div>

@@ -36,9 +36,12 @@ export default function SiteRegistrationForm() {
     label: (
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
-          src={bank.urllogo}
+          src={bank.urllogo || "/images/dummy-bank.png"}
           alt={bank.banknameen}
           style={{ width: 20, height: 20 }}
+          onError={(e) => {
+            e.currentTarget.src = "/images/dummy-bank.png";
+          }}
         />
         {bank.banknamenative}
       </div>
@@ -118,11 +121,11 @@ export default function SiteRegistrationForm() {
   }, []);
 
   return (
-    <Page title="사이트를 등록하세요">
-      <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] pb-8">
-        <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
-          사이트를 등록하세요
-        </h2>
+    <Page title="사이트 등록">
+      <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] py-5">
+        {/* <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
+          사이트 등록 
+        </h2> */}
 
         <div>
           <div className="h-fit rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
@@ -200,7 +203,6 @@ export default function SiteRegistrationForm() {
                         </div>
                       </div>
                     </div>
-
                     {/* <Select
                       label={
                         <>
@@ -218,6 +220,7 @@ export default function SiteRegistrationForm() {
                       {...register("bankName")}
                       error={errors?.bankName?.message}
                     /> */}
+                    은행
                     <ReactSelect
                       options={bankOptions}
                       value={selectedOption}
@@ -243,7 +246,6 @@ export default function SiteRegistrationForm() {
                         menuList: () => "bg-white dark:bg-gray-800",
                       }}
                     />
-
                     {/*Bank account*/}
                     <Input
                       placeholder=""
@@ -255,7 +257,6 @@ export default function SiteRegistrationForm() {
                       {...register("bankAccount")}
                       error={errors?.bankAccount?.message}
                     />
-
                     {/*address*/}
                     <Input
                       placeholder="입금주소값"
@@ -272,7 +273,7 @@ export default function SiteRegistrationForm() {
                 {/*Action buttons*/}
                 <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                   <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
-                    해제
+                    취소
                   </Button>
                   <Button
                     type="submit"
@@ -280,7 +281,7 @@ export default function SiteRegistrationForm() {
                     color="primary"
                     disabled={!isValid}
                   >
-                    확인하다
+                    확인
                   </Button>
                 </div>
               </form>

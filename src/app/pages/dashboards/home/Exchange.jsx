@@ -25,7 +25,7 @@ export function Exchange() {
     <Card className="px-4 pb-5 sm:px-5">
       <div className="flex min-w-0 items-center justify-between py-3">
         <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          교환
+        출금요청
         </h2>
         <ActionMenu />
       </div>

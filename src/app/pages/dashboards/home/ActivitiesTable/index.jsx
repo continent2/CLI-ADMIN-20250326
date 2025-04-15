@@ -56,7 +56,7 @@ export function ActivitiesTable() {
         },
       );
 
-      const currentCount = response.data.list.length;
+      const currentCount = response.data.list?.length;
       setTotalItems(offset + currentCount);
       setHasMore(currentCount === pagination.pageSize);
 
@@ -204,7 +204,7 @@ export function ActivitiesTable() {
                 </TBody>
               </Table>
             </div>
-            {table.getCoreRowModel().rows.length > 0 && (
+            {table.getCoreRowModel().rows?.length > 0 && (
               <div className="p-4 sm:px-5">
                 <PaginationSection
                   table={table}

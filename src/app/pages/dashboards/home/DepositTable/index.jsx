@@ -20,12 +20,51 @@ import { fuzzyFilter } from "utils/react-table/fuzzyFilter";
 import { useSkipper } from "utils/react-table/useSkipper";
 import { PaginationSection } from "./PaginationSection";
 import { MenuAction } from "./MenuActions";
-import { columns } from "./columns.jsx";
-import { activityList } from "./fakeData";
 import { useAppDataContext } from "../../../../contexts/appData/context.js";
 import { useSearchParams } from "react-router";
 
 // ----------------------------------------------------------------------
+
+const columns = [
+  {
+    accessorKey: "createdat",
+    header: "등록일",
+    cell: (info) => {
+      const timestamp = info.row.original?.["createdat"];
+      return timestamp ? new Date(timestamp).toLocaleString() : "-";
+    },
+  },
+  {
+    accessorKey: "site.siteurl",
+    header: "사이트URL",
+    cell: (info) => info.row.original?.["site.siteurl"] || "-",
+  },
+  {
+    accessorKey: "user.externaluserid",
+    header: "사용자ID",
+    cell: (info) => info.row.original?.["user.externaluserid"] || "-",
+  },
+  {
+    accessorKey: "transfer.amount",
+    header: "수량",
+    cell: (info) => info.row.original?.["transfer.amount"] || "-",
+  },
+  {
+    accessorKey: "transfer.currency",
+    header: "단위",
+    cell: (info) => info.row.original?.["transfer.currency"] || "-",
+  },
+  {
+    accessorKey: "transfer.from",
+    header: "보낸주소",
+    cell: (info) => info.row.original?.["transfer.from"] || "-",
+  },
+  {
+    accessorKey: "transfer.txhash",
+    header: "전송ID",
+    cell: (info) => info.row.original?.["transfer.txhash"] || "-",
+  },
+];
 
 export function ActivitiesTable() {
   const { dashboardDepositInfo, dashboardDeposit, dashboardDepositCount } =
@@ -33,7 +72,7 @@ export function ActivitiesTable() {
   const [depositList, setDepositList] = useState([]);
 
   const [searchParams] = useSearchParams();
-  const pageIndex = searchParams.get("page") || 1; // Default to 1 if not provided
+  const pageIndex = searchParams.get("page") || 1;
 
   const paginationData = {
     fetchData: dashboardDepositInfo,
@@ -44,10 +83,7 @@ export function ActivitiesTable() {
 
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
   const theadRef = useRef();
-
   const { height: theadHeight } = useBoxSize({ ref: theadRef });
-
-  const [activities, setActivities] = useState([...activityList]);
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState([]);
@@ -61,49 +97,57 @@ export function ActivitiesTable() {
     },
     meta: {
       deleteRow: (row) => {
-        // Skip page index reset until after next rerender
         skipAutoResetPageIndex();
-        setActivities((old) =>
-          old.filter(
-            (oldRow) => oldRow.activity_id !== row.original.activity_id,
-          ),
+        setDepositList((old) =>
+          old.filter((oldRow) => oldRow.id !== row.original.id),
         );
       },
       deleteRows: (rows) => {
-        // Skip page index reset until after next rerender
         skipAutoResetPageIndex();
-        const rowIds = rows.map((row) => row.original.activity_id);
-        setActivities((old) =>
-          old.filter((row) => !rowIds.includes(row.activity_id)),
-        );
+        const rowIds = rows.map((row) => row.original.id);
+        setDepositList((old) => old.filter((row) => !rowIds.includes(row.id)));
       },
     },
     filterFns: {
       fuzzy: fuzzyFilter,
     },
     getCoreRowModel: getCoreRowModel(),
-
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: fuzzyFilter,
-
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-
     getPaginationRowModel: getPaginationRowModel(),
-
     autoResetPageIndex,
   });
 
-  useDidUpdate(() => table.resetRowSelection(), [activities]);
+  useDidUpdate(() => table.resetRowSelection(), [depositList]);
 
   useEffect(() => {
     dashboardDepositInfo({ offSet: 0, limit: 100 });
   }, []);
 
   useEffect(() => {
-    if (dashboardDeposit && dashboardDeposit.length > 0) {
-      setDepositList(dashboardDeposit);
+    if (dashboardDeposit && dashboardDeposit?.length > 0) {
+      // Transform data keys to lowercase if needed
+      const transformedData = dashboardDeposit.map((item) => ({
+        ...item,
+        createdat: item.createdat || item.CREATEDAT,
+        site: {
+          siteurl: item.site?.siteurl || item.SITE?.SITEURL,
+        },
+        user: {
+          externaluserid:
+            item.user?.externaluserid || item.USER?.EXTERNALUSERID,
+        },
+        transfer: {
+          amount: item.transfer?.amount || item.TRANSFER?.AMOUNT,
+          currency: item.transfer?.currency || item.TRANSFER?.CURRENCY,
+          from: item.transfer?.from || item.TRANSFER?.FROM,
+          txhash: item.transfer?.txhash || item.TRANSFER?.TXHASH,
+        },
+      }));
+      setDepositList(transformedData);
     }
   }, [dashboardDeposit]);
 
@@ -111,7 +155,7 @@ export function ActivitiesTable() {
     <div>
       <div className="table-toolbar flex items-center justify-between">
         <h2 className="truncate text-base font-medium tracking-wide text-gray-800 dark:text-dark-100">
-        입금 
+          입금
         </h2>
         <div className="flex">
           <CollapsibleSearch
@@ -160,37 +204,33 @@ export function ActivitiesTable() {
               ))}
             </THead>
             <TBody>
-              {table.getRowModel().rows.map((row) => {
-                return (
-                  <Tr
-                    key={row.id}
-                    className={clsx(
-                      "relative border-y border-transparent border-b-gray-200 dark:border-b-dark-500",
-                      row.getIsSelected() &&
-                        "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
-                    )}
-                  >
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <Td key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
-                        </Td>
-                      );
-                    })}
-                  </Tr>
-                );
-              })}
+              {table.getRowModel().rows.map((row) => (
+                <Tr
+                  key={row.id}
+                  className={clsx(
+                    "relative border-y border-transparent border-b-gray-200 dark:border-b-dark-500",
+                    row.getIsSelected() &&
+                      "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
+                  )}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <Td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </Td>
+                  ))}
+                </Tr>
+              ))}
             </TBody>
           </Table>
         </div>
-        {table.getCoreRowModel().rows.length && (
+        {table.getCoreRowModel().rows?.length > 0 && (
           <div className="p-4 sm:px-5">
             <PaginationSection table={table} paginationData={paginationData} />
           </div>
-        )}{" "}
+        )}
         <SelectedRowsActions table={table} height={theadHeight} />
       </Card>
     </div>

@@ -1,5 +1,5 @@
 // Import Dependencies
-import { ViewColumnsIcon } from "@heroicons/react/24/outline";
+import { ViewColumnsIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import PropTypes from "prop-types";
 
 // Local Imports
@@ -16,8 +16,8 @@ export function TableConfig({ table }) {
       anchor={{ to: "bottom end", gap: 12 }}
       buttonContent={
         <>
-          <ViewColumnsIcon className="size-4" />
-          <span>View</span>
+          <ArrowPathIcon className="size-4" />
+          {/* <span>View</span> */}
         </>
       }
       classNames={{
@@ -36,7 +36,7 @@ export function TableConfig({ table }) {
         </h3>
       )}
 
-      <div className="flex sm:w-64 flex-col max-sm:overflow-hidden">
+      <div className="flex flex-col max-sm:overflow-hidden sm:w-64">
         <TableSettings table={table} />
       </div>
     </ResponsiveFilter>

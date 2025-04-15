@@ -184,17 +184,17 @@ export default function WithdrawalList() {
 
   // Update the `deposit` state when `list` changes
   useEffect(() => {
-    if (list && list.length > 0) {
+    if (list && list?.length > 0) {
       setWithdraw(list);
     }
   }, [list]);
 
   return (
     <Page title="출금 내역">
-      <div className="transition-content w-full pb-5">
-        <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
+      <div className="transition-content w-full py-5">
+        {/* <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
           출금 내역
-        </h2>
+        </h2> */}
         <div
           className={clsx(
             "flex h-full w-full flex-col",
@@ -223,7 +223,7 @@ export default function WithdrawalList() {
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 
-              {table.getCoreRowModel().rows.length && (
+              {table.getCoreRowModel().rows?.length && (
                 <div
                   className={clsx(
                     "pb-4 sm:pt-4",

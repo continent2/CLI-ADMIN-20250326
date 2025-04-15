@@ -32,7 +32,7 @@ export function Toolbar({ table }) {
 
   // Update the `deposit` state when `list` changes
   useEffect(() => {
-    if (siteList && siteList.length > 0) {
+    if (siteList && siteList?.length > 0) {
       setsiteOption(siteList);
     }
   }, [siteList]);
@@ -212,10 +212,10 @@ function DateFilter({ title, config, onDateFilter }) {
           value={selectedValues ?? ""}
           readOnly
           onChange={(date) => {
-            if (date.length === 0) {
+            if (date?.length === 0) {
               onDateFilter(null);
             }
-            if (date.length === 2) {
+            if (date?.length === 2) {
               // Pass the actual Date objects to be formatted in the handler
               onDateFilter([date[0], date[1]]);
             }

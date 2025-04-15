@@ -190,7 +190,7 @@ export default function SiteAdministratorList() {
 
   // Update the `deposit` state when `list` changes
   useEffect(() => {
-    // if (list && list.length > 0) {
+    // if (list && list?.length > 0) {
     setadminUser(list);
     // }
   }, [list]);
@@ -200,11 +200,11 @@ export default function SiteAdministratorList() {
     // }
   }, [siteId]);
   return (
-    <Page title="사이트 관리자">
-      <div className="transition-content w-full pb-5">
-        <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
-          사이트 관리자
-        </h2>
+    <Page title="관리자">
+      <div className="transition-content w-full py-5">
+        {/* <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
+          관리자 
+        </h2> */}
         <div
           className={clsx(
             "flex h-full w-full flex-col",
@@ -233,7 +233,7 @@ export default function SiteAdministratorList() {
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 
-              {table.getCoreRowModel().rows.length && (
+              {table.getCoreRowModel().rows?.length && (
                 <div
                   className={clsx(
                     "pb-4 sm:pt-4",

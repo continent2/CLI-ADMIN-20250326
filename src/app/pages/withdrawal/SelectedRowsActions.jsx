@@ -29,7 +29,7 @@ export function SelectedRowsActions({ table }) {
   const selectedRows = table.getSelectedRowModel().rows;
 
   const handleDeleteRows = () => {
-    if (selectedRows.length > 0) {
+    if (selectedRows?.length > 0) {
       setDeleteLoading(true);
       setTimeout(() => {
         table.options.meta?.deleteRows(selectedRows);
@@ -53,10 +53,10 @@ export function SelectedRowsActions({ table }) {
         <div className="w-full pt-2">
           <div className="pointer-events-auto flex items-center justify-between rounded-lg bg-gray-800 px-3 py-2 font-medium text-gray-100 dark:bg-dark-50 dark:text-dark-900 sm:px-4 sm:py-3">
             <p>
-              <span>{selectedRows.length} Selected</span>
+              <span>{selectedRows?.length} Selected</span>
               <span className="max-sm:hidden">
                 {" "}
-                from {table.getCoreRowModel().rows.length}
+                from {table.getCoreRowModel().rows?.length}
               </span>
             </p>
             <div className="flex space-x-1.5 rtl:space-x-reverse">
@@ -64,7 +64,7 @@ export function SelectedRowsActions({ table }) {
                 onClick={handleDeleteRows}
                 className="w-7 space-x-1.5 rounded-full px-3 py-1.5 text-xs+ sm:w-auto sm:rounded rtl:space-x-reverse"
                 color="error"
-                disabled={deleteLoading || selectedRows.length <= 0}
+                disabled={deleteLoading || selectedRows?.length <= 0}
               >
                 {deleteLoading ? (
                   <div className="flex size-4 items-center justify-center">

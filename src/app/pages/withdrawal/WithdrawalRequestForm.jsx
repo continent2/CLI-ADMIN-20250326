@@ -15,6 +15,7 @@ import {
 } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline/index.js";
 import ReactSelect from "react-select";
+import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
 
 export const initialState = {
   amountFrom: "",
@@ -78,7 +79,6 @@ export default function WithdrawalRequestForm() {
 
   const isCrypto = getValues("isCrypto");
   const onSubmit = async (data) => {
-
     let payload = {
       amountfrom: "",
       currencyfrom: "",
@@ -93,7 +93,6 @@ export default function WithdrawalRequestForm() {
       nettype: "",
       quotesignature: data.isCrypto === 0 ? data.quoteSignature : "", //quoteSignature only if crypto
     };
-
 
     try {
       const response = await axios.post(`/withdraw/request`, payload, {
@@ -162,16 +161,19 @@ export default function WithdrawalRequestForm() {
 
   useEffect(() => {
     if (withdraw) {
-      setValue("amountField", formatAmount(withdraw.amount));
+      setValue("amountField", formatNumberWithCommas(withdraw.amount));
       if (isCrypto === 0) {
-        setValue("amountField", formatAmount(withdraw.amount));
-        setValue("amount", withdraw.amount_in_base);
+        setValue("amountField", formatNumberWithCommas(withdraw.amount));
+        setValue("amount", formatNumberWithCommas(withdraw.amount_in_base));
       } else if (isCrypto === 1) {
-        setValue("amountField", formatAmount(withdraw.amount_in_quote));
-        setValue("amount", formatAmount(withdraw.amount_in_quote));
+        setValue(
+          "amountField",
+          formatNumberWithCommas(withdraw.amount_in_quote),
+        );
+        setValue("amount", formatNumberWithCommas(withdraw.amount_in_quote));
 
         //sets the bankName byDefault first value
-        if (bankOptions.length > 0) {
+        if (bankOptions?.length > 0) {
           const firstBank = bankOptions[0];
           setSelectedOption(firstBank); // for ReactSelect UI
           setValue("bankName", firstBank.value.banknameen); // for your form schema
@@ -184,10 +186,10 @@ export default function WithdrawalRequestForm() {
 
   return (
     <Page title="출금 요청">
-      <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] pb-8">
-        <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
+      <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] py-5">
+        {/* <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
           출금 요청
-        </h2>
+        </h2> */}
 
         <div>
           <div className="h-fit rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
@@ -219,6 +221,8 @@ export default function WithdrawalRequestForm() {
                     />
 
                     {/*isCrypto*/}
+                  </div>
+                  <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600 lg:w-1/2">
                     <div className="mx-auto">
                       <label className="col-span-2">출금종류</label>
                       <div className="col-span-10">
@@ -235,8 +239,6 @@ export default function WithdrawalRequestForm() {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600 lg:w-1/2">
                     <Input
                       placeholder=""
                       label={
