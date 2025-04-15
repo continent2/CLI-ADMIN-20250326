@@ -370,13 +370,13 @@ export default function WithdrawalRequestForm() {
                     </div>
                   </div>
                   {/*Action buttons*/}
-                  <div className="mt-[14px] flex flex-col items-center justify-center gap-2 rtl:space-x-reverse">
-                    <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
+                  <div className="mt-[14px] flex p-4 items-center justify-center gap-2 rtl:space-x-reverse">
+                    <Button className="w-[200px] min-w-[7rem] px-5 text-base font-medium">
                       취소
                     </Button>
                     <Button
                       type="submit"
-                      className="w-[250px] min-w-[7rem] text-base font-medium"
+                      className="w-[200px] min-w-[7rem] text-base font-medium"
                       color="primary"
                       disabled={!isValid}
                     >
