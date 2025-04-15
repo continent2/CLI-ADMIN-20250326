@@ -52,7 +52,7 @@ export default function WithdrawalRequestForm() {
           alt={bank.banknameen}
           style={{ width: 20, height: 20 }}
         />
-        {bank.banknameen}
+        {bank.banknamenative}
       </div>
     ),
   }));

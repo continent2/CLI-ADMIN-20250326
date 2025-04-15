@@ -132,17 +132,6 @@ export default function SignIn() {
                 가입 문의하기
               </Link>
             </form>
-            <div className="mt-4 text-center text-xs+">
-              <p className="line-clamp-1">
-                {/* <span>가입 문의하기</span>{" "}*/}
-                <Link
-                  className="text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-600"
-                  to="/pages/sign-up-v1"
-                >
-                  가입 문의하기
-                </Link>
-              </p>
-            </div>
           </Card>
           <div className="mt-8 flex justify-center text-xs text-gray-400 dark:text-dark-300">
             <a href="##">VER.2025-04-14 01:12</a>

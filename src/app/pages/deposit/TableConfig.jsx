@@ -1,5 +1,5 @@
 // Import Dependencies
-import { ViewColumnsIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import PropTypes from "prop-types";
 
 // Local Imports

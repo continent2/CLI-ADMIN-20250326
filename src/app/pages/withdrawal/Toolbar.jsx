@@ -5,11 +5,12 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 
 // Local Imports
-import { Input } from "components/ui";
+import {Button, Input} from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
 import { TableConfig } from "../deposit/TableConfig.jsx";
 import { DateFilter } from "components/shared/table/DateFilter";
 import { useState } from "react";
+import {ArrowPathIcon} from "@heroicons/react/24/outline/index.js";
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +50,13 @@ export function Toolbar({ table }) {
                 }
               />
             )}
-            <TableConfig table={table} />
+              <Button
+                  variant="outlined"
+                  className="px-3"
+                  onClick={() => window.location.reload()}
+                  isIcon>
+                  <ArrowPathIcon className="size-4" />
+              </Button>
           </div>
           <div
             className={clsx(
@@ -86,7 +93,13 @@ export function Toolbar({ table }) {
                 }
               />
             )}
-            <TableConfig table={table} />
+              <Button
+                  variant="outlined"
+                  className="px-3"
+                  onClick={() => window.location.reload()}
+                  isIcon>
+                  <ArrowPathIcon className="size-4" />
+              </Button>
           </div>
         </div>
       )}

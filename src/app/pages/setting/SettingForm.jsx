@@ -492,26 +492,6 @@ export default function SettingForm() {
                   </div>
                 </div>
               </form>
-              <div className="pt-6">
-                <Select
-                  label="알림주기"
-                  data={[
-                    { label: "기간 선택", value: "" },
-                    { label: "30 초", value: "30000" },
-                    { label: "50 초", value: "50000" },
-                    { label: "100 초", value: "100000" },
-                  ]}
-                  value={notificationDuration}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setNotificationDuration(val);
-                    localStorage.setItem(
-                      "notification-duration",
-                      val ? val : "30000",
-                    );
-                  }}
-                />
-              </div>
             </div>
 
             <div className="col-span-12 md:col-span-6">
@@ -588,6 +568,30 @@ export default function SettingForm() {
                 </div>
               </form>
             </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <div className="rounded-lg border p-4 dark:border-gray-600">
+                    <Select
+                        label="알림주기"
+                        data={[
+                            { label: "기간 선택", value: "" },
+                            { label: "30 초", value: "30000" },
+                            { label: "50 초", value: "50000" },
+                            { label: "100 초", value: "100000" },
+                        ]}
+                        value={notificationDuration}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setNotificationDuration(val);
+                            localStorage.setItem(
+                                "notification-duration",
+                                val ? val : "30000",
+                            );
+                        }}
+                    />
+                </div>
+            </div>
+
           </div>
         </div>
       </div>

@@ -6,12 +6,13 @@ import PropTypes from "prop-types";
 import { DateFilter } from "components/shared/table/DateFilter";
 
 // Local Imports
-import { Input } from "components/ui";
+import {Button, Input} from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
 import { TableConfig } from "./TableConfig";
 import { RoleFilter } from "./RoleFilter";
 import { useEffect, useState } from "react";
 import { useMemberContext } from "../../contexts/member/context.js";
+import {ArrowPathIcon} from "@heroicons/react/24/outline/index.js";
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +61,13 @@ export function Toolbar({ table }) {
                 }
               />
             )}
-            <TableConfig table={table} />
+              <Button
+                  variant="outlined"
+                  className="px-3"
+                  onClick={() => window.location.reload()}
+                  isIcon>
+                  <ArrowPathIcon className="size-4" />
+              </Button>
           </div>
           <div
             className={clsx(
@@ -111,7 +118,13 @@ export function Toolbar({ table }) {
                 }
               />
             )}
-            <TableConfig table={table} />
+              <Button
+                  variant="outlined"
+                  className="px-3"
+                  onClick={() => window.location.reload()}
+                  isIcon>
+                  <ArrowPathIcon className="size-4" />
+              </Button>
           </div>
         </div>
       )}

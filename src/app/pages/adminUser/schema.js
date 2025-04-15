@@ -33,10 +33,7 @@ export const schema = Yup.object().shape({
       "https://t.me/+ 형식으로 입력해주세요",
     ),
 
-  phoneCountryCode: Yup.string()
-    .trim()
-    .required("국가 코드를 입력해주세요")
-    .matches(/^\+\d{1,3}$/, "유효한 국가 코드 형식이 아닙니다 (예: +82, +1)"),
+  phoneCountryCode: Yup.string(),
 
   phoneNationalNumber: Yup.string()
     .required("전화번호를 입력해주세요")

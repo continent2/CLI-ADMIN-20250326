@@ -107,18 +107,6 @@ export const columns = [
     cell: ReceivedAccount,
   },
   {
-    id: "자동 신청",
-    accessorKey: "bankname", // Keep the accessor for sorting/filtering
-    header: () => (
-      <div>
-        자동 {/* Automatic*/}
-        <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-        신청 {/*Application*/}
-      </div>
-    ),
-    cell: BankDetail,
-  },
-  {
     id: "상태",
     accessorKey: "status", // Keep the accessor for sorting/filtering
     header: "상태", //Situation

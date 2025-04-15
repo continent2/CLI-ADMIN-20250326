@@ -1,5 +1,5 @@
 // Import Dependencies
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon,ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 import PropTypes from "prop-types";
@@ -69,7 +69,13 @@ export function Toolbar({ table }) {
                 }
               />
             )}{" "}
-            <TableConfig table={table} />
+              <Button
+                  variant="outlined"
+                  className="px-3"
+                  onClick={() => window.location.reload()}
+                  isIcon>
+                  <ArrowPathIcon className="size-4" />
+              </Button>
           </div>
           <div
             className={clsx(
@@ -120,7 +126,13 @@ export function Toolbar({ table }) {
                 }}
               />
             )}{" "}
-            <TableConfig table={table} />
+              <Button
+                  variant="outlined"
+                  className="px-3"
+                  onClick={() => window.location.reload()}
+                  isIcon>
+                  <ArrowPathIcon className="size-4" />
+              </Button>
           </div>
         </div>
       )}
