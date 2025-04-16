@@ -14,7 +14,7 @@ import { Link } from "react-router";
 
 // Local Imports
 import { Avatar, AvatarDot, Button } from "components/ui";
-import {useAuthContext} from "../../contexts/auth/context.js";
+import { useAuthContext } from "../../contexts/auth/context.js";
 
 // ----------------------------------------------------------------------
 
@@ -38,11 +38,10 @@ const links = [
 ];
 
 export function Profile() {
-
   const { logout } = useAuthContext();
   const logoutHandler = () => {
     logout();
-  }
+  };
 
   const userName = localStorage.getItem("username");
 

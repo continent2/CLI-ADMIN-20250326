@@ -220,10 +220,13 @@ export default function SiteRegistrationForm() {
                       {...register("bankName")}
                       error={errors?.bankName?.message}
                     /> */}
-                    은행
+                    <label className="-mb-4">
+                      은행
+                    </label>
                     <ReactSelect
                       options={bankOptions}
                       value={selectedOption}
+                      placeholder="주소를 선택하세요"
                       onChange={(selected) => {
                         setSelectedOption(selected); // For select UI
                         setValue("bankName", selected.value.banknameen);

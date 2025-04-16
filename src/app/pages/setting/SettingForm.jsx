@@ -50,9 +50,12 @@ export default function SettingForm() {
     label: (
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
-          src={bank.urllogo}
+          src={bank.urllogo || "/images/dummy-bank.png"}
           alt={bank.banknameen}
           style={{ width: 20, height: 20 }}
+          onError={(e) => {
+            e.currentTarget.src = "/images/dummy-bank.png";
+          }}
         />
         {bank.banknamenative}
       </div>

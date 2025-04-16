@@ -115,7 +115,7 @@ export function WalletCard({ depositData }) {
             ) : (
               <ArrowDownIcon className="size-3.5" />
             )}
-            <span>{Math.abs(trend).toFixed(1)}%</span>
+            <span>{Math.abs(trend)?.toFixed(1)}%</span>
           </div>
         </div>
       </div>

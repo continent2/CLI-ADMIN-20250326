@@ -86,7 +86,7 @@ export function Wallets({ data, isLoading }) {
 
             <div className="mt-4 flex items-end justify-between">
               <p className="text-xl font-medium text-gray-800 dark:text-dark-100">
-                {formatNumberWithCommas(data?.amount_withdraw_today)}
+                {formatNumberWithCommas(data?.count_withdraw_today)}
               </p>
               {/* <p>$2,589.00</p> */}
             </div>
@@ -113,7 +113,6 @@ export function Wallets({ data, isLoading }) {
         {/*   </div> */}
         {/* </div> */}
       </div>
-
       {false && (
         <div className="mt-2 px-4 sm:px-5">
           <h2 className="font-medium tracking-wide text-gray-800 dark:text-dark-100">

@@ -1,4 +1,3 @@
-// Import Dependencies
 import { Link } from "react-router";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -123,21 +122,14 @@ export default function SignIn() {
               <Button type="submit" className="mt-5 w-full" color="primary">
                 로그인 {/*Sign in*/}
               </Button>
-
-              <Link
-                to="https://t.me/+qX8-mKgD6vw5ZmRl"
-                target="_blank"
-                className="mt-5 block w-full text-center text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-600"
-              >
-                가입 문의하기
-              </Link>
             </form>
             <div className="mt-4 text-center text-xs+">
               <p className="line-clamp-1">
                 {/* <span>가입 문의하기</span>{" "}*/}
                 <Link
+                  target="_blank"
                   className="text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-600"
-                  to="/pages/sign-up-v1"
+                  to="https://t.me/+qX8-mKgD6vw5ZmRl"
                 >
                   가입 문의하기
                 </Link>
