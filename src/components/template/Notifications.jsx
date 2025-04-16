@@ -97,10 +97,10 @@ export function Notifications() {
   useEffect(() => {
     if (data) {
       const formattedDeposit = formatNumberWithCommas(
-        data?.amount_deposit_today_in_quote.toFixed(2),
+        data?.amount_deposit_today_in_quote?.toFixed(2),
       );
       const formattedWithdraw = formatNumberWithCommas(
-        data?.amount_withdraw_today_in_quote.toFixed(2),
+        data?.amount_withdraw_today_in_quote?.toFixed(2),
       );
 
       setDepositValue(formattedDeposit);
@@ -174,7 +174,7 @@ export function Notifications() {
         >
           {({ close }) => (
             <div className="flex grow flex-col overflow-hidden">
-              <div className="rounded-t-lg bg-gray-100 dark:bg-dark-800">
+              <div className="flex-grow rounded-t-lg bg-gray-100 dark:bg-dark-800">
                 <div className="flex items-center justify-between px-4 pt-2">
                   <div className="flex items-center gap-2">
                     <h3 className="font-medium text-gray-800 dark:text-dark-100">

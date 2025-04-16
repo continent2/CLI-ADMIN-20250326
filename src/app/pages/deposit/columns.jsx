@@ -20,10 +20,11 @@ export const columns = [
     id: "생성시간",
     accessorKey: "transfer.timestamp",
     header: "생성시간", //creation time
-    cell: (info) => {
-      const timestamp = info.row.original?.["createdat"];
-      return timestamp ? new Date(timestamp).toLocaleString() : "-";
-    },
+    // cell: (info) => {
+    //   const timestamp = info.row.original?.["createdat"];
+    //   return timestamp ? new Date(timestamp).toLocaleString() : "-";
+    // },
+    cell: DateCell,
     filterFn: "inNumberRange",
   },
   {

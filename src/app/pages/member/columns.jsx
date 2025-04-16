@@ -43,7 +43,6 @@ export const columns = [
     cell: ({ row }) => {
       const userName = row.original.info["username"];
       const externalUserId = row.original.info["externaluserid"];
-      console.log(row);
 
       return (
         <div>

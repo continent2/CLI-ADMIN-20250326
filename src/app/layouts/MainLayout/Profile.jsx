@@ -14,7 +14,7 @@ import { Link } from "react-router";
 
 // Local Imports
 import { Avatar, AvatarDot, Button } from "components/ui";
-import {useAuthContext} from "../../contexts/auth/context.js";
+import { useAuthContext } from "../../contexts/auth/context.js";
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ export function Profile() {
   const { logout } = useAuthContext();
   const logoutHandler = () => {
     logout();
-  }
+  };
   return (
     <Popover className="relative">
       <PopoverButton
@@ -69,11 +69,7 @@ export function Profile() {
           {({ close }) => (
             <>
               <div className="flex items-center gap-4 rounded-t-lg bg-gray-100 px-4 py-5 dark:bg-dark-800">
-                <Avatar
-                  size={14}
-                  src="/images/100x100.png"
-                  alt="Profile"
-                />
+                <Avatar size={14} src="/images/100x100.png" alt="Profile" />
                 <div>
                   <Link
                     className="text-base font-medium text-gray-700 hover:text-primary-600 focus:text-primary-600 dark:text-dark-100 dark:hover:text-primary-400 dark:focus:text-primary-400"

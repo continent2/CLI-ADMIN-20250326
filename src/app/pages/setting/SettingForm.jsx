@@ -50,9 +50,12 @@ export default function SettingForm() {
     label: (
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
-          src={bank.urllogo}
+          src={bank.urllogo || "/images/dummy-bank.png"}
           alt={bank.banknameen}
           style={{ width: 20, height: 20 }}
+          onError={(e) => {
+            e.currentTarget.src = "/images/dummy-bank.png";
+          }}
         />
         {bank.banknamenative}
       </div>
@@ -202,6 +205,7 @@ export default function SettingForm() {
             title: "Success",
           }));
           setisModalVisible(true);
+          toast.success("Success");
         } else {
           setModalData((prev) => ({
             ...prev,
@@ -210,6 +214,7 @@ export default function SettingForm() {
             title: "Failed",
           }));
           setisModalVisible(true);
+          toast.error("Fail");
         }
       } catch (err) {
         setModalData((prev) => ({
@@ -219,6 +224,7 @@ export default function SettingForm() {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Error");
       }
     } else {
       toast.error("기존 비밀번호가 올바르지 않습니다");
@@ -260,6 +266,7 @@ export default function SettingForm() {
           title: "Success",
         }));
         setisModalVisible(true);
+        toast.success("Success");
       } else {
         setModalData((prev) => ({
           ...prev,
@@ -268,6 +275,7 @@ export default function SettingForm() {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Fail");
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -277,6 +285,7 @@ export default function SettingForm() {
         title: "Failed",
       }));
       setisModalVisible(true);
+      toast.error("Error");
     }
   };
 
@@ -301,6 +310,7 @@ export default function SettingForm() {
           title: "Success",
         }));
         setisModalVisible(true);
+        toast.success("Success");
       } else {
         setModalData((prev) => ({
           ...prev,
@@ -309,6 +319,7 @@ export default function SettingForm() {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Fail");
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -318,6 +329,7 @@ export default function SettingForm() {
         title: "Failed",
       }));
       setisModalVisible(true);
+      toast.error("Error");
     }
   };
 
@@ -492,25 +504,27 @@ export default function SettingForm() {
                   </div>
                 </div>
               </form>
-              <div className="pt-6">
-                <Select
-                  label="알림주기"
-                  data={[
-                    { label: "기간 선택", value: "" },
-                    { label: "30 초", value: "30000" },
-                    { label: "50 초", value: "50000" },
-                    { label: "100 초", value: "100000" },
-                  ]}
-                  value={notificationDuration}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setNotificationDuration(val);
-                    localStorage.setItem(
-                      "notification-duration",
-                      val ? val : "30000",
-                    );
-                  }}
-                />
+              <div className="md:mt-6 mt-4">
+                <div className="flex h-full flex-col gap-5 rounded-lg border p-4 dark:border-gray-600">
+                  <Select
+                    label="알림주기"
+                    data={[
+                      { label: "기간 선택", value: "" },
+                      { label: "30 초", value: "30000" },
+                      { label: "50 초", value: "50000" },
+                      { label: "100 초", value: "100000" },
+                    ]}
+                    value={notificationDuration}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setNotificationDuration(val);
+                      localStorage.setItem(
+                        "notification-duration",
+                        val ? val : "30000",
+                      );
+                    }}
+                  />
+                </div>
               </div>
             </div>
 

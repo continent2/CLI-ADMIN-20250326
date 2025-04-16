@@ -23,6 +23,8 @@ import { PhoneNumberUtil } from "google-libphonenumber";
 import ReactSelect from "react-select";
 import ReactCountryFlag from "react-country-flag";
 import clsx from "clsx";
+import countryOptions from "./countryList.json"; // Assuming you have a JSON file with country options
+import { toast } from "sonner";
 
 // Initialize phone number util
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -126,13 +128,6 @@ const AdminUserForm = () => {
       return false;
     }
   };
-  const countryOptions = [
-    { value: "+82", label: "South Korea (+82)", code: "KR" },
-    { value: "+1", label: "United States (+1)", code: "US" },
-    { value: "+44", label: "United Kingdom (+44)", code: "GB" },
-    { value: "+81", label: "Japan (+81)", code: "JP" },
-    { value: "+86", label: "China (+86)", code: "CN" },
-  ];
 
   const CustomOption = ({ innerProps, label, data, isFocused, isSelected }) => (
     <div
@@ -204,6 +199,7 @@ const AdminUserForm = () => {
           title: "Success",
         }));
         setisModalVisible(true);
+        toast.success("Success");
       } else {
         setModalData((prev) => ({
           ...prev,
@@ -212,6 +208,7 @@ const AdminUserForm = () => {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Fail");
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -220,6 +217,7 @@ const AdminUserForm = () => {
         color: "error",
         title: "Failed",
       }));
+      toast.error("Error");
       setisModalVisible(true);
     }
   };
@@ -227,7 +225,7 @@ const AdminUserForm = () => {
     <Page title="관리자 추가">
       <div className="transition-content px-[--margin-x] py-5">
         {/* <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
-        관리자 추가
+          관리자 추가
         </h2> */}
 
         <div className="rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
@@ -289,14 +287,21 @@ const AdminUserForm = () => {
                   error={errors?.phoneCountryCode?.message}
                   defaultValue="+82"
                 /> */}
-                국가 코드
+                <label className="-mb-4">
+                  국가 코드
+                </label>
                 <ReactSelect
-                  options={countryOptions}
+                  options={countryOptions?.map(country => ({
+                    value: `+${country?.code}`,
+                    label: `${country?.country} (+${country.code})`,
+                    code: country?.iso
+                  }))}
                   components={{
                     Option: CustomOption,
                     SingleValue: CustomSingleValue,
                   }}
                   value={selectedOption}
+                  placeholder="국가 선택"
                   onChange={(selected) => {
                     setSelectedOption(selected);
                     setValue("phoneCountryCode", selected.value);
@@ -307,7 +312,7 @@ const AdminUserForm = () => {
                         "!flex !items-center !justify-start !rounded-lg !bg-transparent",
                         "hover:!border-gray-400 dark:!border-dark-450",
                         state.isFocused &&
-                          "!border-primary-500 !ring-2 !ring-primary-500",
+                        "!border-primary-500 !ring-2 !ring-primary-500",
                       ),
                     singleValue: () =>
                       "!flex !items-center !text-black dark:!text-dark-100",

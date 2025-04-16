@@ -42,7 +42,7 @@ export function AmountCurrency({ row }) {
         <p>{Currency ?? "N/A"}</p>
       </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>₩ {formatNumberWithCommas(AmountInQuote.toFixed(2))}</p>
+      <p>₩ {formatNumberWithCommas(AmountInQuote?.toFixed(2))}</p>
     </div>
   );
 }

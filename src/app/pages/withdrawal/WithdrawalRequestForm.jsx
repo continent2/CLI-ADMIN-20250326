@@ -16,6 +16,7 @@ import {
 import { CheckCircleIcon } from "@heroicons/react/24/outline/index.js";
 import ReactSelect from "react-select";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
+import { toast } from "sonner";
 
 export const initialState = {
   amountFrom: "",
@@ -42,15 +43,19 @@ export default function WithdrawalRequestForm() {
     withdrawInfo,
   } = useAppDataContext();
   const [selectedOption, setSelectedOption] = useState();
+  const [selectedAgencyBank, setSelectedAgencyBank] = useState();
 
   const bankOptions = banks?.map((bank) => ({
     value: bank, // store the whole bank object
     label: (
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
-          src={bank.urllogo}
+          src={bank.urllogo || "/images/dummy-bank.png"}
           alt={bank.banknameen}
           style={{ width: 20, height: 20 }}
+          onError={(e) => {
+            e.currentTarget.src = "/images/dummy-bank.png";
+          }}
         />
         {bank.banknameen}
       </div>
@@ -111,6 +116,7 @@ export default function WithdrawalRequestForm() {
           title: "Success",
         }));
         setisModalVisible(true);
+        toast.success("Success");
       } else {
         setModalData((prev) => ({
           ...prev,
@@ -119,6 +125,7 @@ export default function WithdrawalRequestForm() {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Fail");
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -128,6 +135,7 @@ export default function WithdrawalRequestForm() {
         title: "Failed",
       }));
       setisModalVisible(true);
+      toast.error("Error");
     }
   };
 
@@ -257,27 +265,49 @@ export default function WithdrawalRequestForm() {
                       <>
                         {/*Recently received address*/}
                         {agencyBank && (
-                          <Select
-                            label="최근 받은 주소"
-                            data={[
-                              { label: "주소를 선택하세요", value: "" },
-                              ...(agencyBank || [])
-                                .filter((b) => b.address) // filters out falsy values like null, undefined, or empty string
-                                .map((b) => ({
-                                  label: b.address,
-                                  value: b.id,
-                                })),
-                            ]}
-                            onChange={(e) => {
-                              const selected = agencyBank.find(
-                                (b) => b.id === +e.target.value,
-                              );
-                              if (selected) {
-                                OnReceivedAddressChange(selected.id);
-                              }
-                            }}
-                            error={errors?.bankAddress?.message}
-                          />
+                          <>
+                            <label className="-mb-4">
+                              최근 받은 주소
+                            </label>
+                            <ReactSelect
+                              options={[
+                                ...(agencyBank || [])
+                                  .filter((b) => b.address) // filters out falsy values like null, undefined, or empty string
+                                  .map((b) => ({
+                                    label: b.address,
+                                    value: b.id,
+                                  })),
+                              ]}
+                              value={selectedAgencyBank}
+                              placeholder="주소를 선택하세요"
+                              onChange={(item) => {
+                                setSelectedAgencyBank(item);
+                                const selected = agencyBank.find(
+                                  (b) => b?.id === item?.value,
+                                );
+                                if (selected) {
+                                  OnReceivedAddressChange(selected.id);
+                                }
+                              }}
+                              classNames={{
+                                control: () =>
+                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                singleValue: () => "text-black dark:text-dark-100",
+                                input: () => "text-black dark:text-white",
+                                option: ({ isFocused, isSelected }) =>
+                                  [
+                                    "text-black dark:text-white",
+                                    "bg-white dark:bg-dark-800",
+                                    isFocused && "bg-gray-100 dark:bg-gray-700",
+                                    isSelected && "bg-blue-500 text-white",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" "),
+                                menu: () => "bg-white dark:bg-gray-800",
+                                menuList: () => "bg-white dark:bg-gray-800",
+                              }}
+                            />
+                          </>
                         )}
 
                         <Input

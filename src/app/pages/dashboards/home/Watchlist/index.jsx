@@ -83,9 +83,9 @@ function DepositCard({ data, title, timeUnit }) {
               type="line"
             />
           </div>
-          <p className="relative -top-3 truncate text-center text-xs font-medium text-gray-800 dark:text-dark-100">
+          {/* <p className="relative -top-3 truncate text-center text-xs font-medium text-gray-800 dark:text-dark-100">
             ${formatNumberWithCommas(totalAmount)}
-          </p>
+          </p> */}
         </div>
         <div className="flex flex-col items-center">
           <div
@@ -99,7 +99,7 @@ function DepositCard({ data, title, timeUnit }) {
             ) : (
               <ArrowDownIcon className="size-3.5" />
             )}
-            <span>{Math.abs(trend).toFixed(1)}%</span>
+            <span>{Math.abs(trend)?.toFixed(1)}%</span>
           </div>
         </div>
       </div>
@@ -213,7 +213,7 @@ export function Watchlist({ data }) {
         <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
           예금통계
         </h2>
-        <ActionMenu />
+        {/* <ActionMenu /> */}
       </div>
 
       <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">

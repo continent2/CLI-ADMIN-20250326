@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useMemo, useRef } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { useThemeContext } from "app/contexts/theme/context";
+import { toast } from "sonner";
 
 const NotificationPoller = () => {
   const { themeMode } = useThemeContext();
@@ -80,9 +80,9 @@ const NotificationPoller = () => {
   useEffect(() => {
     fetchNotifications(); // Initial fetch
 
-    const interval = setInterval(fetchNotifications, notificationDuration);
+    const interval = setInterval(fetchNotifications, 5 * 60 * 1000);
     return () => clearInterval(interval);
-  }, [fetchNotifications, notificationDuration]);
+  }, [fetchNotifications]);
 
   return null;
 };

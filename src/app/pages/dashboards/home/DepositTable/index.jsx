@@ -22,6 +22,9 @@ import { PaginationSection } from "./PaginationSection";
 import { MenuAction } from "./MenuActions";
 import { useAppDataContext } from "../../../../contexts/appData/context.js";
 import { useSearchParams } from "react-router";
+import { DateCell } from "./rows";
+import { CopyableCellWithClick } from "components/shared/table/CopyableCell";
+import { tronScan_Address, tronScan_Transaction } from "constants/app.constant";
 
 // ----------------------------------------------------------------------
 
@@ -29,15 +32,33 @@ const columns = [
   {
     accessorKey: "createdat",
     header: "등록일",
-    cell: (info) => {
-      const timestamp = info.row.original?.["createdat"];
-      return timestamp ? new Date(timestamp).toLocaleString() : "-";
-    },
+    cell: DateCell
   },
   {
     accessorKey: "site.siteurl",
     header: "사이트URL",
-    cell: (info) => info.row.original?.["site.siteurl"] || "-",
+    // cell: (info) => info.row.original?.["site.siteurl"] || "-",
+    cell: ({ row }) => {
+      const siteUrl = row.original["site.siteurl"]; // Get SiteList URL
+      const siteId = row.original["site.id"]; // Get SiteList ID
+
+      return (
+        <div>
+          <a
+            href={siteUrl || "#"} // Corrected link to use siteUrl
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 no-underline dark:text-gray-500" // Add style if needed
+          >
+            {siteUrl.replace(/^https?:\/\//, "") || "N/A"}{" "}
+            {/* Display site URL or "-" if not available */}
+          </a>
+          <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+          <p>{siteId || "N/A"}</p>{" "}
+          {/* Display SiteList ID or "N/A" if not available */}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "user.externaluserid",
@@ -57,12 +78,49 @@ const columns = [
   {
     accessorKey: "transfer.from",
     header: "보낸주소",
-    cell: (info) => info.row.original?.["transfer.from"] || "-",
+    // cell: (info) => info.row.original?.["transfer.from"] || "-",
+    cell: ({ row, table }) => {
+      const fromAddress = row.original["transfer.from"];
+
+      return (
+        <CopyableCellWithClick
+          getValue={() => fromAddress || "N/A"}
+          table={table}
+          onClick={() => {
+            if (fromAddress) {
+              window.open(`${tronScan_Address}${fromAddress}`, "_blank");
+            }
+          }}
+        />
+      );
+    }
   },
   {
     accessorKey: "transfer.txhash",
     header: "전송ID",
-    cell: (info) => info.row.original?.["transfer.txhash"] || "-",
+    // cell: (info) => info.row.original?.["transfer.txhash"] || "-",
+    cell: ({ row, table }) => {
+      // const gasFee = row.original["transfer.gasfee"]; // Get Gasfee
+
+      return (
+        <div>
+          <CopyableCellWithClick
+            getValue={() =>
+              row.original["transfer.txhash"].toUpperCase() || "N/A"
+            }
+            table={table}
+            onClick={() => {
+              const txHash = row.original["transfer.txhash"];
+              if (txHash) {
+                window.open(`${tronScan_Transaction}${txHash}`, "_blank");
+              }
+            }}
+          />
+          {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
+          {/* <p>{gasFee || "N/A"}</p> */}
+        </div>
+      );
+    },
   },
 ];
 
@@ -163,7 +221,7 @@ export function ActivitiesTable() {
             value={globalFilter ?? ""}
             onChange={(e) => setGlobalFilter(e.target.value)}
           />
-          <MenuAction />
+          {/* <MenuAction /> */}
         </div>
       </div>
       <Card className="relative mt-3">
@@ -186,9 +244,9 @@ export function ActivitiesTable() {
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
                           </span>
                           <TableSortIcon sorted={header.column.getIsSorted()} />
                         </div>
@@ -210,7 +268,7 @@ export function ActivitiesTable() {
                   className={clsx(
                     "relative border-y border-transparent border-b-gray-200 dark:border-b-dark-500",
                     row.getIsSelected() &&
-                      "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
+                    "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (
