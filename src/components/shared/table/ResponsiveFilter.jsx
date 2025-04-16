@@ -86,7 +86,7 @@ function MobileView({ children, buttonContent, classNames }) {
           leaveTo="translate-y-full"
           className="fixed bottom-0 left-0 flex w-full transform-gpu flex-col rounded-t-2xl bg-white transition-transform duration-200 dark:bg-dark-700"
         >
-          {children}
+          {typeof children === "function" ? children({ close }) : children}
         </TransitionChild>
       </Transition>
     </>
@@ -101,7 +101,7 @@ function DesktopView({
 }) {
   return (
     <Popover>
-      {({ open }) => (
+      {({ open, close }) => (
         <>
           <PopoverButton
             as={Button}
@@ -127,7 +127,7 @@ function DesktopView({
             anchor={anchor}
             className="z-[100] flex w-fit flex-col rounded-md border border-gray-300 bg-white shadow-lg shadow-gray-200/50 outline-none ring-primary-500/50 focus-visible:outline-none focus-visible:ring dark:border-dark-500 dark:bg-dark-750 dark:shadow-none"
           >
-            <div className="flex flex-col overflow-hidden">{children}</div>
+            <div className="flex flex-col overflow-hidden">{typeof children === "function" ? children({ close }) : children}</div>
           </Transition>
         </>
       )}

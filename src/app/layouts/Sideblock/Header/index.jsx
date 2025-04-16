@@ -134,7 +134,7 @@ export function Header() {
         </div>
         <Notifications />
         <RightSidebar />
-        <LanguageSelector />
+        {/* <LanguageSelector /> */}
         <Profile />
         <div>
           <RadioGroup

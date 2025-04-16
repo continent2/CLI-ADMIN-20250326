@@ -62,18 +62,25 @@ export function SiteCell({ getValue }) {
   );
 }
 
-export function DateCell({ getValue }) {
-    const { locale } = useLocaleContext();
-    const timestamp = getValue();
+export function DateCell({ row }) {
+  const { locale } = useLocaleContext();
+  const createdDate = row?.original?.["agency.createdat"];
+  const updatedDate = row?.original?.["agency.updatedat"];
+  const formattedCreatedDate = createdDate
+    ? `${dayjs(createdDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
+    : "N/A";
 
-    const date = dayjs(timestamp).locale(locale).format("YYYY-MM-DD");
-    const time = dayjs(timestamp).locale(locale).format("HH:mm:ss");
+  const formattedUpdatedDate = updatedDate
+    ? `${dayjs(updatedDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
+    : "N/A";
 
-    return (
-        <>
-            <p>{date} | {time}</p>
-        </>
-    );
+  return (
+    <div>
+      <p>{formattedCreatedDate}</p>
+      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+      <p>{formattedUpdatedDate}</p>
+    </div>
+  );
 }
 
 NameCell.propTypes = {
@@ -88,7 +95,7 @@ SiteCell.propTypes = {
 };
 
 DateCell.propTypes = {
-    getValue: PropTypes.func,
+  getValue: PropTypes.func,
 };
 
 

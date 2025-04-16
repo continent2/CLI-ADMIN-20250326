@@ -21,6 +21,27 @@ const activityColor = {
   personal: "warning",
 };
 
+export function DateCell({ row }) {
+  const { locale } = useLocaleContext();
+  const createdDate = row?.original?.["agency.createdat"];
+  const updatedDate = row?.original?.["agency.updatedat"];
+  const formattedCreatedDate = createdDate
+    ? `${dayjs(createdDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
+    : "N/A";
+
+  const formattedUpdatedDate = updatedDate
+    ? `${dayjs(updatedDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
+    : "N/A";
+
+  return (
+    <div>
+      <p>{formattedCreatedDate}</p>
+      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+      <p>{formattedUpdatedDate}</p>
+    </div>
+  );
+}
+
 function getActivityIcon(type) {
   if (type === "utility-payment") return ShieldExclamationIcon;
   if (type === "property-coverage") return BoltIcon;
@@ -86,6 +107,10 @@ export function AmountCell({ row, getValue }) {
     </span>
   );
 }
+
+DateCell.propTypes = {
+  row: PropTypes.object,
+};
 
 ActivityCell.propTypes = {
   row: PropTypes.object,

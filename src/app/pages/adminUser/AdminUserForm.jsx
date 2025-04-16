@@ -24,6 +24,7 @@ import ReactSelect from "react-select";
 import ReactCountryFlag from "react-country-flag";
 import clsx from "clsx";
 import countryOptions from "./countryList.json"; // Assuming you have a JSON file with country options
+import { toast } from "sonner";
 
 // Initialize phone number util
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -198,6 +199,7 @@ const AdminUserForm = () => {
           title: "Success",
         }));
         setisModalVisible(true);
+        toast.success("Success");
       } else {
         setModalData((prev) => ({
           ...prev,
@@ -206,6 +208,7 @@ const AdminUserForm = () => {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Fail");
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -214,6 +217,7 @@ const AdminUserForm = () => {
         color: "error",
         title: "Failed",
       }));
+      toast.error("Error");
       setisModalVisible(true);
     }
   };

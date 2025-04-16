@@ -47,7 +47,7 @@ export function Wallets({ data, isLoading }) {
         <h2 className="font-medium tracking-wide text-dark-700 dark:text-gray-100">
           지갑
         </h2>
-        <ActionMenu />
+        {/* <ActionMenu /> */}
       </div>
 
       <div

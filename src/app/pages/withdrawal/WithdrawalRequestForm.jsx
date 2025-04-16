@@ -16,6 +16,7 @@ import {
 import { CheckCircleIcon } from "@heroicons/react/24/outline/index.js";
 import ReactSelect from "react-select";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
+import { toast } from "sonner";
 
 export const initialState = {
   amountFrom: "",
@@ -115,6 +116,7 @@ export default function WithdrawalRequestForm() {
           title: "Success",
         }));
         setisModalVisible(true);
+        toast.success("Success");
       } else {
         setModalData((prev) => ({
           ...prev,
@@ -123,6 +125,7 @@ export default function WithdrawalRequestForm() {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Fail");
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -132,6 +135,7 @@ export default function WithdrawalRequestForm() {
         title: "Failed",
       }));
       setisModalVisible(true);
+      toast.error("Error");
     }
   };
 

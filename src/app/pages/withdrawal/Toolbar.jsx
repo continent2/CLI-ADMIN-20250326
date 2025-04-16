@@ -7,9 +7,9 @@ import PropTypes from "prop-types";
 // Local Imports
 import { Input } from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
-import { TableConfig } from "../deposit/TableConfig.jsx";
 import { DateFilter } from "components/shared/table/DateFilter";
 import { useState } from "react";
+import { TableConfig } from "./TableConfig";
 
 // ----------------------------------------------------------------------
 
@@ -102,7 +102,11 @@ function SearchInput({ onSearch }) {
       value={searchTerm}
       onChange={(e) => {
         setSearchTerm(e.target.value);
-        onSearch(e.target.value);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          onSearch(searchTerm); // Trigger search only on Enter key
+        }
       }}
       prefix={<MagnifyingGlassIcon className="size-4" />}
       classNames={{

@@ -15,6 +15,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline/index.js";
+import { toast } from "sonner";
 
 const initialState = {
   siteUrl: "",
@@ -96,6 +97,7 @@ export default function SiteRegistrationForm() {
           title: "Success",
         }));
         setisModalVisible(true);
+        toast.success("Success");
       } else {
         setModalData((prev) => ({
           ...prev,
@@ -104,6 +106,7 @@ export default function SiteRegistrationForm() {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Fail");
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -113,6 +116,7 @@ export default function SiteRegistrationForm() {
         title: "Failed",
       }));
       setisModalVisible(true);
+      toast.error("Error");
     }
   };
 

@@ -38,7 +38,7 @@ export function Balance({ data }) {
     <div className="rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 px-4 pb-4 text-white sm:px-5">
       <div className="flex items-center justify-between py-3">
         <h2 className="text-sm+ font-medium tracking-wide">현재 잔액</h2>
-        <ActionMenu />
+        {/* <ActionMenu /> */}
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:gap-6">
         <div>
@@ -91,7 +91,8 @@ export function Balance({ data }) {
               unstyled
               className="mt-3 w-full rounded-lg border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
             >
-              입금{" "}
+              {/* 입금{" "} */}
+              {formatNumberWithCommas(depositToday)} USDT
             </Button>
           </div>
 
@@ -112,7 +113,8 @@ export function Balance({ data }) {
               unstyled
               className="mt-3 w-full rounded-lg border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
             >
-              출금
+              {/* 출금 */}
+              {formatNumberWithCommas(withdrawToday)} USDT
             </Button>
           </div>
         </div>

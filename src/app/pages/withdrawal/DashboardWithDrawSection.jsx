@@ -16,6 +16,7 @@ import {
 import { CheckCircleIcon } from "@heroicons/react/24/outline/index.js";
 import ReactSelect from "react-select";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
+import { toast } from "sonner";
 
 export const initialState = {
   amountFrom: "",
@@ -73,6 +74,7 @@ export default function WithdrawalRequestForm() {
     setValue,
     getValues,
     watch,
+    resetField,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
@@ -114,6 +116,7 @@ export default function WithdrawalRequestForm() {
           title: "Success",
         }));
         setisModalVisible(true);
+        toast.success("Success");
       } else {
         setModalData((prev) => ({
           ...prev,
@@ -122,6 +125,7 @@ export default function WithdrawalRequestForm() {
           title: "Failed",
         }));
         setisModalVisible(true);
+        toast.error("Fail");
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -131,6 +135,7 @@ export default function WithdrawalRequestForm() {
         title: "Failed",
       }));
       setisModalVisible(true);
+      toast.error("Error");
     }
   };
 
@@ -373,13 +378,23 @@ export default function WithdrawalRequestForm() {
                     </div>
                   </div>
                   {/*Action buttons*/}
-                  <div className="mt-[14px] flex flex-col items-center justify-center gap-2 rtl:space-x-reverse">
-                    <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
+                  <div className="mt-[14px] px-4 flex items-center justify-center gap-2 rtl:space-x-reverse">
+                    <Button
+                      onClick={() => {
+                        resetField("bankAccount");
+                        setSelectedOption(null);
+                        // resetField("amount");
+                        resetField("address");
+                        resetField("value");
+                        // resetField("quoteSignature");
+                        // resetField("amountField");
+                      }}
+                      className="flex-1 min-w-1/2 px-5 text-base font-medium">
                       취소
                     </Button>
                     <Button
                       type="submit"
-                      className="w-[250px] min-w-[7rem] text-base font-medium"
+                      className="flex-1 min-w-1/2 text-base font-medium"
                       color="primary"
                       disabled={!isValid}
                     >

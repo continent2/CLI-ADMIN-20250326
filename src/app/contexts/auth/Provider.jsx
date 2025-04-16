@@ -8,6 +8,7 @@ import isString from "lodash/isString";
 import axios from "utils/axios";
 import { isTokenValid, setSession } from "utils/jwt";
 import { AuthContext } from "./context";
+import { toast } from "sonner";
 
 // ----------------------------------------------------------------------
 
@@ -146,6 +147,7 @@ export function AuthProvider({ children }) {
           user,
         },
       });
+      toast.success("Success");
     } catch (err) {
       dispatch({
         type: "LOGIN_ERROR",
