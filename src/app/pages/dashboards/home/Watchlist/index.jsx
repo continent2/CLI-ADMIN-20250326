@@ -51,19 +51,18 @@ function DepositCard({ data, title, timeUnit }) {
   const trend =
     chartPoints?.length > 1
       ? ((chartPoints[chartPoints?.length - 1] - chartPoints[0]) /
-          (chartPoints[0] || 1)) *
-        100
+        (chartPoints[0] || 1)) *
+      100
       : 0;
 
   return (
     <Box className="flex w-52 shrink-0 flex-col">
       <div className="flex items-center gap-2">
         <div
-          className={`size-6 rounded-full ${
-            trend >= 0
+          className={`size-6 rounded-full ${trend >= 0
               ? "bg-green-100 dark:bg-green-900"
               : "bg-red-100 dark:bg-red-900"
-          }`}
+            }`}
         />
         <div>
           <span>{title}</span>
@@ -166,7 +165,7 @@ function ActionMenu() {
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-none transition-colors",
                   focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                  "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
                 <span>데이터 새로 고침</span>
@@ -179,7 +178,7 @@ function ActionMenu() {
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-none transition-colors",
                   focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                  "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
                 <span>내보내다</span>
@@ -197,9 +196,13 @@ export function Watchlist({ data }) {
   // Process both data types
   const hourlyData = data?.stat_sum_deposit_by_hour?.flat() || [];
   const dailyData = data?.stat_sum_deposit_by_date?.flat() || [];
-  const top3 = data?.user_rank
-    ?.flat()
-    ?.sort((a, b) => b.sumamount - a.sumamount)
+  const top3 = [...new Map(
+    data?.user_rank
+      ?.flat()
+      ?.map(user => [user.userid, user])
+    ?? []
+  ).values()]
+    .sort((a, b) => b?.sumamount - a?.sumamount)
     .slice(0, 3);
 
   // Format date strings (YYYYMMDD -> MM/DD)
@@ -241,7 +244,7 @@ export function Watchlist({ data }) {
                   </span>
                 </div>
                 <span className="font-medium text-green-600 dark:text-green-400">
-                  ${user?.sumamount?.toFixed(0)}
+                  ${formatNumberWithCommas(user?.sumamount?.toFixed(0))}
                 </span>
               </li>
             ))}

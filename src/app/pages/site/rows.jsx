@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { useLocaleContext } from "app/contexts/locale/context";
 import { CopyableCellWithClick } from "components/shared/table/CopyableCell";
 import { tronScan_Address } from "../../../constants/app.constant.js";
+import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
 
 // ----------------------------------------------------------------------
 
@@ -79,9 +80,9 @@ export function Stat1({ row }) {
 
   return (
     <div>
-      <p>{sum ?? "N/A"}</p>
+      <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0}</p>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>{count ?? "N/A"}</p>
+      <p>{formatNumberWithCommas(count?.toFixed(0))}</p>
     </div>
   );
 }
@@ -92,9 +93,9 @@ export function Stat2({ row }) {
 
   return (
     <div>
-      <p>{sum ?? "N/A"}</p>
+      <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0}</p>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>{count ?? "N/A"}</p>
+      <p>{formatNumberWithCommas(count?.toFixed(0))}</p>
     </div>
   );
 }

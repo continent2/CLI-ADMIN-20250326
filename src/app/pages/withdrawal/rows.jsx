@@ -38,11 +38,11 @@ export function AmountCurrency({ row }) {
   return (
     <div>
       <div className="flex gap-x-1">
-        <p>{formatNumberWithCommas(Amount) ?? "N/A"}</p>
+        <p>{formatNumberWithCommas(Number(Amount)?.toFixed(0)) ?? "N/A"}</p>
         <p>{Currency ?? "N/A"}</p>
       </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>₩ {formatNumberWithCommas(AmountInQuote?.toFixed(2))}</p>
+      <p>₩ {formatNumberWithCommas(Number(AmountInQuote)?.toFixed(0))}</p>
     </div>
   );
 }
