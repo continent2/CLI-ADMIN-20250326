@@ -25,6 +25,7 @@ import { useSearchParams } from "react-router";
 import { DateCell } from "./rows";
 import { CopyableCellWithClick } from "components/shared/table/CopyableCell";
 import { tronScan_Address, tronScan_Transaction } from "constants/app.constant";
+import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 
 // ----------------------------------------------------------------------
 
@@ -68,7 +69,10 @@ const columns = [
   {
     accessorKey: "transfer.amount",
     header: "수량",
-    cell: (info) => info.row.original?.["transfer.amount"] || "-",
+    cell: (info) => {
+      let amount = formatNumberWithCommas(Number(info.row.original?.["transfer.amount"] || 0)?.toFixed(0));
+      return amount
+    },
   },
   {
     accessorKey: "transfer.currency",
