@@ -6,11 +6,13 @@ import PropTypes from "prop-types";
 import { Button } from "components/ui";
 import { createScopedKeydownHandler } from "utils/dom/createScopedKeydownHandler";
 import { useState } from "react";
+import { useEffect } from "react";
+import { dark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 // ----------------------------------------------------------------------
 
 export function RoleFilter({ table, options }) {
-  const [selectedValue, setSelectedValue] = useState("");
+  const selectedValue = table.options?.meta?.siteId ?? ""; // fallback just in case
 
   return (
     <div
@@ -20,7 +22,6 @@ export function RoleFilter({ table, options }) {
       <Button
         data-tab-item
         onClick={() => {
-          setSelectedValue("");
           table.options?.meta.handleSiteChange("");
         }}
         className={clsx(
@@ -40,15 +41,15 @@ export function RoleFilter({ table, options }) {
       >
         All
       </Button>
+
       {Array.isArray(options) &&
         options.map((option) => {
-          if (!option.siteurl) return null; // Skip if siteurl is empty or falsy
+          if (!option.siteurl) return null;
 
           return (
             <Button
               data-tab-item
               onClick={() => {
-                setSelectedValue(option.id);
                 table.options?.meta.handleSiteChange(option.id);
               }}
               key={option.id}

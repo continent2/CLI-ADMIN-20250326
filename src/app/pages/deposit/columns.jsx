@@ -110,14 +110,20 @@ export const columns = [
       const amount = row.original["amount"]; // Get transfer amount
       const currency = row.original["currency"]; // Get transfer currency
       //      const convrate = row.original["convrate"]; // Get transfer currency
-      const convrate = row.original["convamount"]; // Get transfer currency
+      const convrate = row.original["transfer.convamount"]; // Get transfer currency
       return (
         <div>
           <p>
-            {formatNumberWithCommas(Number(amount)?.toFixed(0)) || "N/A"} {currency || "N/A"}
+            {formatNumberWithCommas(Number(amount)?.toFixed(0)) || "N/A"}{" "}
+            {currency || "N/A"}
           </p>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-          <p>{convrate === null || convrate === undefined ? "N/A" : formatNumberWithCommas(Number(convrate || 0)?.toFixed(0)) || "N/A"}</p>
+          <p>
+            {convrate === null || convrate === undefined
+              ? "N/A"
+              : formatNumberWithCommas(Number(convrate || 0)?.toFixed(0)) ||
+                "N/A"}
+          </p>
         </div>
       );
     },
@@ -139,7 +145,7 @@ export const columns = [
         <div>
           <CopyableCellWithClick
             getValue={() =>
-              row.original["transfer.txhash"].toUpperCase() || "N/A"
+              row.original["transfer.txhash"]?.toUpperCase() || "N/A"
             }
             table={table}
             onClick={() => {

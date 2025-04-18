@@ -69,7 +69,7 @@ export function Toolbar({ table }) {
                 }
               />
             )}{" "}
-            <TableConfig table={table} />
+            {/* <TableConfig table={table} /> */}
           </div>
           <div
             className={clsx(

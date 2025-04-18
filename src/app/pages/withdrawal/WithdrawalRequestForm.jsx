@@ -192,6 +192,27 @@ export default function WithdrawalRequestForm() {
     }
   }, [withdraw, isCrypto, setValue]);
 
+  const receivedAccountOptions = agencyBank
+    ?.filter((b) => b.bankaccount) // filter out incomplete entries
+    .map((b) => ({
+      value: b.id,
+      label: (
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <img
+            src={b["bank.urllogo"] || "/images/dummy-bank.png"}
+            alt={b.banknameen}
+            style={{ width: 20, height: 20 }}
+            onError={(e) => {
+              e.currentTarget.src = "/images/dummy-bank.png";
+            }}
+          />
+          <div>
+            <div className="text-xs text-gray-500">{b.bankaccount}</div>
+          </div>
+        </div>
+      ),
+      raw: b, // store raw bank object to use onChange
+    }));
   return (
     <Page title="출금 요청">
       <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] py-5">
@@ -266,9 +287,7 @@ export default function WithdrawalRequestForm() {
                         {/*Recently received address*/}
                         {agencyBank && (
                           <>
-                            <label className="-mb-4">
-                              최근 받은 주소
-                            </label>
+                            <label className="-mb-4">최근 받은 주소</label>
                             <ReactSelect
                               options={[
                                 ...(agencyBank || [])
@@ -292,7 +311,8 @@ export default function WithdrawalRequestForm() {
                               classNames={{
                                 control: () =>
                                   "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                                singleValue: () => "text-black dark:text-dark-100",
+                                singleValue: () =>
+                                  "text-black dark:text-dark-100",
                                 input: () => "text-black dark:text-white",
                                 option: ({ isFocused, isSelected }) =>
                                   [
@@ -329,27 +349,37 @@ export default function WithdrawalRequestForm() {
                       <>
                         {/*Recently received account*/}
                         {agencyBank && (
-                          <Select
-                            label="최근받은계정"
-                            data={[
-                              { label: "계정을 선택하세요", value: "" },
-                              ...(agencyBank || [])
-                                .filter((b) => b.bankaccount) // filters out falsy values like null, undefined, or empty string
-                                .map((b) => ({
-                                  label: b.bankaccount,
-                                  value: b.id,
-                                })),
-                            ]}
-                            onChange={(e) => {
-                              const selected = agencyBank.find(
-                                (b) => b.id === +e.target.value,
-                              );
-                              if (selected) {
-                                onReceivedAccountChange(selected.id);
-                              }
-                            }}
-                            error={errors?.bankAccount?.message}
-                          />
+                          <>
+                            <label className="-mb-4">최근받은계정</label>
+                            <ReactSelect
+                              options={receivedAccountOptions}
+                              placeholder="계정을 선택하세요"
+                              onChange={(selected) => {
+                                if (selected?.raw) {
+                                  const selectedBank = selected.raw;
+                                  onReceivedAccountChange(selectedBank.id);
+                                }
+                              }}
+                              classNames={{
+                                control: () =>
+                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                singleValue: () =>
+                                  "text-black dark:text-dark-100",
+                                input: () => "text-black dark:text-white",
+                                option: ({ isFocused, isSelected }) =>
+                                  [
+                                    "text-black dark:text-white",
+                                    "bg-white dark:bg-dark-800",
+                                    isFocused && "bg-gray-100 dark:bg-gray-700",
+                                    isSelected && "bg-blue-500 text-white",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" "),
+                                menu: () => "bg-white dark:bg-gray-800",
+                                menuList: () => "bg-white dark:bg-gray-800",
+                              }}
+                            />
+                          </>
                         )}
 
                         {/*Receiving bank*/}

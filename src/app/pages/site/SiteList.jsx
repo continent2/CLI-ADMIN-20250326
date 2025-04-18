@@ -27,6 +27,7 @@ import { ListView } from "./ListView";
 import { GridView } from "./GridView";
 import { useSiteContext } from "../../contexts/site/context.js";
 import { useSearchParams } from "react-router";
+import NoData from "components/shared/NoData";
 
 // ----------------------------------------------------------------------
 
@@ -107,6 +108,13 @@ export default function SiteList() {
       viewType,
     },
     meta: {
+      siteId,
+      handleReload: () => {
+        setSearchTerm("");
+        setDateRange([]);
+        setSiteId("");
+        paginationData.fetchData(0, 20);
+      },
       handleSearch: (value) => {
         setSearchTerm(value);
         // Reset to first page when searching
@@ -227,13 +235,16 @@ export default function SiteList() {
                 tableSettings.enableFullScreen && "overflow-hidden",
               )}
             >
-              {viewType === "list" && (
-                <ListView table={table} flexRender={flexRender} rows={rows} />
-              )}
+              {viewType === "list" &&
+                (rows.length === 0 ? (
+                  <NoData message="No site data found." />
+                ) : (
+                  <ListView table={table} flexRender={flexRender} rows={rows} />
+                ))}
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 
-              {table.getCoreRowModel().rows?.length && (
+              {table.getCoreRowModel().rows?.length > 0 && (
                 <div
                   className={clsx(
                     "pb-4 sm:pt-4",
