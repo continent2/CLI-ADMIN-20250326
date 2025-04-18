@@ -509,11 +509,11 @@ export default function SettingForm() {
                   <Select
                     label="알림주기"
                     data={[
-                      { label: "기간 선택", value: "" },
-                      { label: "30 초", value: "30000" },
-                      { label: "50 초", value: "50000" },
-                      { label: "100 초", value: "100000" },
-                    ]}
+  ...Array.from({ length: 60 }, (_, i) => ({
+    label: `${i + 1}`,
+    value: `${(i + 1)}`
+  })),
+]}
                     value={notificationDuration}
                     onChange={(e) => {
                       const val = e.target.value;

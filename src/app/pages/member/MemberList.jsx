@@ -27,6 +27,7 @@ import { ListView } from "./ListView";
 import { GridView } from "./GridView";
 import { useMemberContext } from "../../contexts/member/context.js";
 import { useSearchParams } from "react-router";
+import NoData from "components/shared/NoData";
 
 // ----------------------------------------------------------------------
 
@@ -108,6 +109,7 @@ export default function MemberList() {
       viewType,
     },
     meta: {
+      siteId,
       handleSearch: (value) => {
         setSearchTerm(value);
         // Reset to first page when searching
@@ -123,6 +125,12 @@ export default function MemberList() {
       },
       handleSiteChange: (id) => {
         setSiteId(id);
+        paginationData.fetchData(0, 20);
+      },
+      handleReload: () => {
+        setSearchTerm("");
+        setDateRange([]);
+        setSiteId("");
         paginationData.fetchData(0, 20);
       },
       updateData: (rowIndex, columnId, value) => {
@@ -231,13 +239,16 @@ export default function MemberList() {
                 tableSettings.enableFullScreen && "overflow-hidden",
               )}
             >
-              {viewType === "list" && (
-                <ListView table={table} flexRender={flexRender} rows={rows} />
-              )}
+              {viewType === "list" &&
+                (rows.length === 0 ? (
+                  <NoData message="No member data found." />
+                ) : (
+                  <ListView table={table} flexRender={flexRender} rows={rows} />
+                ))}
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 
-              {table.getCoreRowModel().rows?.length && (
+              {table.getCoreRowModel().rows?.length > 0 && (
                 <div
                   className={clsx(
                     "pb-4 sm:pt-4",

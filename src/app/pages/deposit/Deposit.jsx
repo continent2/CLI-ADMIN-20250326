@@ -27,6 +27,7 @@ import { ListView } from "./ListView";
 import { GridView } from "./GridView";
 import { useDepositContext } from "../../contexts/deposit/context.js";
 import { useSearchParams } from "react-router";
+import NoData from "components/shared/NoData";
 
 // ----------------------------------------------------------------------
 
@@ -128,6 +129,7 @@ export default function Deposit() {
       handleSiteChange: (id) => {
         setSiteId(id);
       },
+      siteId,
       updateData: (rowIndex, columnId, value) => {
         // Skip page index reset until after next rerender
         skipAutoResetPageIndex();
@@ -142,6 +144,12 @@ export default function Deposit() {
             return row;
           }),
         );
+      },
+      handleReload: () => {
+        setSearchTerm("");
+        setDateRange([]);
+        setSiteId("");
+        paginationData.fetchData(0, 20);
       },
       deleteRow: (row) => {
         // Skip page index reset until after next rerender
@@ -228,13 +236,16 @@ export default function Deposit() {
                 tableSettings.enableFullScreen && "overflow-hidden",
               )}
             >
-              {viewType === "list" && (
-                <ListView table={table} flexRender={flexRender} rows={rows} />
-              )}
+              {viewType === "list" &&
+                (rows.length === 0 ? (
+                  <NoData message="No deposit data found." />
+                ) : (
+                  <ListView table={table} flexRender={flexRender} rows={rows} />
+                ))}
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 
-              {table.getCoreRowModel().rows?.length && (
+              {table.getCoreRowModel().rows?.length > 0 && (
                 <div
                   className={clsx(
                     "pb-4 sm:pt-4",

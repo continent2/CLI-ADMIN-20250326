@@ -18,15 +18,7 @@ export function TableConfig({ table }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleReload = () => {
-    // Call the deposits function with the same parameters you used initially
-    deposits({
-      offSet: 0, // Your initial offset
-      limit: 20, // Your initial limit
-      searchKey: "", // Your initial search key if any
-      timeStartIso: "", // Your initial time start if any
-      timeEndIso: "", // Your initial time end if any
-      siteId: "", // Your initial site ID if any
-    });
+    table.options.meta.handleReload();
   };
 
   return (
