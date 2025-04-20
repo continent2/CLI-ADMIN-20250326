@@ -1,9 +1,7 @@
 // Import Dependencies
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-
 import PropTypes from "prop-types";
-import { DateFilter } from "components/shared/table/DateFilter";
 
 // Local Imports
 import { Input } from "components/ui";
@@ -12,19 +10,20 @@ import { TableConfig } from "./TableConfig";
 import { RoleFilter } from "./RoleFilter";
 import { useEffect, useState } from "react";
 import { useMemberContext } from "../../contexts/member/context.js";
+import { DateFilter } from "components/shared/table/DateFilter";
 
 // ----------------------------------------------------------------------
 
 export function Toolbar({ table }) {
   const { isXs } = useBreakpointsContext();
   const isFullScreenEnabled = table.getState().tableSettings.enableFullScreen;
-  const { siteList } = useMemberContext();
-  const [siteOption, setsiteOption] = useState({});
+  const { siteList, isLoading } = useMemberContext();
+  const [siteOption, setSiteOption] = useState({});
 
-  // Update the `deposit` state when `list` changes
+  // Update the site options when siteList changes
   useEffect(() => {
     if (siteList && siteList?.length > 0) {
-      setsiteOption(siteList);
+      setSiteOption(siteList);
     }
   }, [siteList]);
 
@@ -47,17 +46,19 @@ export function Toolbar({ table }) {
           >
             <SearchInput
               onSearch={(value) => table.options?.meta.handleSearch(value)}
+              value={table.options.meta.searchTerm || ""}
             />
             {table.getColumn("사용시작일") && (
               <DateFilter
                 title="기간"
                 config={{
-                  maxDate: new Date().fp_incr(1),
+                  //  maxDate: new Date().fp_incr(1),
                   mode: "range",
                 }}
                 onDateFilter={(dates) =>
                   table.options.meta.handleDateFilter(dates)
                 }
+                value={table.options.meta.dateRange}
               />
             )}
             <TableConfig table={table} />
@@ -98,17 +99,21 @@ export function Toolbar({ table }) {
           <div className="flex shrink-0 justify-end space-x-2 rtl:space-x-reverse">
             <SearchInput
               onSearch={(value) => table.options.meta.handleSearch(value)}
+              value={table.options.meta.searchTerm || ""}
+              disabled={isLoading}
             />
             {table.getColumn("사용시작일") && (
               <DateFilter
                 title="기간"
                 config={{
-                  maxDate: new Date().fp_incr(1),
+                  //  maxDate: new Date().fp_incr(1),
                   mode: "range",
                 }}
                 onDateFilter={(dates) =>
                   table.options.meta.handleDateFilter(dates)
                 }
+                value={table.options.meta.dateRange}
+                disabled={isLoading}
               />
             )}
             <TableConfig table={table} />
@@ -119,18 +124,16 @@ export function Toolbar({ table }) {
   );
 }
 
-function SearchInput({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState("");
-
+function SearchInput({ onSearch, value }) {
   return (
     <Input
-      value={searchTerm}
+      value={value}
       onChange={(e) => {
-        setSearchTerm(e.target.value);
+        onSearch(e.target.value);
       }}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          onSearch(searchTerm); // Trigger search only on Enter key
+          onSearch(e.target.value);
         }
       }}
       prefix={<MagnifyingGlassIcon className="size-4" />}
@@ -143,27 +146,35 @@ function SearchInput({ onSearch }) {
   );
 }
 
-function SearchSiteInput() {
+function SearchSiteInput({ table, disabled }) {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <Input
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
       prefix={<MagnifyingGlassIcon className="size-6" />}
       classNames={{
         root: "h-full",
         input: "border-0 py-2 text-sm",
       }}
       placeholder="사이트 검색"
+      disabled={disabled}
     />
   );
 }
 
 Toolbar.propTypes = {
-  table: PropTypes.object,
+  table: PropTypes.object.isRequired,
 };
 
 SearchInput.propTypes = {
-  onSearch: PropTypes.func,
+  onSearch: PropTypes.func.isRequired,
+  value: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 SearchSiteInput.propTypes = {
   table: PropTypes.object,
+  disabled: PropTypes.bool,
 };

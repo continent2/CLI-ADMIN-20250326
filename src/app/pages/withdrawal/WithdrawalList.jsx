@@ -28,12 +28,14 @@ import { GridView } from "./GridView";
 import { useWithdrawalDetailsContext } from "../../contexts/withdrawalDetails/context";
 import { useSearchParams } from "react-router";
 import NoData from "components/shared/NoData";
+import TableSpinner from "components/shared/TableSpinner";
+import { isNull } from "lodash";
 
 // ----------------------------------------------------------------------
 
 export default function WithdrawalList() {
   const [users, setUsers] = useState([...usersList]);
-  const { withdrawas, count, list } = useWithdrawalDetailsContext();
+  const { withdrawas, count, list, isLoading } = useWithdrawalDetailsContext();
   const [withdraw, setWithdraw] = useState([]);
 
   const [tableSettings, setTableSettings] = useState({
@@ -66,14 +68,13 @@ export default function WithdrawalList() {
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [dateRange, setDateRange] = useState([]);
+  const [dateRange, setDateRange] = useState(null);
   const paginationData = {
     fetchData: (offset, limit) => {
-      // Convert date range to ISO strings if available
-      const timeStartIso = dateRange[0]
+      const timeStartIso = dateRange
         ? new Date(dateRange[0]).toISOString().replace(/\.\d+Z$/, "")
         : null;
-      const timeEndIso = dateRange[1]
+      const timeEndIso = dateRange
         ? new Date(dateRange[1]).toISOString().replace(/\.\d+Z$/, "")
         : null;
 
@@ -87,6 +88,7 @@ export default function WithdrawalList() {
     },
     count,
     pageIndex,
+    name: "withdrawalDetail"
   };
 
   const table = useReactTable({
@@ -106,24 +108,27 @@ export default function WithdrawalList() {
       viewType,
     },
     meta: {
+      dateRange,
+      searchTerm,
       handleReload: () => {
         setSearchTerm("");
-        setDateRange([]);
-        paginationData.fetchData(0, 20);
+        setDateRange(null);
+        withdraw({
+          offSet: 0,
+          limit: 20,
+          searchKey: "",
+          timeStartIso: "",
+          timeEndIso: "",
+          siteId: "",
+        });
       },
-
       handleSearch: (value) => {
         setSearchTerm(value);
         // Reset to first page when searching
         paginationData.fetchData(0, 20);
       },
       handleDateFilter: (dates) => {
-        // Format dates to ISO string without milliseconds
-        const formattedDates = dates?.map((date) =>
-          date ? new Date(date).toISOString().replace(/\.\d+Z$/, "") : null,
-        );
-        setDateRange(formattedDates);
-        paginationData.fetchData(0, 20);
+        setDateRange(dates);
       },
       updateData: (rowIndex, columnId, value) => {
         // Skip page index reset until after next rerender
@@ -196,6 +201,14 @@ export default function WithdrawalList() {
     }
   }, [list]);
 
+  useEffect(() => {
+    // This will run after dateRange changes
+    if (dateRange !== null) {
+      // Add any condition you need
+      paginationData.fetchData(0, 20);
+    }
+  }, [dateRange]); // Only run when dateRange changes
+
   return (
     <Page title="출금 내역">
       <div className="transition-content w-full py-5">
@@ -224,12 +237,16 @@ export default function WithdrawalList() {
                 tableSettings.enableFullScreen && "overflow-hidden",
               )}
             >
-              {viewType === "list" &&
+              {isLoading ? (
+                <TableSpinner />
+              ) : (
+                viewType === "list" &&
                 (rows.length === 0 ? (
                   <NoData message="No withdrawal data found." />
                 ) : (
                   <ListView table={table} flexRender={flexRender} rows={rows} />
-                ))}
+                ))
+              )}
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 

@@ -1,5 +1,5 @@
 // Import Dependencies
-import {Portal} from "@headlessui/react";
+import { Portal } from "@headlessui/react";
 import { clsx } from "clsx";
 
 // Local Imports
@@ -9,8 +9,6 @@ import { useThemeContext } from "app/contexts/theme/context";
 import { useDidUpdate } from "hooks";
 import { Header } from "./Header";
 import { Menu } from "./Menu";
-
-
 
 // ----------------------------------------------------------------------
 
@@ -31,17 +29,34 @@ export function Sidebar() {
         "sidebar-panel",
         cardSkin === "shadow"
           ? "shadow-soft dark:shadow-dark-900/60"
-          : "dark:border-dark-600/80 ltr:border-r rtl:border-l border-gray-200",
+          : "border-gray-200 dark:border-dark-600/80 ltr:border-r rtl:border-l",
       )}
     >
       <div
         className={clsx(
-          "flex h-full grow flex-col bg-white",
+          "flex h-full grow flex-col justify-between bg-white pb-4",
           cardSkin === "shadow" ? "dark:bg-dark-750" : "dark:bg-dark-900",
         )}
       >
-        <Header />
-        <Menu />
+        <div>
+          <Header />
+          <Menu />
+        </div>
+
+        <div className="flex flex-col items-center justify-left">
+          {" "}
+          <p style={{ fontSize: "14px" }}>
+            {typeof __BUILD_DATE__ !== "undefined"
+              ? __BUILD_DATE__
+              : "Build date not available"}
+          </p>
+          <p style={{ fontSize: "14px" }}>
+            Version{" "}
+            {typeof __VERSION__ !== "undefined"
+              ? __VERSION__
+              : "Version not available"}
+          </p>
+        </div>
       </div>
 
       {lgAndDown && isSidebarExpanded && (

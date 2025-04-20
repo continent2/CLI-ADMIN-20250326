@@ -28,6 +28,12 @@ const reducerHandlers = {
       user,
     };
   },
+  SITE_REQUEST: (state) => {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  },
 
   SITE_SUCCESS: (state, action) => {
     const { list, count, siteList } = action.payload;
@@ -117,9 +123,9 @@ export function SiteProvider({ children }) {
     timeEndIso,
     siteId,
   }) => {
-    // dispatch({
-    //   type: "LOGIN_REQUEST",
-    // });
+    dispatch({
+      type: "SITE_REQUEST",
+    });
 
     try {
       const token = localStorage.getItem("authToken");

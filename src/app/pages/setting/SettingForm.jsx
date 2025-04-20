@@ -178,7 +178,6 @@ export default function SettingForm() {
 
   const onSubmitPassword = async (data) => {
     const userPwd = localStorage.getItem("pw");
-    console.log("test");
     if (userPwd === data.existingPassword) {
       try {
         const response = await axios.post(
@@ -524,6 +523,21 @@ export default function SettingForm() {
                       );
                     }}
                   />
+
+                  {/*Action buttons*/}
+                  <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
+                    <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
+                      취소
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="w-[250px] min-w-[7rem] text-base font-medium"
+                      color="primary"
+                      disabled={!registerAddressIsValid}
+                    >
+                      확인
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

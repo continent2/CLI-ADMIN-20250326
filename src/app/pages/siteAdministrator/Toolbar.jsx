@@ -46,17 +46,19 @@ export function Toolbar({ table }) {
           >
             <SearchInput
               onSearch={(value) => table.options?.meta.handleSearch(value)}
+              value={table.options.meta.searchTerm}
             />
             {table.getColumn("등록일") && (
               <DateFilter
                 title="기간"
                 config={{
-                  maxDate: new Date().fp_incr(1),
+                  //  maxDate: new Date().fp_incr(1),
                   mode: "range",
                 }}
                 onDateFilter={(dates) =>
                   table.options.meta.handleDateFilter(dates)
                 }
+                value={table.options.meta.dateRange}
               />
             )}
             <TableConfig table={table} />
@@ -97,17 +99,19 @@ export function Toolbar({ table }) {
           <div className="flex shrink-0 justify-end space-x-2 rtl:space-x-reverse">
             <SearchInput
               onSearch={(value) => table.options.meta.handleSearch(value)}
+              value={table.options.meta.searchTerm}
             />
             {table.getColumn("등록일") && (
               <DateFilter
                 title="기간"
                 config={{
-                  maxDate: new Date().fp_incr(1),
+                  //  maxDate: new Date().fp_incr(1),
                   mode: "range",
                 }}
                 onDateFilter={(dates) =>
                   table.options.meta.handleDateFilter(dates)
                 }
+                value={table.options.meta.dateRange}
               />
             )}
             <TableConfig table={table} />
@@ -118,18 +122,16 @@ export function Toolbar({ table }) {
   );
 }
 
-function SearchInput({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState("");
-
+function SearchInput({ onSearch, value }) {
   return (
     <Input
-      value={searchTerm}
+      value={value}
       onChange={(e) => {
-        setSearchTerm(e.target.value);
+        onSearch(e.target.value);
       }}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          onSearch(searchTerm); // Trigger search only on Enter key
+          onSearch(e.target.value); // Trigger search only on Enter key
         }
       }}
       prefix={<MagnifyingGlassIcon className="size-4" />}

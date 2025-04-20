@@ -30,6 +30,13 @@ const reducerHandlers = {
     };
   },
 
+  MEMBER_REQUEST: (state) => {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  },
+
   MEMBER_SUCCESS: (state, action) => {
     const { list, siteList, count } = action.payload;
     return {
@@ -118,9 +125,9 @@ export function MemberProvider({ children }) {
     timeEndIso,
     siteId,
   }) => {
-    // dispatch({
-    //   type: "LOGIN_REQUEST",
-    // });
+    dispatch({
+      type: "MEMBER_REQUEST",
+    });
 
     try {
       const token = localStorage.getItem("authToken");

@@ -65,7 +65,7 @@ export default function Site() {
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [dateRange, setDateRange] = useState([]);
+  const [dateRange, setDateRange] = useState(null);
   const paginationData = {
     fetchData: (offset, limit) => {
       // Convert date range to ISO strings if available
@@ -111,12 +111,7 @@ export default function Site() {
         paginationData.fetchData(0, 20);
       },
       handleDateFilter: (dates) => {
-        // Format dates to ISO string without milliseconds
-        const formattedDates = dates?.map((date) =>
-          date ? new Date(date).toISOString().replace(/\.\d+Z$/, "") : null,
-        );
-        setDateRange(formattedDates);
-        paginationData.fetchData(0, 20);
+        setDateRange(dates);
       },
       updateData: (rowIndex, columnId, value) => {
         // Skip page index reset until after next rerender
@@ -188,6 +183,14 @@ export default function Site() {
       setSite(list);
     }
   }, [list]);
+
+  useEffect(() => {
+    // This will run after dateRange changes
+    if (dateRange !== null) {
+      // Add any condition you need
+      paginationData.fetchData(0, 20);
+    }
+  }, [dateRange]); // Only run when dateRange changes
 
   return (
     <Page title="사이트">

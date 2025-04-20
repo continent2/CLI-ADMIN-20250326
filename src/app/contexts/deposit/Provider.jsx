@@ -30,7 +30,7 @@ const reducerHandlers = {
     };
   },
 
-  LOGIN_REQUEST: (state) => {
+  DEPOSIT_REQUEST: (state) => {
     return {
       ...state,
       isLoading: true,
@@ -117,83 +117,62 @@ export function DepositProvider({ children }) {
     init();
   }, []);
 
-  const deposits = async ({
-    offSet,
-    limit,
-    searchKey,
-    timeStartIso,
-    timeEndIso,
-    siteId,
-  }) => {
-    // dispatch({
-    //   type: "LOGIN_REQUEST",
-    // });
+  // Update your deposits function to properly handle loading state
+const deposits = async ({
+  offSet,
+  limit,
+  searchKey,
+  timeStartIso,
+  timeEndIso,
+  siteId,
+}) => {
+  dispatch({ type: "DEPOSIT_REQUEST" }); // Set loading state
 
-    try {
-      const token = localStorage.getItem("authToken");
+  try {
+    const token = localStorage.getItem("authToken");
+    const params = {};
 
-      // Build query parameters
-      const params = {};
+    if (searchKey) params.searchkey = searchKey;
+    if (timeStartIso) params.timestartiso = timeStartIso;
+    if (timeEndIso) params.timeendiso = timeEndIso;
+    if (siteId) params.siteid = siteId;
 
-      if (searchKey) {
-        params.searchkey = searchKey;
-      }
-
-      if (timeStartIso) {
-        params.timestartiso = timeStartIso;
-      }
-
-      if (timeEndIso) {
-        params.timeendiso = timeEndIso;
-      }
-
-      if (siteId) {
-        params.siteid = siteId;
-      }
-      const response = await axios.get(
+    // Use Promise.all for parallel requests
+    const [depositResponse, siteResponse] = await Promise.all([
+      axios.get(
         `/query/list/custom/deposit/_/_/id/DESC/${offSet}/${limit}`,
         {
-          headers: {
-            Authorization: token,
-          },
-          params, // Add the query parameters here
-        },
-      );
-
-      const site_response = await axios.get(
+          headers: { Authorization: token },
+          params,
+        }
+      ),
+      axios.get(
         "/query/list/plain/site/_/_/name/ASC/0/100",
         {
-          headers: {
-            Authorization: token,
-          },
-        },
-      );
+          headers: { Authorization: token },
+        }
+      ),
+    ]);
 
-      const { list, count } = response.data;
-      const { list: siteList } = site_response.data;
-
-      // if (!isString(authToken) && !isObject(user)) {
-      //   throw new Error("Response is not vallid");
-      // }
-      // setSession(authToken);
-      dispatch({
-        type: "DEPOSIT_SUCCESS",
-        payload: {
-          list,
-          count,
-          siteList,
-        },
-      });
-    } catch (err) {
-      dispatch({
-        type: "DEPOSIT_ERROR",
-        payload: {
-          errorMessage: err,
-        },
-      });
-    }
-  };
-
+    dispatch({
+      type: "DEPOSIT_SUCCESS",
+      payload: {
+        list: depositResponse.data.list,
+        count: depositResponse.data.count,
+        siteList: siteResponse.data.list,
+      },
+    });
+  } catch (err) {
+    dispatch({
+      type: "DEPOSIT_ERROR",
+      payload: {
+        errorMessage: err.response?.data?.message || err.message,
+      },
+    });
+    // Optionally re-throw if you need to handle errors in components
+    throw err;
+  }
+};
   if (!children) {
     return null;
   }

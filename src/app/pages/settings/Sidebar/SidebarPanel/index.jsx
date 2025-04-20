@@ -35,7 +35,7 @@ export function SidebarPanel() {
           cardSkin === "shadow" ? "dark:bg-dark-750" : "dark:bg-dark-900",
         )}
       >
-        <Header />
+        {/* <Header /> */}
         <ScrollShadow className="grow">
           <ul className="space-y-1.5 px-2 font-medium" data-menu-list>
             {settings.childs.map((item) => (

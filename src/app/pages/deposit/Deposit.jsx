@@ -28,17 +28,18 @@ import { GridView } from "./GridView";
 import { useDepositContext } from "../../contexts/deposit/context.js";
 import { useSearchParams } from "react-router";
 import NoData from "components/shared/NoData";
+import TableSpinner from "components/shared/TableSpinner";
 
 // ----------------------------------------------------------------------
 
 export default function Deposit() {
-  const { deposits, count, list } = useDepositContext();
+  const { deposits, count, list, isLoading } = useDepositContext();
   const [users, setUsers] = useState([...usersList]);
   const [deposit, setDeposit] = useState([]);
 
   // State for filters
   const [searchTerm, setSearchTerm] = useState("");
-  const [dateRange, setDateRange] = useState([]);
+  const [dateRange, setDateRange] = useState(null);
   const [siteId, setSiteId] = useState("");
 
   const [tableSettings, setTableSettings] = useState({
@@ -51,13 +52,13 @@ export default function Deposit() {
 
   const paginationData = {
     fetchData: (offset, limit) => {
-      // Convert date range to ISO strings if available
-      const timeStartIso = dateRange[0]
+      const timeStartIso = dateRange
         ? new Date(dateRange[0]).toISOString().replace(/\.\d+Z$/, "")
         : null;
-      const timeEndIso = dateRange[1]
+      const timeEndIso = dateRange
         ? new Date(dateRange[1]).toISOString().replace(/\.\d+Z$/, "")
         : null;
+
       deposits({
         offSet: offset,
         limit,
@@ -71,11 +72,6 @@ export default function Deposit() {
     pageIndex,
     name: "deposit",
   };
-  useEffect(() => {
-    // if (siteId) {
-    paginationData.fetchData(0, 20);
-    // }
-  }, [siteId]);
 
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -95,6 +91,7 @@ export default function Deposit() {
     "column-pinning-users",
     {},
   );
+
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
   const table = useReactTable({
     data: deposit,
@@ -119,17 +116,14 @@ export default function Deposit() {
         paginationData.fetchData(0, 20);
       },
       handleDateFilter: (dates) => {
-        // Format dates to ISO string without milliseconds
-        const formattedDates = dates?.map((date) =>
-          date ? new Date(date).toISOString().replace(/\.\d+Z$/, "") : null,
-        );
-        setDateRange(formattedDates);
-        paginationData.fetchData(0, 20);
+        setDateRange(dates);
       },
       handleSiteChange: (id) => {
         setSiteId(id);
       },
       siteId,
+      dateRange,
+      searchTerm,
       updateData: (rowIndex, columnId, value) => {
         // Skip page index reset until after next rerender
         skipAutoResetPageIndex();
@@ -147,9 +141,16 @@ export default function Deposit() {
       },
       handleReload: () => {
         setSearchTerm("");
-        setDateRange([]);
+        setDateRange(null);
         setSiteId("");
-        paginationData.fetchData(0, 20);
+        deposits({
+          offSet: 0,
+          limit: 20,
+          searchKey: "",
+          timeStartIso: "",
+          timeEndIso: "",
+          siteId: "",
+        });
       },
       deleteRow: (row) => {
         // Skip page index reset until after next rerender
@@ -208,6 +209,14 @@ export default function Deposit() {
     // }
   }, [list]);
 
+  useEffect(() => {
+    // This will run after dateRange changes
+    if (dateRange !== null) {
+      // Add any condition you need
+      paginationData.fetchData(0, 20);
+    }
+  }, [dateRange]); // Only run when dateRange changes
+
   return (
     <Page title="입금 내역">
       <div className="transition-content w-full py-5">
@@ -236,12 +245,16 @@ export default function Deposit() {
                 tableSettings.enableFullScreen && "overflow-hidden",
               )}
             >
-              {viewType === "list" &&
-                (rows.length === 0 ? (
+              {isLoading ? (
+                <TableSpinner />
+              ) : (
+                viewType === "list" &&
+                (rows?.length === 0 ? (
                   <NoData message="No deposit data found." />
                 ) : (
                   <ListView table={table} flexRender={flexRender} rows={rows} />
-                ))}
+                ))
+              )}
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 

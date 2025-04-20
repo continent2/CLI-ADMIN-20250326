@@ -42,9 +42,9 @@ export default function WithdrawalRequestForm() {
     agencyAccountInfo,
     withdrawInfo,
   } = useAppDataContext();
-  const [selectedOption, setSelectedOption] = useState();
-  const [selectedAgencyBank, setSelectedAgencyBank] = useState();
-
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedAgencyBank, setSelectedAgencyBank] = useState("");
+  
   const bankOptions = banks?.map((bank) => ({
     value: bank, // store the whole bank object
     label: (
@@ -181,11 +181,11 @@ export default function WithdrawalRequestForm() {
         setValue("amount", formatNumberWithCommas(withdraw.amount_in_quote));
 
         //sets the bankName byDefault first value
-        if (bankOptions?.length > 0) {
-          const firstBank = bankOptions[0];
-          setSelectedOption(firstBank); // for ReactSelect UI
-          setValue("bankName", firstBank.value.banknameen); // for your form schema
-        }
+        // if (bankOptions?.length > 0) {
+        //   const firstBank = bankOptions[0];
+        //   setSelectedOption(firstBank); // for ReactSelect UI
+        //   setValue("bankName", firstBank.value.banknameen); // for your form schema
+        // }
       }
       setValue("quoteSignature", withdraw.quotesignature);
       setValue("isWithdrawal", withdraw.iswithdrawable ? "가능" : "불가능");

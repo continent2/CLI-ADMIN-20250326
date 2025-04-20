@@ -21,48 +21,133 @@ import { Button, Card, Box } from "components/ui";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 
 // Chart Configuration
-const chartConfig = {
+const baseChartConfig = {
   chart: {
     parentHeightOffset: 0,
-    toolbar: { show: false },
+    toolbar: {
+      show: false,
+      tools: {
+        zoom: true,
+        zoomin: true,
+        zoomout: true,
+        pan: true,
+        reset: true,
+      },
+    },
+    zoom: {
+      enabled: true,
+      type: "x",
+      // autoScaleYaxis: true
+    },
   },
   dataLabels: { enabled: false },
   stroke: { curve: "smooth", width: 3 },
-  grid: { padding: { left: 0, right: 0, top: -28, bottom: 0 } },
-  xaxis: {
-    show: false,
-    axisBorder: { show: false },
-    axisTicks: { show: false },
-    labels: { show: false },
-  },
-  yaxis: {
-    show: false,
-    axisBorder: { show: false },
-    axisTicks: { show: false },
-    labels: { show: false },
+  tooltip: {
+    enabled: true,
+    x: {
+      formatter: function (val, opts) {
+        console.log(opts, val);
+        return `${val}h`;
+      },
+    },
+    y: {
+      formatter: function (val) {
+        return "$" + val.toLocaleString();
+      },
+    },
+    grid: { padding: { left: 0, right: 0, top: -28, bottom: 0 } },
+    yaxis: {
+      show: false,
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+      labels: { show: false },
+    },
   },
 };
 
 // Deposit Card Component
-function DepositCard({ data, title, timeUnit }) {
-  const chartPoints = data?.map((item) => item.sumamount / 1000) || [];
-  const totalAmount = data?.reduce((sum, item) => sum + item.sumamount, 0) || 0;
+function DepositCard({ data, title, timeUnit, isHourly }) {
+  const chartPoints = data?.map((item) => item.sumamount) || [];
+  const labels =
+    data?.map((item, index) =>
+      isHourly
+        ? parseInt(item.hourvalue) % 2 === 0
+          ? `${item.hourvalue}h`
+          : ""
+        : index % 2 == 0
+          ? new Date(item.datevalue).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })
+          : "", 
+    ) || [];
+
+  console.log("dd", data);
 
   const trend =
-    chartPoints?.length > 1
-      ? ((chartPoints[chartPoints?.length - 1] - chartPoints[0]) /
-        (chartPoints[0] || 1)) *
-      100
+    chartPoints.length > 1
+      ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) /
+          (chartPoints[0] || 1)) *
+        100
       : 0;
 
+  const chartConfig = {
+    ...baseChartConfig,
+    xaxis: {
+      ...baseChartConfig.xaxis,
+      categories: labels,
+      labels: {
+        ...baseChartConfig?.xaxis?.labels,
+        show: true,
+        rotate: -45,
+        style: {
+          colors: "#6B7280",
+          fontSize: "10px",
+        },
+      },
+    },
+    tooltip: {
+      enabled: true,
+      x: {
+        formatter: function (val, opts) {
+          if (isHourly) {
+            return `${val}h`;
+          } else {
+            // Get the original data point
+            const dataPoint = data[opts.dataPointIndex];
+            console.log("data poi", dataPoint);
+            // Format the YYYYMMDD date properly
+            const dateStr = dataPoint.datevalue;
+            const formattedDate = new Date(dateStr).toLocaleDateString(
+              "en-US",
+              {
+                month: "short",
+                day: "numeric",
+                weekday: "short",
+              },
+            );
+            return formattedDate; // e.g. "Mon, Apr 5, 2024"
+          }
+        },
+      },
+    },
+    yaxis: {
+      show: false,
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+      labels: { show: false },
+    },
+  };
+
   return (
-    <Box className="flex w-52 shrink-0 flex-col">
+    <Box className="flex w-full shrink-0 flex-col sm:w-52">
       <div className="flex items-center gap-2">
         <div
-          className={`size-6 rounded-full ${trend >= 0
+          className={`size-6 rounded-full ${
+            trend >= 0
               ? "bg-green-100 dark:bg-green-900"
               : "bg-red-100 dark:bg-red-900"
-            }`}
+          }`}
         />
         <div>
           <span>{title}</span>
@@ -71,66 +156,107 @@ function DepositCard({ data, title, timeUnit }) {
           </span>
         </div>
       </div>
-      <div className="mt-2.5 flex w-full justify-between rounded-lg bg-gray-50 py-3 dark:bg-surface-3 ltr:pr-3 rtl:pl-3">
-        <div className="flex w-full flex-col">
-          <div className="ax-transparent-gridline">
-            <Chart
-              options={{ ...chartConfig, colors: ["#3B82F6"] }}
-              series={[{ name: "Deposits", data: chartPoints }]}
-              height="60"
-              width="140"
-              type="line"
-            />
-          </div>
-          {/* <p className="relative -top-3 truncate text-center text-xs font-medium text-gray-800 dark:text-dark-100">
-            ${formatNumberWithCommas(totalAmount)}
-          </p> */}
+      <div className="mt-2.5 flex flex-col rounded-lg bg-gray-50 p-3 dark:bg-surface-3">
+        <div className="ax-transparent-gridline">
+          <Chart
+            options={chartConfig}
+            series={[
+              {
+                name: "Deposits",
+                data: chartPoints,
+              },
+            ]}
+            height={180}
+            type="line"
+          />
         </div>
-        <div className="flex flex-col items-center">
+        {/* <div className="mt-3 flex items-center justify-between">
           <div
             className={clsx(
               `this:${trend > 0 ? "success" : "error"}`,
-              "mt-1 flex items-center gap-0.5 text-xs text-this dark:text-this-lighter",
+              "flex items-center gap-0.5 text-sm font-medium text-this dark:text-this-lighter",
             )}
           >
             {trend > 0 ? (
-              <ArrowUpIcon className="size-3.5" />
+              <ArrowUpIcon className="size-4" />
             ) : (
-              <ArrowDownIcon className="size-3.5" />
+              <ArrowDownIcon className="size-4" />
             )}
-            <span>{Math.abs(trend)?.toFixed(1)}%</span>
+            <span>{Math.abs(trend).toFixed(1)}%</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </Box>
   );
 }
 
-function UserRanking({ data, title }) {
-  const chartPoints = data?.map((item) => item.sumamount) || [];
+// Main Watchlist Component
+export function Watchlist({ data }) {
+  // Process both data types
+  const hourlyData = data?.stat_sum_deposit_by_hour[0] || [];
+  const dailyData = data?.stat_sum_deposit_by_date[0] || [];
+  const top3 = [
+    ...new Map(
+      data?.user_rank?.flat()?.map((user) => [user.userid, user]) ?? [],
+    ).values(),
+  ]
+    .sort((a, b) => b?.sumamount - a?.sumamount)
+    .slice(0, 3);
+
+  // Format date strings (YYYYMMDD -> MM/DD)
+  const formattedDailyData = dailyData.map((item) => ({
+    ...item,
+    datevalue: `${item.datevalue.slice(4, 6)}/${item.datevalue.slice(6, 8)}`,
+  }));
 
   return (
-    <Box className="flex w-72 shrink-0 flex-col">
-      <div className="flex items-center gap-2">
-        <div>
-          <span>{title}</span>
-          {/* <span className="ml-2 text-xs uppercase text-gray-400 dark:text-dark-300"> */}
-          {/*   {timeUnit} */}
-          {/* </span> */}
+    <Card>
+      <div className="flex items-center justify-between px-4 py-3 sm:px-5">
+        <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
+          예금통계
+        </h2>
+        {/* <ActionMenu /> */}
+      </div>
+
+      <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
+        <DepositCard
+          data={hourlyData}
+          title="시간당 입금"
+          timeUnit="24시간"
+          isHourly={true}
+        />
+        <DepositCard
+          data={formattedDailyData}
+          title="일일 예금"
+          timeUnit="날짜"
+          isHourly={false}
+        />
+
+        <div className="flex flex-col gap-2">
+          <h2 className="w-28">상위 3개 예금주</h2>
+          <ol className="space-y-3">
+            {top3?.map((user, index) => (
+              <li key={index} className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-gray-700 dark:text-dark-100">
+                    #{index + 1}
+                  </span>
+                  <span className="text-gray-600 dark:text-dark-200">
+                    {user.username}
+                  </span>
+                  <span className="text-gray-600 dark:text-dark-200">
+                    {user.externaluserid}
+                  </span>
+                </div>
+                <span className="font-medium text-green-600 dark:text-green-400">
+                  ${formatNumberWithCommas(user?.sumamount?.toFixed(0))}
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
-      <div className="mt-2.5 flex justify-between rounded-lg bg-gray-50 py-3 dark:bg-surface-3 ltr:pr-3 rtl:pl-3">
-        <div className="ax-transparent-gridline">
-          <Chart
-            options={{ ...chartConfig, colors: ["#3B82F6"] }}
-            series={[{ name: "Deposits", data: chartPoints }]}
-            height="60"
-            width="120"
-            type="line"
-          />
-        </div>
-      </div>
-    </Box>
+    </Card>
   );
 }
 
@@ -165,7 +291,7 @@ function ActionMenu() {
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-none transition-colors",
                   focus &&
-                  "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
                 <span>데이터 새로 고침</span>
@@ -178,7 +304,7 @@ function ActionMenu() {
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-none transition-colors",
                   focus &&
-                  "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
                 <span>내보내다</span>
@@ -190,71 +316,6 @@ function ActionMenu() {
     </Menu>
   );
 }
-
-// Main Watchlist Component
-export function Watchlist({ data }) {
-  // Process both data types
-  const hourlyData = data?.stat_sum_deposit_by_hour?.flat() || [];
-  const dailyData = data?.stat_sum_deposit_by_date?.flat() || [];
-  const top3 = [...new Map(
-    data?.user_rank
-      ?.flat()
-      ?.map(user => [user.userid, user])
-    ?? []
-  ).values()]
-    .sort((a, b) => b?.sumamount - a?.sumamount)
-    .slice(0, 3);
-
-  // Format date strings (YYYYMMDD -> MM/DD)
-  const formattedDailyData = dailyData.map((item) => ({
-    ...item,
-    datevalue: `${item.datevalue.slice(4, 6)}/${item.datevalue.slice(6, 8)}`,
-  }));
-  return (
-    <Card>
-      <div className="flex items-center justify-between px-4 py-3 sm:px-5">
-        <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          예금통계
-        </h2>
-        {/* <ActionMenu /> */}
-      </div>
-
-      <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
-        <DepositCard data={hourlyData} title="시간당 입금" timeUnit="24시간" />
-        <DepositCard
-          data={formattedDailyData}
-          title="일일 예금"
-          timeUnit="날짜"
-        />
-
-        <div className="flex flex-col gap-2">
-          <h2 className="w-28">상위 3개 예금주</h2>
-          <ol className="space-y-3">
-            {top3?.map((user, index) => (
-              <li key={index} className="flex items-center gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-gray-700 dark:text-dark-100">
-                    #{index + 1}
-                  </span>
-                  <span className="text-gray-600 dark:text-dark-200">
-                    {user.username}
-                  </span>
-                  <span className="text-gray-600 dark:text-dark-200">
-                    {user.externaluserid}
-                  </span>
-                </div>
-                <span className="font-medium text-green-600 dark:text-green-400">
-                  ${formatNumberWithCommas(user?.sumamount?.toFixed(0))}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
-    </Card>
-  );
-}
-
 // PropTypes
 DepositCard.propTypes = {
   data: PropTypes.arrayOf(

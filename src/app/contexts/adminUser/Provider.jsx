@@ -29,6 +29,13 @@ const reducerHandlers = {
     };
   },
 
+  USERS_REQUEST: (state) => {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  },
+
   USERS_SUCCESS: (state, action) => {
     const { list, count, siteList } = action.payload;
     return {
@@ -117,9 +124,9 @@ export function AdminUserProvider({ children }) {
     timeEndIso,
     siteId,
   }) => {
-    // dispatch({
-    //   type: "LOGIN_REQUEST",
-    // });
+    dispatch({
+      type: "USERS_REQUEST",
+    });
 
     try {
       const token = localStorage.getItem("authToken");

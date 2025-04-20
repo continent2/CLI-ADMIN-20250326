@@ -21,6 +21,7 @@ import { Button } from "components/ui";
 import { useLocaleContext } from "app/contexts/locale/context";
 import { DatePicker } from "components/shared/form/Datepicker";
 import { ResponsiveFilter } from "components/shared/table/ResponsiveFilter";
+import { DateFilter } from "components/shared/table/DateFilter";
 
 // ----------------------------------------------------------------------
 
@@ -56,17 +57,20 @@ export function Toolbar({ table }) {
           >
             <SearchInput
               onSearch={(value) => table.options?.meta.handleSearch(value)}
+              value={table.options.meta.searchTerm}
             />
             {table.getColumn("생성시간") && (
               <DateFilter
                 title="기간"
                 config={{
-                  maxDate: new Date().fp_incr(1),
+                  // maxDate: new Date().fp_incr(1),
                   mode: "range",
                 }}
-                onDateFilter={(dates) =>
-                  table.options.meta.handleDateFilter(dates)
-                }
+                onDateFilter={(dates) => {
+
+                  return table.options.meta.handleDateFilter(dates);
+                }}
+                value={table.options.meta.dateRange}
               />
             )}{" "}
             {/* <TableConfig table={table} /> */}
@@ -107,17 +111,19 @@ export function Toolbar({ table }) {
           <div className="flex shrink-0 justify-end space-x-2 rtl:space-x-reverse">
             <SearchInput
               onSearch={(value) => table.options.meta.handleSearch(value)}
+              value={table.options.meta.searchTerm}
             />
             {table.getColumn("생성시간") && (
               <DateFilter
                 title="기간"
                 config={{
-                  maxDate: new Date().fp_incr(1),
+                  //maxDate: new Date().fp_incr(1),
                   mode: "range",
                 }}
                 onDateFilter={(dates) => {
                   return table.options.meta.handleDateFilter(dates);
                 }}
+                value={table.options.meta.dateRange}
               />
             )}{" "}
             <TableConfig table={table} />
@@ -128,18 +134,11 @@ export function Toolbar({ table }) {
   );
 }
 
-function SearchInput({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState("");
-
+function SearchInput({ onSearch, value }) {
   return (
     <Input
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)} // Only update state, don't trigger search
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          onSearch(searchTerm); // Trigger search only on Enter key
-        }
-      }}
+      value={value}
+      onChange={(e) => onSearch(e.target.value)} // Only update state, don't trigger search
       prefix={<MagnifyingGlassIcon className="size-4" />}
       classNames={{
         root: "shrink-0",
@@ -160,77 +159,6 @@ function SearchSiteInput() {
       }}
       placeholder="사이트 검색"
     />
-  );
-}
-
-function DateFilter({ title, config, onDateFilter }) {
-  const [selectedValues, setSelectedValues] = useState(null);
-  const { locale } = useLocaleContext();
-  const { smAndDown } = useBreakpointsContext();
-
-  return (
-    <ResponsiveFilter
-      buttonContent={
-        <>
-          <CalendarIcon className="size-4" />
-          <span className="text-sm"> {title}</span>
-
-          {selectedValues && (
-            <>
-              <div className="h-full w-px bg-gray-300 dark:bg-dark-450" />
-              <span className="text-sm">
-                {dayjs(selectedValues[0]).locale(locale).format("DD MMM YYYY")}{" "}
-                -{" "}
-                {dayjs(selectedValues[1]).locale(locale).format("DD MMM YYYY")}
-              </span>
-            </>
-          )}
-        </>
-      }
-    >
-      {({ close = () => {} }) => (
-        <>
-          <div
-            className={clsx(
-              "mx-auto flex w-full items-center justify-between",
-              smAndDown
-                ? "mb-2 mt-1 h-10 w-full max-w-xs border-b border-gray-200 py-3 dark:border-dark-500"
-                : "bg-gray-150 px-2.5 py-2 dark:bg-dark-900",
-            )}
-          >
-            <p className="truncate text-start text-base font-medium text-gray-800 dark:text-dark-50 sm:py-1 sm:text-sm">
-              {title}
-            </p>
-            {selectedValues && (
-              <Button
-                onClick={() => onDateFilter(null)}
-                className="h-7 px-3 text-xs"
-              >
-                Clear
-              </Button>
-            )}
-          </div>
-          <div className="max-sm:mx-auto max-sm:[&_.is-calendar]:w-80 max-sm:[&_.is-calendar]:max-w-none">
-            <DatePicker
-              isCalendar
-              value={selectedValues ?? ""}
-              readOnly
-              onChange={(date) => {
-                if (date?.length === 0) {
-                  onDateFilter(null);
-                }
-                if (date?.length === 2) {
-                  // Pass the actual Date objects to be formatted in the handler
-                  onDateFilter([date[0], date[1]]);
-                  close();
-                }
-              }}
-              options={config}
-            />{" "}
-          </div>{" "}
-        </>
-      )}
-    </ResponsiveFilter>
   );
 }
 

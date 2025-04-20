@@ -51,7 +51,7 @@ export function Toolbar({ table }) {
                 column={table.getColumn("등록일")}
                 title="Date Range"
                 config={{
-                  maxDate: new Date().fp_incr(1),
+                  //  maxDate: new Date().fp_incr(1),
                   mode: "range",
                 }}
               />
@@ -104,7 +104,7 @@ export function Toolbar({ table }) {
                 column={table.getColumn("등록일")}
                 title="Date Range"
                 config={{
-                  maxDate: new Date().fp_incr(1),
+                  //  maxDate: new Date().fp_incr(1),
                   mode: "range",
                 }}
               />

@@ -28,12 +28,13 @@ import { GridView } from "./GridView";
 import { useSiteContext } from "../../contexts/site/context.js";
 import { useSearchParams } from "react-router";
 import NoData from "components/shared/NoData";
+import TableSpinner from "components/shared/TableSpinner";
 
 // ----------------------------------------------------------------------
 
 export default function SiteList() {
   const [users, setUsers] = useState([...usersList]);
-  const { sites, count, list } = useSiteContext();
+  const { sites, count, list, isLoading } = useSiteContext();
   const [site, setSite] = useState([]);
 
   const [tableSettings, setTableSettings] = useState({
@@ -67,14 +68,13 @@ export default function SiteList() {
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [dateRange, setDateRange] = useState([]);
+  const [dateRange, setDateRange] = useState(null);
   const paginationData = {
     fetchData: (offset, limit) => {
-      // Convert date range to ISO strings if available
-      const timeStartIso = dateRange[0]
+      const timeStartIso = dateRange
         ? new Date(dateRange[0]).toISOString().replace(/\.\d+Z$/, "")
         : null;
-      const timeEndIso = dateRange[1]
+      const timeEndIso = dateRange
         ? new Date(dateRange[1]).toISOString().replace(/\.\d+Z$/, "")
         : null;
 
@@ -89,6 +89,7 @@ export default function SiteList() {
     },
     count,
     pageIndex,
+    name: "site"
   };
 
   const table = useReactTable({
@@ -109,11 +110,21 @@ export default function SiteList() {
     },
     meta: {
       siteId,
+      dateRange,
+      searchTerm,
       handleReload: () => {
         setSearchTerm("");
-        setDateRange([]);
+        setDateRange(null);
         setSiteId("");
-        paginationData.fetchData(0, 20);
+
+        sites({
+          offSet: 0,
+          limit: 20,
+          searchKey: "",
+          timeStartIso: "",
+          timeEndIso: "",
+          siteId: "",
+        });
       },
       handleSearch: (value) => {
         setSearchTerm(value);
@@ -121,16 +132,10 @@ export default function SiteList() {
         paginationData.fetchData(0, 20);
       },
       handleDateFilter: (dates) => {
-        // Format dates to ISO string without milliseconds
-        const formattedDates = dates?.map((date) =>
-          date ? new Date(date).toISOString().replace(/\.\d+Z$/, "") : null,
-        );
-        setDateRange(formattedDates);
-        paginationData.fetchData(0, 20);
+        setDateRange(dates);
       },
       handleSiteChange: (id) => {
         setSiteId(id);
-        paginationData.fetchData(0, 20);
       },
       updateData: (rowIndex, columnId, value) => {
         // Skip page index reset until after next rerender
@@ -193,7 +198,7 @@ export default function SiteList() {
   const WrapComponent = viewType === "list" ? Card : Box;
 
   useEffect(() => {
-    sites({ offSet: 0, limit: 20 });
+    paginationData.fetchData(0, 20);
   }, []);
 
   // Update the `deposit` state when `list` changes
@@ -202,11 +207,21 @@ export default function SiteList() {
     setSite(list);
     // }
   }, [list]);
+
   useEffect(() => {
-    // if (siteId) {
-    paginationData.fetchData(0, 20);
-    // }
-  }, [siteId]);
+    // This will run after dateRange changes
+    if (dateRange !== null) {
+      // Add any condition you need
+      paginationData.fetchData(0, 20);
+    }
+  }, [dateRange]); // Only run when dateRange changes
+
+  useEffect(() => {
+      if (siteId) {
+        paginationData.fetchData(0, 20);
+      }
+    }, [siteId]);
+
   return (
     <Page title="사이트">
       <div className="transition-content w-full py-5">
@@ -235,12 +250,16 @@ export default function SiteList() {
                 tableSettings.enableFullScreen && "overflow-hidden",
               )}
             >
-              {viewType === "list" &&
+              {isLoading ? (
+                <TableSpinner />
+              ) : (
+                viewType === "list" &&
                 (rows.length === 0 ? (
                   <NoData message="No site data found." />
                 ) : (
                   <ListView table={table} flexRender={flexRender} rows={rows} />
-                ))}
+                ))
+              )}
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 

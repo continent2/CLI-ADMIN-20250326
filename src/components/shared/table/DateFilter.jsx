@@ -1,5 +1,5 @@
 // Import Dependencies
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CalendarIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import dayjs from "dayjs";
@@ -11,22 +11,43 @@ import { useLocaleContext } from "app/contexts/locale/context";
 import { DatePicker } from "../form/Datepicker";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
 import { ResponsiveFilter } from "./ResponsiveFilter";
-import { useState } from "react";
 
 // ----------------------------------------------------------------------
 
-export function DateFilter({ title, config, onDateFilter }) {
-  const [selectedValues, setSelectedValues] = useState(null);
+export function DateFilter({ title, config, onDateFilter, value, disabled }) {
+  const [selectedValues, setSelectedValues] = useState(value || null);
   const { locale } = useLocaleContext();
   const { smAndDown } = useBreakpointsContext();
+
+  // Sync with external value changes
+  useEffect(() => {
+    console.log(value);
+    setSelectedValues(value || null);
+  }, [value]);
+
+  const handleClear = () => {
+    onDateFilter(null);
+    setSelectedValues(null);
+  };
+
+  const handleDateChange = (date) => {
+    if (!date || date.length === 0) {
+      handleClear();
+      return;
+    }
+
+    if (date.length === 2) {
+      onDateFilter([date[0], date[1]]);
+      setSelectedValues([date[0], date[1]]);
+    }
+  };
 
   return (
     <ResponsiveFilter
       buttonContent={
         <>
           <CalendarIcon className="size-4" />
-          <span className="text-sm"> {title}</span>
-
+          <span className="text-sm">{title}</span>
           {selectedValues && (
             <>
               <div className="h-full w-px bg-gray-300 dark:bg-dark-450" />
@@ -39,8 +60,9 @@ export function DateFilter({ title, config, onDateFilter }) {
           )}
         </>
       }
+      disabled={disabled}
     >
-      {({ close = () => { } }) => (
+      {({ close = () => {} }) => (
         <>
           <div
             className={clsx(
@@ -55,7 +77,10 @@ export function DateFilter({ title, config, onDateFilter }) {
             </p>
             {selectedValues && (
               <Button
-                onClick={() => onDateFilter(null)}
+                onClick={() => {
+                  handleClear();
+                  close();
+                }}
                 className="h-7 px-3 text-xs"
               >
                 Clear
@@ -68,20 +93,28 @@ export function DateFilter({ title, config, onDateFilter }) {
               value={selectedValues ?? ""}
               readOnly
               onChange={(date) => {
-                if (date?.length === 0) {
-                  onDateFilter(null);
-                }
-                if (date?.length === 2) {
-                  // Pass the actual Date objects to be formatted in the handler
-                  onDateFilter([date[0], date[1]]);
-                  close();
-                }
+                handleDateChange(date);
+                if (date?.length === 2) close();
               }}
               options={config}
-            />{" "}
-          </div>{" "}
+              disabled={disabled}
+            />
+          </div>
         </>
       )}
     </ResponsiveFilter>
   );
 }
+
+DateFilter.propTypes = {
+  title: PropTypes.string.isRequired,
+  config: PropTypes.object.isRequired,
+  onDateFilter: PropTypes.func.isRequired,
+  value: PropTypes.array,
+  disabled: PropTypes.bool,
+};
+
+DateFilter.defaultProps = {
+  value: null,
+  disabled: false,
+};

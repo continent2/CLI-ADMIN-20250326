@@ -18,6 +18,7 @@ export function Header() {
             <img src={appLogo} alt="app_logo" className="h-[120px]" />
         </Link>
       </div>
+      
       <div className="pt-5 xl:hidden">
         <Button
           onClick={close}

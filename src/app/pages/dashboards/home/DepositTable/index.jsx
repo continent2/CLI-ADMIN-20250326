@@ -33,7 +33,7 @@ const columns = [
   {
     accessorKey: "createdat",
     header: "등록일",
-    cell: DateCell
+    cell: DateCell,
   },
   {
     accessorKey: "site.siteurl",
@@ -61,23 +61,69 @@ const columns = [
       );
     },
   },
+  // {
+  //   accessorKey: "user.externaluserid",
+  //   header: "사용자ID",
+  //   cell: (info) => info.row.original?.["cc"] || "-",
+  // },
   {
     accessorKey: "user.externaluserid",
-    header: "사용자ID",
-    cell: (info) => info.row.original?.["user.externaluserid"] || "-",
-  },
-  {
-    accessorKey: "transfer.amount",
-    header: "수량",
-    cell: (info) => {
-      let amount = formatNumberWithCommas(Number(info.row.original?.["transfer.amount"] || 0)?.toFixed(0));
-      return amount
+    header: () => (
+      <div>
+         사용자 이름<div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+         사용자ID
+      </div>
+    ),
+    cell: ({ row }) => {
+      const userId = row.original?.["user.externaluserid"];
+      const username = row.original?.["user.username"];
+
+      return (
+        <div>
+          <p className="text-gray-500">{username || "N/A"}</p>
+          <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+          <p>{userId || "N/A"}</p>
+        </div>
+      );
     },
   },
+  // {
+  //   accessorKey: "transfer.amount",
+  //   header: "수량",
+  //   cell: (info) => {
+  //     let amount = formatNumberWithCommas(
+  //       Number(info.row.original?.["transfer.amount"] || 0)?.toFixed(0),
+  //     );
+  //     return amount;
+  //   },
+  // },
+  // {
+  //   accessorKey: "transfer.currency",
+  //   header: "단위",
+  //   cell: (info) => info.row.original?.["transfer.currency"] || "-",
+  // },
   {
-    accessorKey: "transfer.currency",
-    header: "단위",
-    cell: (info) => info.row.original?.["transfer.currency"] || "-",
+    accessorKey: "transfer.amount",
+    header: () => (
+      <div>
+        수량 <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+        단위
+      </div>
+    ), // cell: (info) => info.row.original?.["site.siteurl"] || "-",
+    cell: ({ row }) => {
+      const transferAmount = formatNumberWithCommas(
+        Number(row.original?.["transfer.amount"] || 0)?.toFixed(0),
+      ); // Get SiteList URL
+      const currency = row.original?.["transfer.currency"]; // Get SiteList ID
+
+      return (
+        <div>
+          <p>{transferAmount || "N/A"}</p>
+          <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+          <p>{currency || "N/A"}</p>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "transfer.from",
@@ -97,7 +143,7 @@ const columns = [
           }}
         />
       );
-    }
+    },
   },
   {
     accessorKey: "transfer.txhash",
@@ -132,7 +178,7 @@ export function ActivitiesTable() {
   const { dashboardDepositInfo, dashboardDeposit, dashboardDepositCount } =
     useAppDataContext();
   const [depositList, setDepositList] = useState([]);
-
+  
   const [searchParams] = useSearchParams();
   const pageIndex = searchParams.get("page") || 1;
 
@@ -248,9 +294,9 @@ export function ActivitiesTable() {
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
                           </span>
                           <TableSortIcon sorted={header.column.getIsSorted()} />
                         </div>
@@ -272,7 +318,7 @@ export function ActivitiesTable() {
                   className={clsx(
                     "relative border-y border-transparent border-b-gray-200 dark:border-b-dark-500",
                     row.getIsSelected() &&
-                    "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
+                      "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (

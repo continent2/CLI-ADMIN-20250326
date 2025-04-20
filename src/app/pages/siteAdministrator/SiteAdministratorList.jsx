@@ -28,12 +28,13 @@ import { GridView } from "./GridView";
 import { useAdminUserContext } from "../../contexts/adminUser/context.js";
 import { useSearchParams } from "react-router";
 import NoData from "components/shared/NoData";
+import TableSpinner from "components/shared/TableSpinner";
 
 // ----------------------------------------------------------------------
 
 export default function SiteAdministratorList() {
   const [users, count, setUsers] = useState([...usersList]);
-  const { adminUsers, list } = useAdminUserContext();
+  const { adminUsers, list, isLoading } = useAdminUserContext();
   const [adminUser, setadminUser] = useState([]);
   const [siteId, setSiteId] = useState("");
 
@@ -67,14 +68,13 @@ export default function SiteAdministratorList() {
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [dateRange, setDateRange] = useState([]);
+  const [dateRange, setDateRange] = useState(null);
   const paginationData = {
     fetchData: (offset, limit) => {
-      // Convert date range to ISO strings if available
-      const timeStartIso = dateRange[0]
+      const timeStartIso = dateRange
         ? new Date(dateRange[0]).toISOString().replace(/\.\d+Z$/, "")
         : null;
-      const timeEndIso = dateRange[1]
+      const timeEndIso = dateRange
         ? new Date(dateRange[1]).toISOString().replace(/\.\d+Z$/, "")
         : null;
 
@@ -89,6 +89,7 @@ export default function SiteAdministratorList() {
     },
     count,
     pageIndex,
+    name: "siteAdministrator"
   };
 
   const table = useReactTable({
@@ -109,29 +110,31 @@ export default function SiteAdministratorList() {
     },
     meta: {
       siteId,
+      searchTerm,
+      dateRange,
       handleReload: () => {
         setSearchTerm("");
-        setDateRange([]);
+        setDateRange(null);
         setSiteId("");
-        paginationData.fetchData(0, 20);
+        adminUsers({
+          offSet: 0,
+          limit: 20,
+          searchKey: "",
+          timeStartIso: "",
+          timeEndIso: "",
+          siteId: "",
+        });
       },
-
       handleSearch: (value) => {
         setSearchTerm(value);
         // Reset to first page when searching
         paginationData.fetchData(0, 20);
       },
       handleDateFilter: (dates) => {
-        // Format dates to ISO string without milliseconds
-        const formattedDates = dates?.map((date) =>
-          date ? new Date(date).toISOString().replace(/\.\d+Z$/, "") : null,
-        );
-        setDateRange(formattedDates);
-        paginationData.fetchData(0, 20);
+        setDateRange(dates);
       },
       handleSiteChange: (id) => {
         setSiteId(id);
-        paginationData.fetchData(0, 20);
       },
       updateData: (rowIndex, columnId, value) => {
         // Skip page index reset until after next rerender
@@ -203,11 +206,21 @@ export default function SiteAdministratorList() {
     setadminUser(list);
     // }
   }, [list]);
+
   useEffect(() => {
-    // if (siteId) {
-    paginationData.fetchData(0, 20);
-    // }
-  }, [siteId]);
+    // This will run after dateRange changes
+    if (dateRange !== null) {
+      // Add any condition you need
+      paginationData.fetchData(0, 20);
+    }
+  }, [dateRange]); // Only run when dateRange changes
+
+  useEffect(() => {
+      if (siteId) {
+        paginationData.fetchData(0, 20);
+      }
+    }, [siteId]);
+
   return (
     <Page title="관리자">
       <div className="transition-content w-full py-5">
@@ -236,12 +249,16 @@ export default function SiteAdministratorList() {
                 tableSettings.enableFullScreen && "overflow-hidden",
               )}
             >
-              {viewType === "list" &&
+              {isLoading ? (
+                <TableSpinner />
+              ) : (
+                viewType === "list" &&
                 (rows.length === 0 ? (
                   <NoData message="No site admin data found." />
                 ) : (
                   <ListView table={table} flexRender={flexRender} rows={rows} />
-                ))}
+                ))
+              )}
 
               {viewType === "grid" && <GridView table={table} rows={rows} />}
 

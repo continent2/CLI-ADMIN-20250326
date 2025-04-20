@@ -29,6 +29,13 @@ const reducerHandlers = {
     };
   },
 
+  WITHDRAW_REQUEST: (state) => {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  },
+
   WITHDRAW_SUCCESS: (state, action) => {
     const { list, count } = action.payload;
     return {
@@ -116,9 +123,9 @@ export function WithdrawalDetailsProvider({ children }) {
     timeEndIso,
     siteId,
   }) => {
-    // dispatch({
-    //   type: "LOGIN_REQUEST",
-    // });
+    dispatch({
+      type: "WITHDRAW_REQUEST",
+    });
 
     try {
       const token = localStorage.getItem("authToken");

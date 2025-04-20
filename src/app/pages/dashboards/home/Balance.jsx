@@ -67,7 +67,7 @@ export function Balance({ data }) {
           </div>
 
           {/* Display dynamic balance */}
-          <div className="mt-3 text-3xl font-semibold">
+          <div className="mt-3 text-3xl font-semibold text-nowrap">
             {/** ₩{withdrawableAmount}*/}
             {formatNumberWithCommas(withdrawableAmount)} USDT
           </div>
@@ -80,18 +80,18 @@ export function Balance({ data }) {
           {/* Income */}
           <div>
             <p className="text-white/90">당일 입금액</p>
-            <div className="mt-1 flex items-center gap-2">
+            <div className="mt-1 flex items-center flex-nowrap gap-2">
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowRightIcon className="size-4" />
               </div>
-              <p className="text-[11px] font-medium">
+              <p className="text-[11px] flex gap-1 flex-nowrap text-nowrap font-medium">
                 {formatNumberWithCommas(depositToday)} <p>USDT</p>
               </p>
               {/** <p className="text-base font-medium">₩{depositToday}</p>*/}
             </div>
             <Button
               unstyled
-              className="mt-3 w-full rounded-lg border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
+              className="mt-3 w-full rounded-lg flex text-nowrap flex-nowrap items-center gap-1 border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
             >
               {/* 입금{" "} */}
               {formatNumberWithCommas(depositTodayInQuote)} KRW
@@ -101,11 +101,11 @@ export function Balance({ data }) {
           {/* Expense */}
           <div>
             <p className="text-white/90">당일 출금액</p>
-            <div className="mt-1 flex items-center gap-2">
+            <div className="mt-1 flex flex-nowrap items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowRightIcon className="size-4" />
               </div>
-              <p className="text-[11px] font-medium">
+              <p className="text-[11px] flex gap-1 flex-nowrap text-nowrap font-medium">
                 {formatNumberWithCommas(withdrawToday)}
                 <p>USDT</p>
               </p>
@@ -113,7 +113,7 @@ export function Balance({ data }) {
             </div>
             <Button
               unstyled
-              className="mt-3 w-full rounded-lg border border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
+              className="mt-3 w-full rounded-lg border flex text-nowrap flex-nowrap items-center gap-1 border-white/10 bg-white/20 px-5 py-2 text-white hover:bg-white/30 focus:bg-white/30 active:bg-white/25"
             >
               {/* 출금 */}
               {formatNumberWithCommas(withdrawTodayInQuote)} KRW

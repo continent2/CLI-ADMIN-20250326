@@ -140,6 +140,7 @@ export function AuthProvider({ children }) {
       }
       setSession(authToken);
       localStorage.setItem("username", user.username);
+      localStorage.setItem("userId", JSON.stringify(user));
       localStorage.setItem("pw", user.pw);
       dispatch({
         type: "LOGIN_SUCCESS",

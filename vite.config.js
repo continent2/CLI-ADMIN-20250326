@@ -6,6 +6,10 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 
 export default defineConfig({
   plugins: [react(), jsconfigPaths(), svgr()],
+  define: {
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 19)),
+    __VERSION__: JSON.stringify("6714f5f"),
+  },
   optimizeDeps: {
     esbuildOptions: {
       define: {
