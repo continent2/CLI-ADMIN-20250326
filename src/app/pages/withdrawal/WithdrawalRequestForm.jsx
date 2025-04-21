@@ -15,7 +15,7 @@ import {
 } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline/index.js";
 import ReactSelect from "react-select";
-import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
+import { formatNumberWithCommas, unformatNumberWithCommas} from "utils/formatNumberWithCommas.js";
 import { toast } from "sonner";
 
 export const initialState = {
@@ -26,7 +26,7 @@ export const initialState = {
   currencyTo: "",
   bankName: "",
   bankAccount: null,
-  isCrypto: 0,
+  isCrypto: 1,
   address: "",
   netType: "",
   quoteSignature: "",
@@ -42,24 +42,26 @@ export default function WithdrawalRequestForm() {
     agencyAccountInfo,
     withdrawInfo,
   } = useAppDataContext();
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedAgencyBank, setSelectedAgencyBank] = useState("");
-  
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedAgencyBank, setSelectedAgencyBank] = useState(null);
+  const [selectedAccountOption, setSelectedAccountOption] = useState(null);
+
   const bankOptions = banks?.map((bank) => ({
-    value: bank, // store the whole bank object
+    value: bank.id, // Use ID as value for better consistency
     label: (
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
           src={bank.urllogo || "/images/dummy-bank.png"}
-          alt={bank.banknameen}
+          alt={bank.banknameen || "Bank logo"}
           style={{ width: 20, height: 20 }}
           onError={(e) => {
             e.currentTarget.src = "/images/dummy-bank.png";
           }}
         />
-        {bank.banknameen}
+        {bank.banknamenative}
       </div>
     ),
+    bankData: bank // Store full bank data separately
   }));
 
   const [isModalVisible, setisModalVisible] = useState(false);
@@ -78,25 +80,22 @@ export default function WithdrawalRequestForm() {
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
-    mode: "all",
+    mode: "onChange",
     defaultValues: initialState,
   });
 
   const isCrypto = getValues("isCrypto");
+
   const onSubmit = async (data) => {
-    let payload = {
-      amountfrom: "",
-      currencyfrom: "",
-      amount: data.amount,
-      currency: data.isCrypto === 0 ? "USDT" : "KRW", // USDT for crypto, KRW for fiat
-      bankid: "",
-      bankname: data.isCrypto === 1 ? data.bankName : "",
-      bankcode: "",
-      bankaccount: data.isCrypto === 1 ? data.bankAccount : "",
+    const payload = {
+      amount: unformatNumberWithCommas(data.amount),
+      currency: data.isCrypto === 1 ? "USDT" : "KRW",
       iscrypto: data.isCrypto,
-      address: data.isCrypto === 0 ? data.address : "", // address only if crypto
-      nettype: "",
-      quotesignature: data.isCrypto === 0 ? data.quoteSignature : "", //quoteSignature only if crypto
+      bankid: data.isCrypto === 0 ? agencyBank.find((bank) => data.bankName === bank["bank.banknameen"])?.["bank.id"] : "",
+      bankname: data.isCrypto === 0 ? data.bankName : "",
+      bankaccount: data.isCrypto === 0 ? data.bankAccount : "",
+      address: data.isCrypto === 1 ? data.address : "",
+      quotesignature: data.quoteSignature,
     };
 
     try {
@@ -105,35 +104,31 @@ export default function WithdrawalRequestForm() {
           Authorization: token,
           "Content-Type": "application/json",
         },
-        timeout: 5000, // Timeout after 5 seconds
       });
 
-      if (response.data.status === "OK") {
-        setModalData((prev) => ({
-          ...prev,
+      if (response.data.status === "ERR") {
+        setModalData({
           message: response.data.message,
-          color: "success", // Fixing typo
-          title: "Success",
-        }));
-        setisModalVisible(true);
-        toast.success("Success");
-      } else {
-        setModalData((prev) => ({
-          ...prev,
-          message: response.data.message,
-          color: "error", // Fixing typo
+          color: "error",
           title: "Failed",
-        }));
+        });
         setisModalVisible(true);
         toast.error("Fail");
+      } else {
+        setModalData({
+          message: response.data.message,
+          color: "success",
+          title: "Success",
+        });
+        setisModalVisible(true);
+        toast.success("Success");
       }
     } catch (err) {
-      setModalData((prev) => ({
-        ...prev,
-        message: err,
+      setModalData({
+        message: err.message,
         color: "error",
         title: "Failed",
-      }));
+      });
       setisModalVisible(true);
       toast.error("Error");
     }
@@ -142,14 +137,7 @@ export default function WithdrawalRequestForm() {
   function OnReceivedAddressChange(id) {
     const item = agencyBank.find((item) => item.id === +id);
     if (item) {
-      setValue("address", item.address);
-    }
-  }
-
-  function onReceivedAccountChange(id) {
-    const item = agencyBank.find((item) => item.id === +id);
-    if (item) {
-      setValue("bankAccount", item.bankaccount);
+      setValue("address", item.address, { shouldValidate: true });
     }
   }
 
@@ -159,7 +147,6 @@ export default function WithdrawalRequestForm() {
 
   useEffect(() => {
     bankInfo();
-    agencyAccountInfo(isCrypto);
     withdrawInfo();
   }, []);
 
@@ -169,61 +156,49 @@ export default function WithdrawalRequestForm() {
 
   useEffect(() => {
     if (withdraw) {
-      setValue("amountField", formatNumberWithCommas(withdraw.amount));
-      if (isCrypto === 0) {
-        setValue("amountField", formatNumberWithCommas(withdraw.amount));
-        setValue("amount", formatNumberWithCommas(withdraw.amount_in_base));
-      } else if (isCrypto === 1) {
-        setValue(
-          "amountField",
-          formatNumberWithCommas(withdraw.amount_in_quote),
-        );
-        setValue("amount", formatNumberWithCommas(withdraw.amount_in_quote));
-
-        //sets the bankName byDefault first value
-        // if (bankOptions?.length > 0) {
-        //   const firstBank = bankOptions[0];
-        //   setSelectedOption(firstBank); // for ReactSelect UI
-        //   setValue("bankName", firstBank.value.banknameen); // for your form schema
-        // }
+      setValue("amountField", formatNumberWithCommas(withdraw.amount), { shouldValidate: true });
+      setValue("quoteSignature", withdraw.quotesignature, { shouldValidate: true });
+      
+      if (isCrypto === 1) {
+        setValue("amountField", formatNumberWithCommas(withdraw.amount), { shouldValidate: true });
+        setValue("amount", formatNumberWithCommas(withdraw.amount_in_base), { shouldValidate: true });
+      } else if (isCrypto === 0) {
+        setValue("amountField", formatNumberWithCommas(withdraw.amount_in_quote), { shouldValidate: true });
+        setValue("amount", formatNumberWithCommas(withdraw.amount_in_quote), { shouldValidate: true });
       }
-      setValue("quoteSignature", withdraw.quotesignature);
-      setValue("isWithdrawal", withdraw.iswithdrawable ? "가능" : "불가능");
+      
+      setValue("isWithdrawal", withdraw.iswithdrawable ? "가능" : "불가능", { shouldValidate: true });
     }
   }, [withdraw, isCrypto, setValue]);
 
   const receivedAccountOptions = agencyBank
-    ?.filter((b) => b.bankaccount) // filter out incomplete entries
+    ?.filter((b) => b.bankaccount)
     .map((b) => ({
       value: b.id,
       label: (
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <img
             src={b["bank.urllogo"] || "/images/dummy-bank.png"}
-            alt={b.banknameen}
+            alt={b["bank.banknameen"] || "Bank logo"}
             style={{ width: 20, height: 20 }}
             onError={(e) => {
               e.currentTarget.src = "/images/dummy-bank.png";
             }}
           />
-          <div>
-            <div className="text-xs text-gray-500">{b.bankaccount}</div>
+          <div className="flex items-center gap-1 text-xs text-gray-500"> 
+            <div className="text-xs text-gray-500">{b["bank.banknameen"]}</div> - <div className="text-xs text-gray-500">{b.bankaccount}</div>
           </div>
         </div>
       ),
-      raw: b, // store raw bank object to use onChange
+      bankData: b,
     }));
+
   return (
     <Page title="출금 요청">
       <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] py-5">
-        {/* <h2 className="py-6 pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
-          출금 요청
-        </h2> */}
-
         <div>
           <div className="h-fit rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
             <div>
-              {/*Form*/}
               <form
                 autoComplete="off"
                 onSubmit={handleSubmit(onSubmit)}
@@ -231,7 +206,6 @@ export default function WithdrawalRequestForm() {
               >
                 <div className="flex flex-col gap-9 lg:flex-row">
                   <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600 lg:w-1/2">
-                    {/*Amount*/}
                     <Input
                       placeholder=""
                       label="출금가능액"
@@ -240,7 +214,6 @@ export default function WithdrawalRequestForm() {
                       disabled
                     />
 
-                    {/*isWithdrawal*/}
                     <Input
                       placeholder=""
                       label="출금가능여부"
@@ -248,9 +221,8 @@ export default function WithdrawalRequestForm() {
                       error={errors?.isWithdrawal?.message}
                       disabled
                     />
-
-                    {/*isCrypto*/}
                   </div>
+                  
                   <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600 lg:w-1/2">
                     <div className="mx-auto">
                       <label className="col-span-2">출금종류</label>
@@ -259,15 +231,16 @@ export default function WithdrawalRequestForm() {
                           <span className="label me-2">USDT</span>
                           <Switch
                             label="KRW"
-                            checked={watch("isCrypto") === 1}
+                            checked={watch("isCrypto") === 0}
                             onChange={(e) =>
-                              setValue("isCrypto", e.target.checked ? 1 : 0)
+                              setValue("isCrypto", e.target.checked ? 0 : 1, { shouldValidate: true })
                             }
                             error={errors?.isCrypto?.message}
                           />
                         </div>
                       </div>
                     </div>
+                    
                     <Input
                       placeholder=""
                       label={
@@ -280,39 +253,29 @@ export default function WithdrawalRequestForm() {
                       disabled
                     />
 
-                    {/*USDT*/}
-                    {/*Expected withdrawal amount*/}
-                    {watch("isCrypto") === 0 && (
+                    {watch("isCrypto") === 1 && (
                       <>
-                        {/*Recently received address*/}
                         {agencyBank && (
                           <>
                             <label className="-mb-4">최근 받은 주소</label>
                             <ReactSelect
-                              options={[
-                                ...(agencyBank || [])
-                                  .filter((b) => b.address) // filters out falsy values like null, undefined, or empty string
-                                  .map((b) => ({
-                                    label: b.address,
-                                    value: b.id,
-                                  })),
-                              ]}
+                              options={agencyBank
+                                .filter((b) => b.address)
+                                .map((b) => ({
+                                  value: b.id,
+                                  label: b.address,
+                                  bankData: b,
+                                }))}
                               value={selectedAgencyBank}
+                              getOptionValue={(option) => option.value}
                               placeholder="주소를 선택하세요"
                               onChange={(item) => {
                                 setSelectedAgencyBank(item);
-                                const selected = agencyBank.find(
-                                  (b) => b?.id === item?.value,
-                                );
-                                if (selected) {
-                                  OnReceivedAddressChange(selected.id);
-                                }
+                                OnReceivedAddressChange(item.value);
                               }}
                               classNames={{
-                                control: () =>
-                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                                singleValue: () =>
-                                  "text-black dark:text-dark-100",
+                                control: () => "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                singleValue: () => "text-black dark:text-dark-100",
                                 input: () => "text-black dark:text-white",
                                 option: ({ isFocused, isSelected }) =>
                                   [
@@ -320,9 +283,7 @@ export default function WithdrawalRequestForm() {
                                     "bg-white dark:bg-dark-800",
                                     isFocused && "bg-gray-100 dark:bg-gray-700",
                                     isSelected && "bg-blue-500 text-white",
-                                  ]
-                                    .filter(Boolean)
-                                    .join(" "),
+                                  ].filter(Boolean).join(" "),
                                 menu: () => "bg-white dark:bg-gray-800",
                                 menuList: () => "bg-white dark:bg-gray-800",
                               }}
@@ -343,28 +304,23 @@ export default function WithdrawalRequestForm() {
                       </>
                     )}
 
-                    {/*KRW*/}
-                    {/*Expected withdrawal amount*/}
-                    {watch("isCrypto") === 1 && (
+                    {watch("isCrypto") === 0 && (
                       <>
-                        {/*Recently received account*/}
                         {agencyBank && (
                           <>
                             <label className="-mb-4">최근받은계정</label>
                             <ReactSelect
                               options={receivedAccountOptions}
+                              value={selectedAccountOption}
+                              getOptionValue={(option) => option.value}
                               placeholder="계정을 선택하세요"
                               onChange={(selected) => {
-                                if (selected?.raw) {
-                                  const selectedBank = selected.raw;
-                                  onReceivedAccountChange(selectedBank.id);
-                                }
+                                setSelectedAccountOption(selected);
+                                setValue("bankAccount", selected.bankData.bankaccount, { shouldValidate: true });
                               }}
                               classNames={{
-                                control: () =>
-                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                                singleValue: () =>
-                                  "text-black dark:text-dark-100",
+                                control: () => "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                singleValue: () => "text-black dark:text-dark-100",
                                 input: () => "text-black dark:text-white",
                                 option: ({ isFocused, isSelected }) =>
                                   [
@@ -372,9 +328,7 @@ export default function WithdrawalRequestForm() {
                                     "bg-white dark:bg-dark-800",
                                     isFocused && "bg-gray-100 dark:bg-gray-700",
                                     isSelected && "bg-blue-500 text-white",
-                                  ]
-                                    .filter(Boolean)
-                                    .join(" "),
+                                  ].filter(Boolean).join(" "),
                                 menu: () => "bg-white dark:bg-gray-800",
                                 menuList: () => "bg-white dark:bg-gray-800",
                               }}
@@ -382,37 +336,33 @@ export default function WithdrawalRequestForm() {
                           </>
                         )}
 
-                        {/*Receiving bank*/}
                         <label className="-mb-4">
                           받는은행 <span className="text-red-500">*</span>
                         </label>
                         <ReactSelect
                           options={bankOptions}
                           value={selectedOption}
+                          getOptionValue={(option) => option.value}
                           onChange={(selected) => {
-                            setSelectedOption(selected); // For select UI
-                            setValue("bankName", selected.value.banknameen);
+                            setSelectedOption(selected);
+                            setValue("bankName", selected.bankData.banknameen, { shouldValidate: true });
                           }}
                           classNames={{
-                            control: () =>
-                              "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                            control: () => "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
                             singleValue: () => "text-black dark:text-dark-100",
                             input: () => "text-black dark:text-white",
                             option: ({ isFocused, isSelected }) =>
                               [
                                 "text-black dark:text-white",
-                                "bg-white dark:bg-dark-800", // ✅ background of dropdown options
+                                "bg-white dark:bg-dark-800",
                                 isFocused && "bg-gray-100 dark:bg-gray-700",
                                 isSelected && "bg-blue-500 text-white",
-                              ]
-                                .filter(Boolean)
-                                .join(" "),
+                              ].filter(Boolean).join(" "),
                             menu: () => "bg-white dark:bg-gray-800",
                             menuList: () => "bg-white dark:bg-gray-800",
                           }}
                         />
 
-                        {/*Receiving account*/}
                         <Input
                           placeholder=""
                           label={
@@ -427,7 +377,7 @@ export default function WithdrawalRequestForm() {
                     )}
                   </div>
                 </div>
-                {/*Action buttons*/}
+                
                 <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                   <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
                     취소
@@ -447,12 +397,11 @@ export default function WithdrawalRequestForm() {
         </div>
       </div>
 
-      {/*modal*/}
       <Transition appear show={isModalVisible} as={Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-          onClose={close}
+          onClose={() => setisModalVisible(false)}
         >
           <TransitionChild
             as={Fragment}

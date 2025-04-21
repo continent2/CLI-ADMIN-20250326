@@ -113,7 +113,7 @@ export default function WithdrawalList() {
       handleReload: () => {
         setSearchTerm("");
         setDateRange(null);
-        withdraw({
+        withdrawas({
           offSet: 0,
           limit: 20,
           searchKey: "",

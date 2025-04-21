@@ -98,15 +98,12 @@ export function AppDataProvider({ children }) {
     try {
       const authToken = localStorage.getItem("authToken");
       const response = await axios.get(
-        `/query/list/plain/agencyaccount/_/_/updatedat/DESC/0/100`,
+        `/query/list/plain/agencyaccount/_/_/updatedat/DESC/0/100?iscrypto=${isCrypto}`,
         {
           headers: {
             Authorization: authToken,
           },
           timeout: 5000, // Timeout after 5 seconds
-        },
-        {
-          iscrypto: isCrypto,
         },
       );
       dispatch({
@@ -123,7 +120,6 @@ export function AppDataProvider({ children }) {
           errorMessage: err,
         },
       });
-      console.log(err);
     }
   };
 

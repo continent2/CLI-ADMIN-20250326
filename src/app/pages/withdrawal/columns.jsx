@@ -4,7 +4,7 @@ import {
   SendAccount,
   ReceivedAccount,
   BankDetail,
-} from ".//rows.jsx";
+} from "./rows.jsx";
 import {
   tronScan_Transaction,
   tronScan_Address,
@@ -39,7 +39,7 @@ export const columns = [
     accessorKey: "transfer.txhash", // Keep the accessor for sorting/filtering
     header: "전송ID", // 발생수수료
     cell: ({ row, table }) => {
-      const txHash = row.original["transfer.txhash"].toUpperCase();
+      const txHash = row.original["transfer.txhash"]?.toUpperCase();
       return (
         <CopyableCellWithClick
           getValue={() => txHash || "N/A"}

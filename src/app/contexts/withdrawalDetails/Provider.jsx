@@ -149,7 +149,7 @@ export function WithdrawalDetailsProvider({ children }) {
       }
 
       const response = await axios.get(
-        `/query/list/custom/withdraw/_/_/id/DESC/${offSet}/${limit}?iscrypto=1`,
+        `/query/list/custom/withdraw/_/_/id/DESC/${offSet}/${limit}?iscrypto=0`,
         {
           headers: {
             Authorization: token,

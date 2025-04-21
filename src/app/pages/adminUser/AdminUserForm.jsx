@@ -107,10 +107,6 @@ const AdminUserForm = () => {
       }
 
       // Format the phone number to international format
-      const formattedNumber = phoneUtil.format(
-        phoneNumber,
-        PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL,
-      );
       setValue(
         "phoneNationalNumber",
         phoneUtil.getNationalSignificantNumber(phoneNumber),
@@ -121,6 +117,7 @@ const AdminUserForm = () => {
 
       return true;
     } catch (error) {
+      console.log(error);
       setError("phoneNationalNumber", {
         type: "manual",
         message: "유효한 전화번호 형식이 아닙니다",

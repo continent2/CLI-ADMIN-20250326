@@ -156,7 +156,7 @@ const columns = [
         <div>
           <CopyableCellWithClick
             getValue={() =>
-              row.original["transfer.txhash"].toUpperCase() || "N/A"
+              row.original["transfer.txhash"]?.toUpperCase() || "N/A"
             }
             table={table}
             onClick={() => {

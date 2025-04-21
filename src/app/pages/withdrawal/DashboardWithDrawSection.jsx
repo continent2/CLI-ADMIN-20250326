@@ -26,7 +26,7 @@ export const initialState = {
   currencyTo: "",
   bankName: "",
   bankAccount: null,
-  isCrypto: 0,
+  isCrypto: 1,
   address: "",
   netType: "",
   quoteSignature: "",
@@ -42,7 +42,9 @@ export default function WithdrawalRequestForm() {
     agencyAccountInfo,
     withdrawInfo,
   } = useAppDataContext();
-  const [selectedOption, setSelectedOption] = useState();
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedAgencyBank, setSelectedAgencyBank] = useState("");
+  const [selectedAccountOption, setSelectedAccountOption] = useState("");
 
   const bankOptions = banks?.map((bank) => ({
     value: bank, // store the whole bank object
@@ -56,7 +58,7 @@ export default function WithdrawalRequestForm() {
             e.currentTarget.src = "/images/dummy-bank.png";
           }}
         />
-        {bank.banknameen}
+        {bank.banknamenative}
       </div>
     ),
   }));
@@ -83,20 +85,20 @@ export default function WithdrawalRequestForm() {
   });
 
   const isCrypto = getValues("isCrypto");
-  const onSubmit = async (data) => {
-    let payload = {
-      amountfrom: "",
-      currencyfrom: "",
-      amount: data.amount,
-      currency: data.isCrypto === 0 ? "USDT" : "KRW", // USDT for crypto, KRW for fiat
-      bankid: "",
-      bankname: data.isCrypto === 1 ? data.bankName : "",
-      bankcode: "",
-      bankaccount: data.isCrypto === 1 ? data.bankAccount : "",
+    const onSubmit = async (data) => {
+    const payload = {
+      // amountfrom: "",
+      // currencyfrom: "",
+      amount: "12052.424",
+      currency: data.isCrypto === 1 ? "USDT" : "KRW", // USDT for crypto, KRW for fiat
       iscrypto: data.isCrypto,
-      address: data.isCrypto === 0 ? data.address : "", // address only if crypto
-      nettype: "",
-      quotesignature: data.isCrypto === 0 ? data.quoteSignature : "", //quoteSignature only if crypto
+      bankid: data.isCrypto === 0 ? agencyBank.find((bank) => data.bankName === bank["bank.banknameen"])["bank.id"]: "",
+      bankname: data.isCrypto === 0 ? data.bankName : "",
+      // bankcode: "",
+      bankaccount: data.isCrypto === 0 ? data.bankAccount : "",
+      address: data.isCrypto === 1 ? data.address : "", // address only if crypto
+      // nettype: "",
+      quotesignature: data.quoteSignature, //quoteSignature only if crypto
     };
 
     try {
@@ -105,20 +107,11 @@ export default function WithdrawalRequestForm() {
           Authorization: token,
           "Content-Type": "application/json",
         },
-        timeout: 5000, // Timeout after 5 seconds
+        // timeout: 5000, // Timeout after 5 seconds
       });
 
-      if (response.data.status === "OK") {
-        setModalData((prev) => ({
-          ...prev,
-          message: response.data.message,
-          color: "success", // Fixing typo
-          title: "Success",
-        }));
-        setisModalVisible(true);
-        toast.success("Success");
-      } else {
-        setModalData((prev) => ({
+      if (response.data.status === "ERR") {
+          setModalData((prev) => ({
           ...prev,
           message: response.data.message,
           color: "error", // Fixing typo
@@ -126,6 +119,16 @@ export default function WithdrawalRequestForm() {
         }));
         setisModalVisible(true);
         toast.error("Fail");
+      } else {
+setModalData((prev) => ({
+          ...prev,
+          message: response.data.message,
+          color: "success", // Fixing typo
+          title: "Success",
+        }));
+        setisModalVisible(true);
+        toast.success("Success");
+
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -142,14 +145,7 @@ export default function WithdrawalRequestForm() {
   function OnReceivedAddressChange(id) {
     const item = agencyBank.find((item) => item.id === +id);
     if (item) {
-      setValue("address", item.address);
-    }
-  }
-
-  function onReceivedAccountChange(id) {
-    const item = agencyBank.find((item) => item.id === +id);
-    if (item) {
-      setValue("bankAccount", item.bankaccount);
+      setValue("address", item.address, { shouldValidate: true });
     }
   }
 
@@ -159,7 +155,7 @@ export default function WithdrawalRequestForm() {
 
   useEffect(() => {
     bankInfo();
-    agencyAccountInfo(isCrypto);
+    // agencyAccountInfo(isCrypto);
     withdrawInfo();
   }, []);
 
@@ -169,29 +165,51 @@ export default function WithdrawalRequestForm() {
 
   useEffect(() => {
     if (withdraw) {
-      setValue("amountField", formatNumberWithCommas(withdraw.amount));
-      if (isCrypto === 0) {
-        setValue("amountField", formatNumberWithCommas(withdraw.amount));
-        setValue("amount", formatNumberWithCommas(withdraw.amount_in_base));
-      } else if (isCrypto === 1) {
+      setValue("amountField", formatNumberWithCommas(withdraw.amount), { shouldValidate: true });
+      setValue("quoteSignature", withdraw.quotesignature, { shouldValidate: true });
+      if (isCrypto === 1) {
+        setValue("amountField", formatNumberWithCommas(withdraw.amount, { shouldValidate: true }));
+        setValue("amount", formatNumberWithCommas(withdraw.amount_in_base), { shouldValidate: true });
+      } else if (isCrypto === 0) {
         setValue(
           "amountField",
-          formatNumberWithCommas(withdraw.amount_in_quote),
+          formatNumberWithCommas(withdraw.amount_in_quote), { shouldValidate: true },
         );
-        setValue("amount", formatNumberWithCommas(withdraw.amount_in_quote));
+        setValue("amount", formatNumberWithCommas(withdraw.amount_in_quote), { shouldValidate: true });
 
         //sets the bankName byDefault first value
-        if (bankOptions?.length > 0) {
-          const firstBank = bankOptions[0];
-          setSelectedOption(firstBank); // for ReactSelect UI
-          setValue("bankName", firstBank.value.banknameen); // for your form schema
-        }
+        // if (bankOptions?.length > 0) {
+        //   const firstBank = bankOptions[0];
+        //   setSelectedOption(firstBank); // for ReactSelect UI
+        //   setValue("bankName", firstBank.value.banknameen); // for your form schema
+        // }
       }
-      setValue("quoteSignature", withdraw.quotesignature);
-      setValue("isWithdrawal", withdraw.iswithdrawable ? "가능" : "불가능");
+      setValue("isWithdrawal", withdraw.iswithdrawable ? "가능" : "불가능", { shouldValidate: true });
     }
   }, [withdraw, isCrypto, setValue]);
 
+
+  const receivedAccountOptions = agencyBank
+    ?.filter((b) => b.bankaccount)
+    .map((b) => ({
+      value: b,
+      label: (
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <img
+            src={b["bank.urllogo"] || "/images/dummy-bank.png"}
+            alt={b.banknameen}
+            style={{ width: 20, height: 20 }}
+            onError={(e) => {
+              e.currentTarget.src = "/images/dummy-bank.png";
+            }}
+          />
+          <div className="flex items-center gap-1 text-xs text-gray-500"> 
+            <div className="text-xs text-gray-500">{b["bank.banknameen"]}</div> - <div className="text-xs text-gray-500">{b["bankaccount"]}</div>
+          </div>
+        </div>
+      ),
+      raw: b, // store raw bank object to use onChange
+    }));
   return (
     <Card>
       <Page title="출금 요청">
@@ -217,13 +235,13 @@ export default function WithdrawalRequestForm() {
                           <div className="mt-1 flex">
                             <span className="label me-2">USDT</span>
                             <Switch
-                              label="KRW"
-                              checked={watch("isCrypto") === 1}
-                              onChange={(e) =>
-                                setValue("isCrypto", e.target.checked ? 1 : 0)
-                              }
-                              error={errors?.isCrypto?.message}
-                            />
+                            label="KRW"
+                            checked={watch("isCrypto") === 0}
+                            onChange={(e) =>
+                              setValue("isCrypto", e.target.checked ? 0 : 1, { shouldValidate: true })
+                            }
+                            error={errors?.isCrypto?.message}
+                          />
                           </div>
                         </div>
                       </div>
@@ -262,14 +280,14 @@ export default function WithdrawalRequestForm() {
 
                       {/*USDT*/}
                       {/*Expected withdrawal amount*/}
-                      {watch("isCrypto") === 0 && (
+                      {watch("isCrypto") === 1 && (
                         <>
                           {/*Recently received address*/}
-                          {agencyBank && (
-                            <Select
-                              label="최근 받은 주소"
-                              data={[
-                                { label: "주소를 선택하세요", value: "" },
+                                                  {agencyBank && (
+                          <>
+                            <label className="-mb-4">최근 받은 주소</label>
+                            <ReactSelect
+                              options={[
                                 ...(agencyBank || [])
                                   .filter((b) => b.address) // filters out falsy values like null, undefined, or empty string
                                   .map((b) => ({
@@ -277,17 +295,38 @@ export default function WithdrawalRequestForm() {
                                     value: b.id,
                                   })),
                               ]}
-                              onChange={(e) => {
+                              value={selectedAgencyBank}
+                              placeholder="주소를 선택하세요"
+                              onChange={(item) => {
+                                setSelectedAgencyBank(item);
                                 const selected = agencyBank.find(
-                                  (b) => b.id === +e.target.value,
+                                  (b) => b?.id === item?.value,
                                 );
                                 if (selected) {
                                   OnReceivedAddressChange(selected.id);
                                 }
                               }}
-                              error={errors?.bankAddress?.message}
+                              classNames={{
+                                control: () =>
+                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                singleValue: () =>
+                                  "text-black dark:text-dark-100",
+                                input: () => "text-black dark:text-white",
+                                option: ({ isFocused, isSelected }) =>
+                                  [
+                                    "text-black dark:text-white",
+                                    "bg-white dark:bg-dark-800",
+                                    isFocused && "bg-gray-100 dark:bg-gray-700",
+                                    isSelected && "bg-blue-500 text-white",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" "),
+                                menu: () => "bg-white dark:bg-gray-800",
+                                menuList: () => "bg-white dark:bg-gray-800",
+                              }}
                             />
-                          )}
+                          </>
+                        )}
 
                           <Input
                             placeholder=""
@@ -304,77 +343,92 @@ export default function WithdrawalRequestForm() {
 
                       {/*KRW*/}
                       {/*Expected withdrawal amount*/}
-                      {watch("isCrypto") === 1 && (
+                      {watch("isCrypto") === 0 && (
                         <>
                           {/*Recently received account*/}
-                          {agencyBank && (
-                            <Select
-                              label="최근받은계정"
-                              data={[
-                                { label: "계정을 선택하세요", value: "" },
-                                ...(agencyBank || [])
-                                  .filter((b) => b.bankaccount) // filters out falsy values like null, undefined, or empty string
-                                  .map((b) => ({
-                                    label: b.bankaccount,
-                                    value: b.id,
-                                  })),
-                              ]}
-                              onChange={(e) => {
-                                const selected = agencyBank.find(
-                                  (b) => b.id === +e.target.value,
+                                                  {agencyBank && (
+                          <>
+                            <label className="-mb-4">최근받은계정</label>
+                            <ReactSelect
+                              options={receivedAccountOptions}
+                              placeholder="계정을 선택하세요"
+                              onChange={(selected) => {
+                                setSelectedAccountOption(selected);
+                                setValue(
+                                  "bankAccount",
+                                  selected.value["bankaccount"], { shouldValidate: true },
                                 );
-                                if (selected) {
-                                  onReceivedAccountChange(selected.id);
-                                }
+                                // if (selected?.raw) {
+                                // const selectedBank = selected.raw;
+                                // onReceivedAccountChange(selectedBank.id);
+                                // }
                               }}
-                              error={errors?.bankAccount?.message}
+                              classNames={{
+                                control: () =>
+                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                singleValue: () =>
+                                  "text-black dark:text-dark-100",
+                                input: () => "text-black dark:text-white",
+                                option: ({ isFocused, isSelected }) =>
+                                  [
+                                    "text-black dark:text-white",
+                                    "bg-white dark:bg-dark-800",
+                                    isFocused && "bg-gray-100 dark:bg-gray-700",
+                                    isSelected && "bg-blue-500 text-white",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" "),
+                                menu: () => "bg-white dark:bg-gray-800",
+                                menuList: () => "bg-white dark:bg-gray-800",
+                              }}
                             />
-                          )}
+                          </>
+                        )}
 
-                          {/*Receiving bank*/}
-                          <label className="-mb-4">
-                            받는은행<span className="text-red-500">*</span>
-                          </label>
-                          <ReactSelect
-                            options={bankOptions}
-                            value={selectedOption}
-                            onChange={(selected) => {
-                              setSelectedOption(selected); // For select UI
-                              setValue("bankName", selected.value.banknameen);
-                            }}
-                            classNames={{
-                              control: () =>
-                                "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                              singleValue: () =>
-                                "text-black dark:text-dark-100",
-                              input: () => "text-black dark:text-white",
-                              option: ({ isFocused, isSelected }) =>
-                                [
-                                  "text-black dark:text-white",
-                                  "bg-white dark:bg-dark-800", // ✅ background of dropdown options
-                                  isFocused && "bg-gray-100 dark:bg-gray-700",
-                                  isSelected && "bg-blue-500 text-white",
-                                ]
-                                  .filter(Boolean)
-                                  .join(" "),
-                              menu: () => "bg-white dark:bg-gray-800",
-                              menuList: () => "bg-white dark:bg-gray-800",
-                            }}
-                          />
 
-                          {/*Receiving account*/}
-                          <Input
-                            placeholder=""
-                            label={
-                              <>
-                                받는계정 <span className="text-red-500">*</span>
-                              </>
-                            }
-                            {...register("bankAccount")}
-                            error={errors?.bankAccount?.message}
-                          />
-                        </>
-                      )}
+                                                 {/*Receiving bank*/}
+                        <label className="-mb-4">
+                          받는은행 <span className="text-red-500">*</span>
+                        </label>
+                        <ReactSelect
+                          options={bankOptions}
+                          value={selectedOption}
+                          onChange={(selected) => {
+                            setSelectedOption(selected); // For select UI
+                            setValue("bankName", selected.value["banknameen"], { shouldValidate: true });
+                          }}
+                          classNames={{
+                            control: () =>
+                              "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                            singleValue: () => "text-black dark:text-dark-100",
+                            input: () => "text-black dark:text-white",
+                            option: ({ isFocused, isSelected }) =>
+                              [
+                                "text-black dark:text-white",
+                                "bg-white dark:bg-dark-800", // ✅ background of dropdown options
+                                isFocused && "bg-gray-100 dark:bg-gray-700",
+                                isSelected && "bg-blue-500 text-white",
+                              ]
+                                .filter(Boolean)
+                                .join(" "),
+                            menu: () => "bg-white dark:bg-gray-800",
+                            menuList: () => "bg-white dark:bg-gray-800",
+                          }}
+                        />
+
+                        {/*Receiving account*/}
+                        <Input
+                          placeholder=""
+                          label={
+                            <>
+                              받는계정 <span className="text-red-500">*</span>
+                            </>
+                          }
+                          {...register("bankAccount")}
+                          error={errors?.bankAccount?.message}
+                        />
+                      </>
+                    )}
                     </div>
                   </div>
                   {/*Action buttons*/}
