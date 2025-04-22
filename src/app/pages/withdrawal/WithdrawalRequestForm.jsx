@@ -13,13 +13,16 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { CheckCircleIcon } from "@heroicons/react/24/outline/index.js";
+import {
+  CheckCircleIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/outline/index.js";
 import ReactSelect from "react-select";
 import {
   formatNumberWithCommas,
   unformatNumberWithCommas,
 } from "utils/formatNumberWithCommas.js";
-import { Tooltip } from "components/shared/Tooltip"; // Import your Tooltip component
+import { Tooltip } from "components/shared/Tooltip";
 
 export const initialState = {
   amountFrom: "",
@@ -217,6 +220,16 @@ export default function WithdrawalRequestForm() {
       bankData: b,
     }));
 
+  const DisabledInfoIcon = () => (
+    <span
+      data-tooltip-id="withdrawal-disabled-tooltip"
+      data-tooltip-content={tooltipMessage}
+      className="ml-2 inline-flex items-center text-gray-400"
+    >
+      <InformationCircleIcon className="h-5 w-5" />
+    </span>
+  );
+
   return (
     <Page title="출금 요청">
       <Tooltip id="withdrawal-disabled-tooltip" />
@@ -269,12 +282,9 @@ export default function WithdrawalRequestForm() {
                     <div className="mx-auto">
                       <label className="col-span-2">출금종류</label>
                       <div className="col-span-10">
-                        <div className="mt-1 flex">
+                        <div className="mt-1 flex items-center">
                           <span className="label me-2">USDT</span>
-                          <div
-                            data-tooltip-id="withdrawal-disabled-tooltip"
-                            data-tooltip-content={tooltipMessage}
-                          >
+                          <div className="flex items-center">
                             <Switch
                               label="KRW"
                               checked={watch("isCrypto") === 0}
@@ -290,8 +300,9 @@ export default function WithdrawalRequestForm() {
                                 }
                               }}
                               error={errors?.isCrypto?.message}
-                              // disabled={isDisabled}
+                              disabled={isDisabled}
                             />
+                            {isDisabled && <DisabledInfoIcon />}
                           </div>
                         </div>
                       </div>
@@ -313,69 +324,72 @@ export default function WithdrawalRequestForm() {
                       <>
                         {agencyBank && (
                           <>
-                            <label className="-mb-4">최근 받은 주소</label>
-                            <div
-                              data-tooltip-id="withdrawal-disabled-tooltip"
-                              data-tooltip-content={tooltipMessage}
-                            >
-                              <ReactSelect
-                                options={agencyBank
-                                  .filter((b) => b.address)
-                                  .map((b) => ({
-                                    value: b.id,
-                                    label: b.address,
-                                    bankData: b,
-                                  }))}
-                                value={selectedAgencyBank}
-                                getOptionValue={(option) => option.value}
-                                placeholder="주소를 선택하세요"
-                                onChange={(item) => {
-                                  if (isWithdrawal) {
-                                    setSelectedAgencyBank(item);
-                                    OnReceivedAddressChange(item.value);
-                                  }
-                                }}
-                                classNames={{
-                                  control: () =>
-                                    "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                                  singleValue: () =>
-                                    "text-black dark:text-dark-100",
-                                  input: () => "text-black dark:text-white",
-                                  option: ({ isFocused, isSelected }) =>
-                                    [
-                                      "text-black dark:text-white",
-                                      "bg-white dark:bg-dark-800",
-                                      isFocused &&
-                                        "bg-gray-100 dark:bg-gray-700",
-                                      isSelected && "bg-blue-500 text-white",
-                                    ]
-                                      .filter(Boolean)
-                                      .join(" "),
-                                  menu: () => "bg-white dark:bg-gray-800",
-                                  menuList: () => "bg-white dark:bg-gray-800",
-                                }}
-                                isDisabled={isDisabled}
-                              />
+                            <div className="-mb-3 flex items-center">
+                              <label className="">최근 받은 주소</label>
+                              {isDisabled && <DisabledInfoIcon />}
                             </div>
+                            {/* <div */}
+                            {/*   data-tooltip-id="withdrawal-disabled-tooltip" */}
+                            {/*   data-tooltip-content={tooltipMessage} */}
+                            {/* > */}
+                            <ReactSelect
+                              options={agencyBank
+                                .filter((b) => b.address)
+                                .map((b) => ({
+                                  value: b.id,
+                                  label: b.address,
+                                  bankData: b,
+                                }))}
+                              value={selectedAgencyBank}
+                              getOptionValue={(option) => option.value}
+                              placeholder="주소를 선택하세요"
+                              onChange={(item) => {
+                                if (isWithdrawal) {
+                                  setSelectedAgencyBank(item);
+                                  OnReceivedAddressChange(item.value);
+                                }
+                              }}
+                              classNames={{
+                                control: () =>
+                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                singleValue: () =>
+                                  "text-black dark:text-dark-100",
+                                input: () => "text-black dark:text-white",
+                                option: ({ isFocused, isSelected }) =>
+                                  [
+                                    "text-black dark:text-white",
+                                    "bg-white dark:bg-dark-800",
+                                    isFocused && "bg-gray-100 dark:bg-gray-700",
+                                    isSelected && "bg-blue-500 text-white",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" "),
+                                menu: () => "bg-white dark:bg-gray-800",
+                                menuList: () => "bg-white dark:bg-gray-800",
+                              }}
+                              isDisabled={isDisabled}
+                            />
+                            {/* </div> */}
                           </>
                         )}
 
-                        <div
-                          data-tooltip-id="withdrawal-disabled-tooltip"
-                          data-tooltip-content={tooltipMessage}
-                        >
-                          <Input
-                            placeholder=""
-                            label={
-                              <>
-                                받는주소 <span className="text-red-500">*</span>
-                              </>
-                            }
-                            {...register("address")}
-                            error={errors?.address?.message}
-                            disabled={isDisabled}
-                          />
+                        <div className="-mb-3 flex items-center">
+                          <label className="">
+                            받는주소 <span className="text-red-500">*</span>
+                          </label>
+                          {isDisabled && <DisabledInfoIcon />}
                         </div>
+                        {/* <div */}
+                        {/* data-tooltip-id="withdrawal-disabled-tooltip" */}
+                        {/*   data-tooltip-content={tooltipMessage} */}
+                        {/* > */}
+                        <Input
+                          placeholder=""
+                          {...register("address")}
+                          error={errors?.address?.message}
+                          disabled={isDisabled}
+                        />
+                        {/*   </div> */}
                       </>
                     )}
 
@@ -383,112 +397,117 @@ export default function WithdrawalRequestForm() {
                       <>
                         {agencyBank && (
                           <>
-                            <label className="-mb-4">최근받은계정</label>
-                            <div
-                              data-tooltip-id="withdrawal-disabled-tooltip"
-                              data-tooltip-content={tooltipMessage}
-                            >
-                              <ReactSelect
-                                options={receivedAccountOptions}
-                                value={selectedAccountOption}
-                                getOptionValue={(option) => option.value}
-                                placeholder="계정을 선택하세요"
-                                onChange={(selected) => {
-                                  if (isWithdrawal) {
-                                    setSelectedAccountOption(selected);
-                                    setValue(
-                                      "bankAccount",
-                                      selected.bankData.bankaccount,
-                                      { shouldValidate: true },
-                                    );
-                                  }
-                                }}
-                                classNames={{
-                                  control: () =>
-                                    "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                                  singleValue: () =>
-                                    "text-black dark:text-dark-100",
-                                  input: () => "text-black dark:text-white",
-                                  option: ({ isFocused, isSelected }) =>
-                                    [
-                                      "text-black dark:text-white",
-                                      "bg-white dark:bg-dark-800",
-                                      isFocused &&
-                                        "bg-gray-100 dark:bg-gray-700",
-                                      isSelected && "bg-blue-500 text-white",
-                                    ]
-                                      .filter(Boolean)
-                                      .join(" "),
-                                  menu: () => "bg-white dark:bg-gray-800",
-                                  menuList: () => "bg-white dark:bg-gray-800",
-                                }}
-                                isDisabled={isDisabled}
-                              />
+                            <div className="-mb-3 flex items-center">
+                              <label className="">최근받은계정</label>
+                              {isDisabled && <DisabledInfoIcon />}
                             </div>
+                            {/* <div */}
+                            {/*   data-tooltip-id="withdrawal-disabled-tooltip" */}
+                            {/*   data-tooltip-content={tooltipMessage} */}
+                            {/* > */}
+                            <ReactSelect
+                              options={receivedAccountOptions}
+                              value={selectedAccountOption}
+                              getOptionValue={(option) => option.value}
+                              placeholder="계정을 선택하세요"
+                              onChange={(selected) => {
+                                if (isWithdrawal) {
+                                  setSelectedAccountOption(selected);
+                                  setValue(
+                                    "bankAccount",
+                                    selected.bankData.bankaccount,
+                                    { shouldValidate: true },
+                                  );
+                                }
+                              }}
+                              classNames={{
+                                control: () =>
+                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                singleValue: () =>
+                                  "text-black dark:text-dark-100",
+                                input: () => "text-black dark:text-white",
+                                option: ({ isFocused, isSelected }) =>
+                                  [
+                                    "text-black dark:text-white",
+                                    "bg-white dark:bg-dark-800",
+                                    isFocused && "bg-gray-100 dark:bg-gray-700",
+                                    isSelected && "bg-blue-500 text-white",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" "),
+                                menu: () => "bg-white dark:bg-gray-800",
+                                menuList: () => "bg-white dark:bg-gray-800",
+                              }}
+                              isDisabled={isDisabled}
+                            />
+                            {/* </div> */}
                           </>
                         )}
 
-                        <label className="-mb-4">
-                          받는은행 <span className="text-red-500">*</span>
-                        </label>
-                        <div
-                          data-tooltip-id="withdrawal-disabled-tooltip"
-                          data-tooltip-content={tooltipMessage}
-                        >
-                          <ReactSelect
-                            options={bankOptions}
-                            value={selectedOption}
-                            getOptionValue={(option) => option.value}
-                            onChange={(selected) => {
-                              if (isWithdrawal) {
-                                setSelectedOption(selected);
-                                setValue(
-                                  "bankName",
-                                  selected.bankData.banknameen,
-                                  {
-                                    shouldValidate: true,
-                                  },
-                                );
-                              }
-                            }}
-                            classNames={{
-                              control: () =>
-                                "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                              singleValue: () =>
-                                "text-black dark:text-dark-100",
-                              input: () => "text-black dark:text-white",
-                              option: ({ isFocused, isSelected }) =>
-                                [
-                                  "text-black dark:text-white",
-                                  "bg-white dark:bg-dark-800",
-                                  isFocused && "bg-gray-100 dark:bg-gray-700",
-                                  isSelected && "bg-blue-500 text-white",
-                                ]
-                                  .filter(Boolean)
-                                  .join(" "),
-                              menu: () => "bg-white dark:bg-gray-800",
-                              menuList: () => "bg-white dark:bg-gray-800",
-                            }}
-                            isDisabled={isDisabled}
-                          />
+                        <div className="-mb-3 flex items-center">
+                          <label className="">
+                            받는은행 <span className="text-red-500">*</span>
+                          </label>
+                          {isDisabled && <DisabledInfoIcon />}
                         </div>
-
-                        <div
-                          data-tooltip-id="withdrawal-disabled-tooltip"
-                          data-tooltip-content={tooltipMessage}
-                        >
-                          <Input
-                            placeholder=""
-                            label={
-                              <>
-                                받는계정 <span className="text-red-500">*</span>
-                              </>
+                        {/* <div */}
+                        {/*   data-tooltip-id="withdrawal-disabled-tooltip" */}
+                        {/*   data-tooltip-content={tooltipMessage} */}
+                        {/* > */}
+                        <ReactSelect
+                          options={bankOptions}
+                          value={selectedOption}
+                          getOptionValue={(option) => option.value}
+                          onChange={(selected) => {
+                            if (isWithdrawal) {
+                              setSelectedOption(selected);
+                              setValue(
+                                "bankName",
+                                selected.bankData.banknameen,
+                                {
+                                  shouldValidate: true,
+                                },
+                              );
                             }
-                            {...register("bankAccount")}
-                            error={errors?.bankAccount?.message}
-                            disabled={isDisabled}
-                          />
+                          }}
+                          classNames={{
+                            control: () =>
+                              "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                            singleValue: () => "text-black dark:text-dark-100",
+                            input: () => "text-black dark:text-white",
+                            option: ({ isFocused, isSelected }) =>
+                              [
+                                "text-black dark:text-white",
+                                "bg-white dark:bg-dark-800",
+                                isFocused && "bg-gray-100 dark:bg-gray-700",
+                                isSelected && "bg-blue-500 text-white",
+                              ]
+                                .filter(Boolean)
+                                .join(" "),
+                            menu: () => "bg-white dark:bg-gray-800",
+                            menuList: () => "bg-white dark:bg-gray-800",
+                          }}
+                          isDisabled={isDisabled}
+                        />
+                        {/* </div> */}
+
+                        <div className="-mb-3 flex items-center">
+                          <label className="">
+                            받는계정 <span className="text-red-500">*</span>
+                          </label>
+                          {isDisabled && <DisabledInfoIcon />}
                         </div>
+                        {/* <div */}
+                        {/*   data-tooltip-id="withdrawal-disabled-tooltip" */}
+                        {/*   data-tooltip-content={tooltipMessage} */}
+                        {/* > */}
+                        <Input
+                          placeholder=""
+                          {...register("bankAccount")}
+                          error={errors?.bankAccount?.message}
+                          disabled={isDisabled}
+                        />
+                        {/* </div> */}
                       </>
                     )}
                   </div>
@@ -498,18 +517,21 @@ export default function WithdrawalRequestForm() {
                   <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
                     취소
                   </Button>
-                  <div
-                    data-tooltip-id="withdrawal-disabled-tooltip"
-                    data-tooltip-content={tooltipMessage}
-                  >
-                    <Button
-                      type="submit"
-                      className="w-[250px] min-w-[7rem] text-base font-medium"
-                      color="primary"
-                      disabled={!isValid || isDisabled}
+                  <div className="flex items-center">
+                    <div
+                      data-tooltip-id="withdrawal-disabled-tooltip"
+                      data-tooltip-content={tooltipMessage}
                     >
-                      확인
-                    </Button>
+                      <Button
+                        type="submit"
+                        className="w-[250px] min-w-[7rem] text-base font-medium"
+                        color="primary"
+                        disabled={!isValid || isDisabled}
+                      >
+                        확인
+                      </Button>
+                    </div>
+                    {isDisabled && <DisabledInfoIcon />}
                   </div>
                 </div>
               </form>
