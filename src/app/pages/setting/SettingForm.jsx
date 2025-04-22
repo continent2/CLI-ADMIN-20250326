@@ -566,7 +566,7 @@ export default function SettingForm() {
             </div>
 
             {/* Bank Form */}
-            <div className="col-span-12 md:col-span-6">
+            <div className="col-span-12 md:col-span-6 -mt-[74px]">
               <form
                 autoComplete="off"
                 onSubmit={handleSubmitBank(onSubmitBank)}

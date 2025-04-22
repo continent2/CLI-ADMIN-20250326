@@ -7,10 +7,10 @@ import { useDocumentTitle } from "hooks";
 
 // ----------------------------------------------------------------------
 
-const Page = ({ title = "", component = Fragment, children }) => {
+const Page = ({ title = "", subTitle = "", component = Fragment, children }) => {
   const Component = component;
   useDocumentTitle(title );
-  return <Component>{children}</Component>;
+  return <Component className="space-y-2">{children} <p>{subTitle}</p></Component>;
 };
 
 Page.propTypes = {

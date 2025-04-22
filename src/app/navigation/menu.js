@@ -82,7 +82,7 @@ export const menu = {
       path: path(ROOT_MENU, "/withdrawalRequest"),
       type: NAV_TYPE_ITEM,
       title: "",
-      transKey: "출금 요청",
+      transKey:  "출금 요청",
       Icon: ArrowRightStartOnRectangleIcon,
     },
     {

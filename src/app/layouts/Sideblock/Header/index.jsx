@@ -67,6 +67,8 @@ export function Header() {
     },
   ];
 
+  const isWithdrawRequestPage = location.pathname === "/withdrawalRequest";
+
   return (
     <header
       className={clsx(
@@ -83,6 +85,18 @@ export function Header() {
           <h1 className="text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
             {allPathnames.find((val) => val.path === pathname)?.label}
           </h1>
+
+          {/* {isWithdrawRequestPage && ( */}
+          {/*   <p className="text-gray-400"> */}
+          {/*     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do */}
+          {/*     eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut */}
+          {/*     enim ad minim veniam, quis nostrud exercitation ullamco laboris */}
+          {/*     nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in */}
+          {/*     reprehenderit in voluptate velit esse cillum dolore eu fugiat */}
+          {/*     nulla pariatur. Excepteur sint occaecat cupidatat non proident, */}
+          {/*     sunt in culpa qui officia deserunt mollit anim id est laborum. */}
+          {/*   </p> */}
+          {/* )} */}
           {/* {pathname.includes("setting") ? (
             <h1 className="text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:text-2xl">
               설정
