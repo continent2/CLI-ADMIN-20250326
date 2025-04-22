@@ -22,7 +22,7 @@ const initialState = {
   SocialGroupId: "",
   managerSocialId: "",
   isCrypto: 1,
-  isReceiveAgencyOrSite: null,
+  isReceiveAgencyOrSite: 1,
   bankName: "",
   bankId: "",
   address: "",
