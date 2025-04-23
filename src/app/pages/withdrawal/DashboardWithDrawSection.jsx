@@ -13,10 +13,14 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { CheckCircleIcon } from "@heroicons/react/24/outline/index.js";
+import {
+  CheckCircleIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/outline/index.js";
 import ReactSelect from "react-select";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
 import { toast } from "sonner";
+import { Tooltip } from "components/shared/Tooltip";
 
 export const initialState = {
   amountFrom: "",
@@ -47,12 +51,12 @@ export default function WithdrawalRequestForm() {
   const [selectedAccountOption, setSelectedAccountOption] = useState("");
 
   const bankOptions = banks?.map((bank) => ({
-    value: bank, // store the whole bank object
+    value: bank,
     label: (
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
           src={bank.urllogo || "/images/dummy-bank.png"}
-          alt={bank.banknameen}
+          alt={bank.banknamenative}
           style={{ width: 20, height: 20 }}
           onError={(e) => {
             e.currentTarget.src = "/images/dummy-bank.png";
@@ -85,20 +89,38 @@ export default function WithdrawalRequestForm() {
   });
 
   const isCrypto = getValues("isCrypto");
-    const onSubmit = async (data) => {
+  const isWithdrawal = getValues("isWithdrawal") === "가능";
+  const isDisabled = !isWithdrawal;
+  const tooltipMessage =
+    "출금 가능한 금액이 없거나 선행하는 출금 건이 진행 중입니다";
+
+  const DisabledInfoIcon = () => (
+    <span
+      data-tooltip-id="withdrawal-disabled-tooltip"
+      data-tooltip-content={tooltipMessage}
+      className="ml-2 inline-flex items-center text-gray-400"
+    >
+      <InformationCircleIcon className="h-5 w-5" />
+    </span>
+  );
+
+  const onSubmit = async (data) => {
+    if (isDisabled) return;
+
     const payload = {
-      // amountfrom: "",
-      // currencyfrom: "",
       amount: "12052.424",
-      currency: data.isCrypto === 1 ? "USDT" : "KRW", // USDT for crypto, KRW for fiat
+      currency: data.isCrypto === 1 ? "USDT" : "KRW",
       iscrypto: data.isCrypto,
-      bankid: data.isCrypto === 0 ? agencyBank.find((bank) => data.bankName === bank["bank.banknameen"])["bank.id"]: "",
+      bankid:
+        data.isCrypto === 0
+          ? agencyBank.find(
+              (bank) => data.bankName === bank["bank.banknamenative"],
+            )["bank.id"]
+          : "",
       bankname: data.isCrypto === 0 ? data.bankName : "",
-      // bankcode: "",
       bankaccount: data.isCrypto === 0 ? data.bankAccount : "",
-      address: data.isCrypto === 1 ? data.address : "", // address only if crypto
-      // nettype: "",
-      quotesignature: data.quoteSignature, //quoteSignature only if crypto
+      address: data.isCrypto === 1 ? data.address : "",
+      quotesignature: data.quoteSignature,
     };
 
     try {
@@ -107,28 +129,26 @@ export default function WithdrawalRequestForm() {
           Authorization: token,
           "Content-Type": "application/json",
         },
-        // timeout: 5000, // Timeout after 5 seconds
       });
 
       if (response.data.status === "ERR") {
-          setModalData((prev) => ({
+        setModalData((prev) => ({
           ...prev,
           message: response.data.message,
-          color: "error", // Fixing typo
+          color: "error",
           title: "Failed",
         }));
         setisModalVisible(true);
         toast.error("Fail");
       } else {
-setModalData((prev) => ({
+        setModalData((prev) => ({
           ...prev,
           message: response.data.message,
-          color: "success", // Fixing typo
+          color: "success",
           title: "Success",
         }));
         setisModalVisible(true);
         toast.success("Success");
-
       }
     } catch (err) {
       setModalData((prev) => ({
@@ -155,7 +175,6 @@ setModalData((prev) => ({
 
   useEffect(() => {
     bankInfo();
-    // agencyAccountInfo(isCrypto);
     withdrawInfo();
   }, []);
 
@@ -165,29 +184,35 @@ setModalData((prev) => ({
 
   useEffect(() => {
     if (withdraw) {
-      setValue("amountField", formatNumberWithCommas(withdraw.amount), { shouldValidate: true });
-      setValue("quoteSignature", withdraw.quotesignature, { shouldValidate: true });
+      setValue("amountField", formatNumberWithCommas(withdraw.amount), {
+        shouldValidate: true,
+      });
+      setValue("quoteSignature", withdraw.quotesignature, {
+        shouldValidate: true,
+      });
       if (isCrypto === 1) {
-        setValue("amountField", formatNumberWithCommas(withdraw.amount, { shouldValidate: true }));
-        setValue("amount", formatNumberWithCommas(withdraw.amount_in_base), { shouldValidate: true });
+        setValue(
+          "amountField",
+          formatNumberWithCommas(withdraw.amount, { shouldValidate: true }),
+        );
+        setValue("amount", formatNumberWithCommas(withdraw.amount_in_base), {
+          shouldValidate: true,
+        });
       } else if (isCrypto === 0) {
         setValue(
           "amountField",
-          formatNumberWithCommas(withdraw.amount_in_quote), { shouldValidate: true },
+          formatNumberWithCommas(withdraw.amount_in_quote),
+          { shouldValidate: true },
         );
-        setValue("amount", formatNumberWithCommas(withdraw.amount_in_quote), { shouldValidate: true });
-
-        //sets the bankName byDefault first value
-        // if (bankOptions?.length > 0) {
-        //   const firstBank = bankOptions[0];
-        //   setSelectedOption(firstBank); // for ReactSelect UI
-        //   setValue("bankName", firstBank.value.banknameen); // for your form schema
-        // }
+        setValue("amount", formatNumberWithCommas(withdraw.amount_in_quote), {
+          shouldValidate: true,
+        });
       }
-      setValue("isWithdrawal", withdraw.iswithdrawable ? "가능" : "불가능", { shouldValidate: true });
+      setValue("isWithdrawal", withdraw.iswithdrawable ? "가능" : "불가능", {
+        shouldValidate: true,
+      });
     }
   }, [withdraw, isCrypto, setValue]);
-
 
   const receivedAccountOptions = agencyBank
     ?.filter((b) => b.bankaccount)
@@ -197,22 +222,27 @@ setModalData((prev) => ({
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <img
             src={b["bank.urllogo"] || "/images/dummy-bank.png"}
-            alt={b.banknameen}
+            alt={b.banknamenative}
             style={{ width: 20, height: 20 }}
             onError={(e) => {
               e.currentTarget.src = "/images/dummy-bank.png";
             }}
           />
-          <div className="flex items-center gap-1 text-xs text-gray-500"> 
-            <div className="text-xs text-gray-500">{b["bank.banknameen"]}</div> - <div className="text-xs text-gray-500">{b["bankaccount"]}</div>
+          <div className="flex items-center gap-1 text-xs text-gray-500">
+            <div className="text-xs text-gray-500">
+              {b["bank.banknamenative"]}
+            </div>{" "}
+            - <div className="text-xs text-gray-500">{b["bankaccount"]}</div>
           </div>
         </div>
       ),
-      raw: b, // store raw bank object to use onChange
+      raw: b,
     }));
+
   return (
     <Card>
       <Page title="출금 요청">
+        <Tooltip id="withdrawal-disabled-tooltip" />
         <div className="transition-content grid w-full grid-rows-[auto_1fr] pb-8">
           <h2 className="px-5 pt-5 text-sm font-medium tracking-wide text-gray-800 dark:text-dark-50">
             출금 요청
@@ -221,7 +251,6 @@ setModalData((prev) => ({
           <div>
             <div className="h-fit rounded-lg border border-none border-gray-200 bg-white shadow-sm dark:bg-dark-700">
               <div className="p-2">
-                {/*Form*/}
                 <form
                   autoComplete="off"
                   onSubmit={handleSubmit(onSubmit)}
@@ -232,20 +261,27 @@ setModalData((prev) => ({
                       <div className="mx-auto">
                         <label className="col-span-2">출금종류</label>
                         <div className="col-span-10">
-                          <div className="mt-1 flex">
+                          <div className="mt-1 flex items-center">
                             <span className="label me-2">USDT</span>
-                            <Switch
-                            label="KRW"
-                            checked={watch("isCrypto") === 0}
-                            onChange={(e) =>
-                              setValue("isCrypto", e.target.checked ? 0 : 1, { shouldValidate: true })
-                            }
-                            error={errors?.isCrypto?.message}
-                          />
+                            <div className="flex items-center">
+                              <Switch
+                                label="KRW"
+                                checked={watch("isCrypto") === 0}
+                                onChange={(e) => {
+                                  setValue(
+                                    "isCrypto",
+                                    e.target.checked ? 0 : 1,
+                                    { shouldValidate: true },
+                                  );
+                                }}
+                                error={errors?.isCrypto?.message}
+                                disabled={isDisabled}
+                              />
+                              {isDisabled && <DisabledInfoIcon />}
+                            </div>
                           </div>
                         </div>
                       </div>
-                      {/*Amount*/}
                       <Input
                         placeholder=""
                         label="출금가능액"
@@ -254,7 +290,6 @@ setModalData((prev) => ({
                         disabled
                       />
 
-                      {/*isWithdrawal*/}
                       <Input
                         placeholder=""
                         label="출금가능여부"
@@ -262,8 +297,6 @@ setModalData((prev) => ({
                         error={errors?.isWithdrawal?.message}
                         disabled
                       />
-
-                      {/*isCrypto*/}
                     </div>
                     <div className="flex w-full flex-col gap-5 rounded-lg p-4 pb-5">
                       <Input
@@ -278,182 +311,197 @@ setModalData((prev) => ({
                         disabled
                       />
 
-                      {/*USDT*/}
-                      {/*Expected withdrawal amount*/}
                       {watch("isCrypto") === 1 && (
                         <>
-                          {/*Recently received address*/}
-                                                  {agencyBank && (
-                          <>
-                            <label className="-mb-4">최근 받은 주소</label>
-                            <ReactSelect
-                              options={[
-                                ...(agencyBank || [])
-                                  .filter((b) => b.address) // filters out falsy values like null, undefined, or empty string
-                                  .map((b) => ({
-                                    label: b.address,
-                                    value: b.id,
-                                  })),
-                              ]}
-                              value={selectedAgencyBank}
-                              placeholder="주소를 선택하세요"
-                              onChange={(item) => {
-                                setSelectedAgencyBank(item);
-                                const selected = agencyBank.find(
-                                  (b) => b?.id === item?.value,
-                                );
-                                if (selected) {
-                                  OnReceivedAddressChange(selected.id);
-                                }
-                              }}
-                              classNames={{
-                                control: () =>
-                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                                singleValue: () =>
-                                  "text-black dark:text-dark-100",
-                                input: () => "text-black dark:text-white",
-                                option: ({ isFocused, isSelected }) =>
-                                  [
-                                    "text-black dark:text-white",
-                                    "bg-white dark:bg-dark-800",
-                                    isFocused && "bg-gray-100 dark:bg-gray-700",
-                                    isSelected && "bg-blue-500 text-white",
-                                  ]
-                                    .filter(Boolean)
-                                    .join(" "),
-                                menu: () => "bg-white dark:bg-gray-800",
-                                menuList: () => "bg-white dark:bg-gray-800",
-                              }}
-                            />
-                          </>
-                        )}
+                          {agencyBank && (
+                            <>
+                              <div className="-mb-4 flex items-center">
+                                <label className="">최근 받은 주소</label>
+                                {isDisabled && <DisabledInfoIcon />}
+                              </div>
+                              <ReactSelect
+                                options={[
+                                  ...(agencyBank || [])
+                                    .filter((b) => b.address)
+                                    .map((b) => ({
+                                      label: b.address,
+                                      value: b.id,
+                                    })),
+                                ]}
+                                value={selectedAgencyBank}
+                                placeholder="주소를 선택하세요"
+                                onChange={(item) => {
+                                  if (!isDisabled) {
+                                    setSelectedAgencyBank(item);
+                                    const selected = agencyBank.find(
+                                      (b) => b?.id === item?.value,
+                                    );
+                                    if (selected) {
+                                      OnReceivedAddressChange(selected.id);
+                                    }
+                                  }
+                                }}
+                                classNames={{
+                                  control: () =>
+                                    "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                  singleValue: () =>
+                                    "text-black dark:text-dark-100",
+                                  input: () => "text-black dark:text-white",
+                                  option: ({ isFocused, isSelected }) =>
+                                    [
+                                      "text-black dark:text-white",
+                                      "bg-white dark:bg-dark-800",
+                                      isFocused &&
+                                        "bg-gray-100 dark:bg-gray-700",
+                                      isSelected && "bg-blue-500 text-white",
+                                    ]
+                                      .filter(Boolean)
+                                      .join(" "),
+                                  menu: () => "bg-white dark:bg-gray-800",
+                                  menuList: () => "bg-white dark:bg-gray-800",
+                                }}
+                                isDisabled={isDisabled}
+                              />
+                            </>
+                          )}
 
+                          <div className="-mb-4 flex items-center">
+                            <label className="">
+                              받는주소 <span className="text-red-500">*</span>
+                            </label>
+                            {isDisabled && <DisabledInfoIcon />}
+                          </div>
                           <Input
                             placeholder=""
-                            label={
-                              <>
-                                받는주소 <span className="text-red-500">*</span>
-                              </>
-                            }
                             {...register("address")}
                             error={errors?.address?.message}
+                            disabled={isDisabled}
                           />
                         </>
                       )}
 
-                      {/*KRW*/}
-                      {/*Expected withdrawal amount*/}
                       {watch("isCrypto") === 0 && (
                         <>
-                          {/*Recently received account*/}
-                                                  {agencyBank && (
-                          <>
-                            <label className="-mb-4">최근받은계정</label>
-                            <ReactSelect
-                              options={receivedAccountOptions}
-                              placeholder="계정을 선택하세요"
-                              onChange={(selected) => {
-                                setSelectedAccountOption(selected);
-                                setValue(
-                                  "bankAccount",
-                                  selected.value["bankaccount"], { shouldValidate: true },
-                                );
-                                // if (selected?.raw) {
-                                // const selectedBank = selected.raw;
-                                // onReceivedAccountChange(selectedBank.id);
-                                // }
-                              }}
-                              classNames={{
-                                control: () =>
-                                  "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                                singleValue: () =>
-                                  "text-black dark:text-dark-100",
-                                input: () => "text-black dark:text-white",
-                                option: ({ isFocused, isSelected }) =>
-                                  [
-                                    "text-black dark:text-white",
-                                    "bg-white dark:bg-dark-800",
-                                    isFocused && "bg-gray-100 dark:bg-gray-700",
-                                    isSelected && "bg-blue-500 text-white",
-                                  ]
-                                    .filter(Boolean)
-                                    .join(" "),
-                                menu: () => "bg-white dark:bg-gray-800",
-                                menuList: () => "bg-white dark:bg-gray-800",
-                              }}
-                            />
-                          </>
-                        )}
-
-
-                                                 {/*Receiving bank*/}
-                        <label className="-mb-4">
-                          받는은행 <span className="text-red-500">*</span>
-                        </label>
-                        <ReactSelect
-                          options={bankOptions}
-                          value={selectedOption}
-                          onChange={(selected) => {
-                            setSelectedOption(selected); // For select UI
-                            setValue("bankName", selected.value["banknameen"], { shouldValidate: true });
-                          }}
-                          classNames={{
-                            control: () =>
-                              "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
-                            singleValue: () => "text-black dark:text-dark-100",
-                            input: () => "text-black dark:text-white",
-                            option: ({ isFocused, isSelected }) =>
-                              [
-                                "text-black dark:text-white",
-                                "bg-white dark:bg-dark-800", // ✅ background of dropdown options
-                                isFocused && "bg-gray-100 dark:bg-gray-700",
-                                isSelected && "bg-blue-500 text-white",
-                              ]
-                                .filter(Boolean)
-                                .join(" "),
-                            menu: () => "bg-white dark:bg-gray-800",
-                            menuList: () => "bg-white dark:bg-gray-800",
-                          }}
-                        />
-
-                        {/*Receiving account*/}
-                        <Input
-                          placeholder=""
-                          label={
+                          {agencyBank && (
                             <>
-                              받는계정 <span className="text-red-500">*</span>
+                              <div className="-mb-4 flex items-center">
+                                <label className="">최근받은계정</label>
+                                {isDisabled && <DisabledInfoIcon />}
+                              </div>
+                              <ReactSelect
+                                options={receivedAccountOptions}
+                                placeholder="계정을 선택하세요"
+                                onChange={(selected) => {
+                                  setSelectedAccountOption(selected);
+                                  setValue(
+                                    "bankAccount",
+                                    selected.value["bankaccount"],
+                                    { shouldValidate: true },
+                                  );
+                                }}
+                                classNames={{
+                                  control: () =>
+                                    "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                                  singleValue: () =>
+                                    "text-black dark:text-dark-100",
+                                  input: () => "text-black dark:text-white",
+                                  option: ({ isFocused, isSelected }) =>
+                                    [
+                                      "text-black dark:text-white",
+                                      "bg-white dark:bg-dark-800",
+                                      isFocused &&
+                                        "bg-gray-100 dark:bg-gray-700",
+                                      isSelected && "bg-blue-500 text-white",
+                                    ]
+                                      .filter(Boolean)
+                                      .join(" "),
+                                  menu: () => "bg-white dark:bg-gray-800",
+                                  menuList: () => "bg-white dark:bg-gray-800",
+                                }}
+                                isDisabled={isDisabled}
+                              />
                             </>
-                          }
-                          {...register("bankAccount")}
-                          error={errors?.bankAccount?.message}
-                        />
-                      </>
-                    )}
+                          )}
+
+                          <div className="-mb-4 flex items-center">
+                            <label className="">
+                              받는은행 <span className="text-red-500">*</span>
+                            </label>
+                            {isDisabled && <DisabledInfoIcon />}
+                          </div>
+                          <ReactSelect
+                            options={bankOptions}
+                            value={selectedOption}
+                            onChange={(selected) => {
+                              setSelectedOption(selected);
+                              setValue(
+                                "bankName",
+                                selected.value["banknamenative"],
+                                { shouldValidate: true },
+                              );
+                            }}
+                            classNames={{
+                              control: () =>
+                                "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                              singleValue: () =>
+                                "text-black dark:text-dark-100",
+                              input: () => "text-black dark:text-white",
+                              option: ({ isFocused, isSelected }) =>
+                                [
+                                  "text-black dark:text-white",
+                                  "bg-white dark:bg-dark-800",
+                                  isFocused && "bg-gray-100 dark:bg-gray-700",
+                                  isSelected && "bg-blue-500 text-white",
+                                ]
+                                  .filter(Boolean)
+                                  .join(" "),
+                              menu: () => "bg-white dark:bg-gray-800",
+                              menuList: () => "bg-white dark:bg-gray-800",
+                            }}
+                            isDisabled={isDisabled}
+                          />
+
+                          <div className="-mb-4 flex items-center">
+                            <label className="">
+                              받는계정 <span className="text-red-500">*</span>
+                            </label>
+                            {isDisabled && <DisabledInfoIcon />}
+                          </div>
+                          <Input
+                            placeholder=""
+                            {...register("bankAccount")}
+                            error={errors?.bankAccount?.message}
+                            disabled={isDisabled}
+                          />
+                        </>
+                      )}
                     </div>
                   </div>
-                  {/*Action buttons*/}
-                  <div className="mt-[14px] px-4 flex items-center justify-center gap-2 rtl:space-x-reverse">
+                  <div className="mt-[14px] flex items-center justify-center gap-2 px-4 rtl:space-x-reverse">
                     <Button
                       onClick={() => {
                         resetField("bankAccount");
                         setSelectedOption(null);
-                        // resetField("amount");
                         resetField("address");
                         resetField("value");
-                        // resetField("quoteSignature");
-                        // resetField("amountField");
+                        setSelectedAgencyBank(null);
+                        setSelectedAccountOption(null);
                       }}
-                      className="flex-1 min-w-1/2 px-5 text-base font-medium">
+                      className="min-w-1/2 flex-1 px-5 text-base font-medium"
+                    >
                       취소
                     </Button>
-                    <Button
-                      type="submit"
-                      className="flex-1 min-w-1/2 text-base font-medium"
-                      color="primary"
-                      disabled={!isValid}
-                    >
-                      확인
-                    </Button>
+                    <div className="flex items-center">
+                      <Button
+                        type="submit"
+                        className="min-w-1/2 flex-1 text-base font-medium"
+                        color="primary"
+                        disabled={!isValid || isDisabled}
+                      >
+                        확인
+                      </Button>
+                      {isDisabled && <DisabledInfoIcon />}
+                    </div>
                   </div>
                 </form>
               </div>
@@ -461,12 +509,11 @@ setModalData((prev) => ({
           </div>
         </div>
 
-        {/*modal*/}
         <Transition appear show={isModalVisible} as={Fragment}>
           <Dialog
             as="div"
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-            onClose={close}
+            onClose={() => setisModalVisible(false)}
           >
             <TransitionChild
               as={Fragment}

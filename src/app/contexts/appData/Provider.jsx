@@ -67,7 +67,7 @@ export function AppDataProvider({ children }) {
     try {
       const authToken = localStorage.getItem("authToken");
       const response = await axios.get(
-        `/query/list/plain/bank/_/_/id/ASC/0/100`,
+        `/query/list/plain/bank/active/1/id/ASC/0/100`,
         {
           headers: {
             Authorization: authToken,

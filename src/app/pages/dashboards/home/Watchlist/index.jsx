@@ -37,24 +37,15 @@ const baseChartConfig = {
     zoom: {
       enabled: true,
       type: "x",
-      // autoScaleYaxis: true
     },
   },
   dataLabels: { enabled: false },
   stroke: { curve: "smooth", width: 3 },
+  yaxis: {
+    show: false,
+  },
   tooltip: {
     enabled: true,
-    x: {
-      formatter: function (val, opts) {
-        console.log(opts, val);
-        return `${val}h`;
-      },
-    },
-    y: {
-      formatter: function (val) {
-        return "$" + val.toLocaleString();
-      },
-    },
     grid: { padding: { left: 0, right: 0, top: -28, bottom: 0 } },
     yaxis: {
       show: false,
@@ -74,15 +65,10 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
         ? parseInt(item.hourvalue) % 2 === 0
           ? `${item.hourvalue}h`
           : ""
-        : index % 2 == 0
-          ? new Date(item.datevalue).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            })
-          : "", 
+        : index % 2 === 0
+          ? formatDateLabel(item.datevalue)
+          : "",
     ) || [];
-
-  console.log("dd", data);
 
   const trend =
     chartPoints.length > 1
@@ -107,40 +93,49 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
       },
     },
     tooltip: {
-      enabled: true,
+      ...baseChartConfig.tooltip,
       x: {
         formatter: function (val, opts) {
           if (isHourly) {
             return `${val}h`;
           } else {
-            // Get the original data point
             const dataPoint = data[opts.dataPointIndex];
-            console.log("data poi", dataPoint);
-            // Format the YYYYMMDD date properly
-            const dateStr = dataPoint.datevalue;
-            const formattedDate = new Date(dateStr).toLocaleDateString(
-              "en-US",
-              {
-                month: "short",
-                day: "numeric",
-                weekday: "short",
-              },
-            );
-            return formattedDate; // e.g. "Mon, Apr 5, 2024"
+            return formatDateTooltip(dataPoint.datevalue);
           }
         },
       },
-    },
-    yaxis: {
-      show: false,
-      axisBorder: { show: false },
-      axisTicks: { show: false },
-      labels: { show: false },
+      y: {
+        formatter: function (val) {
+          return "$" + val.toLocaleString();
+        },
+      },
     },
   };
 
+  // Helper function to format date for labels (MM/DD)
+  function formatDateLabel(dateStr) {
+    if (!dateStr) return "";
+    const month = dateStr.slice(4, 6);
+    const day = dateStr.slice(6, 8);
+    return `${day}/${month}`;
+  }
+
+  // Helper function to format date for tooltips (Weekday, Month Day)
+  function formatDateTooltip(dateStr) {
+    if (!dateStr) return "";
+    const year = dateStr.slice(0, 4);
+    const month = dateStr.slice(4, 6);
+    const day = dateStr.slice(6, 8);
+    const date = new Date(`${year}-${month}-${day}`);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  }
+
   return (
-    <Box className="flex w-full shrink-0 flex-col sm:w-52">
+    <Box className="flex w-full shrink-0 flex-col sm:w-96">
       <div className="flex items-center gap-2">
         <div
           className={`size-6 rounded-full ${
@@ -170,21 +165,6 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
             type="line"
           />
         </div>
-        {/* <div className="mt-3 flex items-center justify-between">
-          <div
-            className={clsx(
-              `this:${trend > 0 ? "success" : "error"}`,
-              "flex items-center gap-0.5 text-sm font-medium text-this dark:text-this-lighter",
-            )}
-          >
-            {trend > 0 ? (
-              <ArrowUpIcon className="size-4" />
-            ) : (
-              <ArrowDownIcon className="size-4" />
-            )}
-            <span>{Math.abs(trend).toFixed(1)}%</span>
-          </div>
-        </div> */}
       </div>
     </Box>
   );
@@ -195,19 +175,13 @@ export function Watchlist({ data }) {
   // Process both data types
   const hourlyData = data?.stat_sum_deposit_by_hour[0] || [];
   const dailyData = data?.stat_sum_deposit_by_date[0] || [];
-  const top3 = [
+  const top5 = [
     ...new Map(
       data?.user_rank?.flat()?.map((user) => [user.userid, user]) ?? [],
     ).values(),
   ]
     .sort((a, b) => b?.sumamount - a?.sumamount)
-    .slice(0, 3);
-
-  // Format date strings (YYYYMMDD -> MM/DD)
-  const formattedDailyData = dailyData.map((item) => ({
-    ...item,
-    datevalue: `${item.datevalue.slice(4, 6)}/${item.datevalue.slice(6, 8)}`,
-  }));
+    .slice(0, 5);
 
   return (
     <Card>
@@ -215,7 +189,6 @@ export function Watchlist({ data }) {
         <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
           예금통계
         </h2>
-        {/* <ActionMenu /> */}
       </div>
 
       <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
@@ -226,16 +199,16 @@ export function Watchlist({ data }) {
           isHourly={true}
         />
         <DepositCard
-          data={formattedDailyData}
+          data={dailyData}
           title="일일 예금"
           timeUnit="날짜"
           isHourly={false}
         />
 
         <div className="flex flex-col gap-2">
-          <h2 className="w-28">상위 3개 예금주</h2>
+          <h2 className="w-28">상위 5개 예금주</h2>
           <ol className="space-y-3">
-            {top3?.map((user, index) => (
+            {top5?.map((user, index) => (
               <li key={index} className="flex items-center gap-2">
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-gray-700 dark:text-dark-100">
@@ -316,6 +289,7 @@ function ActionMenu() {
     </Menu>
   );
 }
+
 // PropTypes
 DepositCard.propTypes = {
   data: PropTypes.arrayOf(
@@ -333,5 +307,6 @@ Watchlist.propTypes = {
   data: PropTypes.shape({
     stat_sum_deposit_by_hour: PropTypes.array,
     stat_sum_deposit_by_date: PropTypes.array,
+    user_rank: PropTypes.array,
   }),
 };

@@ -12,6 +12,7 @@ import { TableConfig } from "../deposit/TableConfig.jsx";
 import { useEffect, useState } from "react";
 import { useAdminUserContext } from "../../contexts/adminUser/context.js";
 import { RoleFilter } from "../deposit/RoleFilter.jsx";
+import { SearchInput, SearchSiteInput } from "components/ui";
 
 // ----------------------------------------------------------------------
 
@@ -117,44 +118,6 @@ export function Toolbar({ table }) {
   );
 }
 
-function SearchInput({ table }) {
-  return (
-    <Input
-      value={table.getState().globalFilter}
-      onChange={(e) => table.setGlobalFilter(e.target.value)}
-      prefix={<MagnifyingGlassIcon className="size-4" />}
-      classNames={{
-        root: "shrink-0",
-        input: "text-sm ring-primary-500/50 focus:ring",
-      }}
-      placeholder="Search Name, Member Id..."
-    />
-  );
-}
-
-function SearchSiteInput({ table }) {
-  return (
-    <Input
-      value={table.getState().globalFilter}
-      onChange={(e) => table.setGlobalFilter(e.target.value)}
-      prefix={<MagnifyingGlassIcon className="size-6" />}
-      classNames={{
-        root: "h-full",
-        input: "border-0 py-4 text-sm",
-      }}
-      placeholder="Search Site"
-    />
-  );
-}
-
 Toolbar.propTypes = {
-  table: PropTypes.object,
-};
-
-SearchInput.propTypes = {
-  table: PropTypes.object,
-};
-
-SearchSiteInput.propTypes = {
   table: PropTypes.object,
 };

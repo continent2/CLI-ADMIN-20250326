@@ -225,14 +225,14 @@ const AdminUserForm = () => {
           관리자 추가
         </h2> */}
 
-        <div className="rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
+        <div className="rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-900 md:p-[38px] lg:p-[54px]">
           <form
             autoComplete="off"
             onSubmit={handleSubmit(onSubmit)}
             id="new-admin-user-form"
           >
             <div className="flex gap-4">
-              <div className="flex w-1/2 flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600">
+              <div className="flex w-1/2 flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-800">
                 <Input
                   label={
                     <>
@@ -284,14 +284,12 @@ const AdminUserForm = () => {
                   error={errors?.phoneCountryCode?.message}
                   defaultValue="+82"
                 /> */}
-                <label className="-mb-4">
-                  국가 코드
-                </label>
+                <label className="-mb-4">국가 코드</label>
                 <ReactSelect
-                  options={countryOptions?.map(country => ({
+                  options={countryOptions?.map((country) => ({
                     value: `+${country?.code}`,
                     label: `${country?.country} (+${country.code})`,
-                    code: country?.iso
+                    code: country?.iso,
                   }))}
                   components={{
                     Option: CustomOption,
@@ -309,7 +307,7 @@ const AdminUserForm = () => {
                         "!flex !items-center !justify-start !rounded-lg !bg-transparent",
                         "hover:!border-gray-400 dark:!border-dark-450",
                         state.isFocused &&
-                        "!border-primary-500 !ring-2 !ring-primary-500",
+                          "!border-primary-500 !ring-2 !ring-primary-500",
                       ),
                     singleValue: () =>
                       "!flex !items-center !text-black dark:!text-dark-100",
@@ -371,7 +369,7 @@ const AdminUserForm = () => {
                   error={errors?.email?.message}
                 />
               </div>
-              <div className="flex w-1/2 flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600">
+              <div className="flex w-1/2 flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-800">
                 <Input
                   label={
                     <>

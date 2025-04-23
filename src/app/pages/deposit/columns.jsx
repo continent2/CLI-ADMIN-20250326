@@ -119,6 +119,7 @@ export const columns = [
           </p>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
           <p>
+            ₩{" "}
             {convrate === null || convrate === undefined
               ? "N/A"
               : formatNumberWithCommas(Number(convrate || 0)?.toFixed(0)) ||

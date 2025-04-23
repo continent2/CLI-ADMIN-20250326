@@ -64,7 +64,7 @@ export function Stat1({ row }) {
         <p>({formatNumberWithCommas(count?.toFixed(0)) ?? 0})</p>
       </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>{formatNumberWithCommas(sumInQuote?.toFixed(0))} ₩ </p>
+      <p>₩ {formatNumberWithCommas(sumInQuote?.toFixed(0))}</p>
     </div>
   );
 }
@@ -81,7 +81,7 @@ export function Stat2({ row }) {
         <p>({formatNumberWithCommas(count?.toFixed(0)) ?? 0})</p>
       </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>{formatNumberWithCommas(sumInQuote?.toFixed(0))} ₩ </p>
+      <p>₩ {formatNumberWithCommas(sumInQuote?.toFixed(0))}</p>
     </div>
   );
 }

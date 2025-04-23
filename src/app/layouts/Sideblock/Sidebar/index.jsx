@@ -43,14 +43,14 @@ export function Sidebar() {
           <Menu />
         </div>
 
-        <div className="flex flex-col items-center justify-left">
+        <div className="justify-left flex flex-col items-center">
           {" "}
-          <p style={{ fontSize: "14px" }}>
+          <p style={{ fontSize: "12px" }}>
             {typeof __BUILD_DATE__ !== "undefined"
               ? __BUILD_DATE__
               : "Build date not available"}
           </p>
-          <p style={{ fontSize: "14px" }}>
+          <p style={{ fontSize: "12px" }}>
             Version{" "}
             {typeof __VERSION__ !== "undefined"
               ? __VERSION__

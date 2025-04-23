@@ -1,16 +1,15 @@
 // Import Dependencies
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 
 // Local Imports
-import { Input } from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
-import { TableConfig } from "./TableConfig";
-import { RoleFilter } from "./RoleFilter";
+import { DateFilter } from "components/shared/table/DateFilter";
+import { SearchInput, SearchSiteInput } from "components/ui";
 import { useEffect, useState } from "react";
 import { useMemberContext } from "../../contexts/member/context.js";
-import { DateFilter } from "components/shared/table/DateFilter";
+import { RoleFilter } from "./RoleFilter";
+import { TableConfig } from "./TableConfig";
 
 // ----------------------------------------------------------------------
 
@@ -124,57 +123,6 @@ export function Toolbar({ table }) {
   );
 }
 
-function SearchInput({ onSearch, value }) {
-  return (
-    <Input
-      value={value}
-      onChange={(e) => {
-        onSearch(e.target.value);
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          onSearch(e.target.value);
-        }
-      }}
-      prefix={<MagnifyingGlassIcon className="size-4" />}
-      classNames={{
-        root: "shrink-0",
-        input: "py-2 text-sm ring-primary-500/50 focus:ring",
-      }}
-      placeholder="검색"
-    />
-  );
-}
-
-function SearchSiteInput({ table, disabled }) {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  return (
-    <Input
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      prefix={<MagnifyingGlassIcon className="size-6" />}
-      classNames={{
-        root: "h-full",
-        input: "border-0 py-2 text-sm",
-      }}
-      placeholder="사이트 검색"
-      disabled={disabled}
-    />
-  );
-}
-
 Toolbar.propTypes = {
   table: PropTypes.object.isRequired,
-};
-
-SearchInput.propTypes = {
-  onSearch: PropTypes.func.isRequired,
-  value: PropTypes.string,
-  disabled: PropTypes.bool,
-};
-
-SearchSiteInput.propTypes = {
-  table: PropTypes.object,
-  disabled: PropTypes.bool,
 };

@@ -1,26 +1,19 @@
 // Import Dependencies
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 import PropTypes from "prop-types";
 
 // Local Imports
-import { Input } from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
-import { TableConfig } from "./TableConfig";
-import { RoleFilter } from "./RoleFilter";
-import { useDepositContext } from "../../contexts/deposit/context.js";
+import { SearchInput, SearchSiteInput } from "components/ui";
 import { useEffect, useState } from "react";
+import { useDepositContext } from "../../contexts/deposit/context.js";
+import { RoleFilter } from "./RoleFilter";
+import { TableConfig } from "./TableConfig";
 
 // Import Dependencies
-import { CalendarIcon } from "@heroicons/react/20/solid";
-import dayjs from "dayjs";
 
 // Local Imports
-import { Button } from "components/ui";
-import { useLocaleContext } from "app/contexts/locale/context";
-import { DatePicker } from "components/shared/form/Datepicker";
-import { ResponsiveFilter } from "components/shared/table/ResponsiveFilter";
 import { DateFilter } from "components/shared/table/DateFilter";
 
 // ----------------------------------------------------------------------
@@ -67,7 +60,6 @@ export function Toolbar({ table }) {
                   mode: "range",
                 }}
                 onDateFilter={(dates) => {
-
                   return table.options.meta.handleDateFilter(dates);
                 }}
                 value={table.options.meta.dateRange}
@@ -134,42 +126,8 @@ export function Toolbar({ table }) {
   );
 }
 
-function SearchInput({ onSearch, value }) {
-  return (
-    <Input
-      value={value}
-      onChange={(e) => onSearch(e.target.value)} // Only update state, don't trigger search
-      prefix={<MagnifyingGlassIcon className="size-4" />}
-      classNames={{
-        root: "shrink-0",
-        input: "py-2 text-sm ring-primary-500/50 focus:ring",
-      }}
-      placeholder="검색"
-    />
-  );
-}
-
-function SearchSiteInput() {
-  return (
-    <Input
-      prefix={<MagnifyingGlassIcon className="size-6" />}
-      classNames={{
-        root: "h-full",
-        input: "border-0 py-2 text-sm",
-      }}
-      placeholder="사이트 검색"
-    />
-  );
-}
-
 Toolbar.propTypes = {
   table: PropTypes.object,
 };
 
-SearchInput.propTypes = {
-  table: PropTypes.object,
-};
 
-SearchSiteInput.propTypes = {
-  table: PropTypes.object,
-};

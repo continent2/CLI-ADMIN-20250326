@@ -2,7 +2,7 @@ import { Page } from "components/shared/Page";
 import { Button, Input, Select } from "../../../components/ui/index.js";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { bankSchema, userUpdateSchema, addressSchema} from "./schema.js";
+import { bankSchema, userUpdateSchema, addressSchema } from "./schema.js";
 import axios from "../../../utils/axios.js";
 import { useEffect, useState } from "react";
 import {
@@ -51,7 +51,7 @@ export default function SettingForm() {
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
           src={bank.urllogo || "/images/dummy-bank.png"}
-          alt={bank.banknameen}
+          alt={bank.banknamenative}
           style={{ width: 20, height: 20 }}
           onError={(e) => {
             e.currentTarget.src = "/images/dummy-bank.png";
@@ -87,25 +87,33 @@ export default function SettingForm() {
           // Set default values for bank form
           if (response.data.accountbank) {
             const bank = banks?.find(
-              (b) => b.banknameen === response.data.accountbank.bankname,
+              (b) => b.banknamenative === response.data.accountbank.bankname,
             );
             if (bank) {
               const bankOption = bankOptions?.find(
                 (opt) => opt.value.id === bank.id,
               );
               setSelectedOption(bankOption);
-              setValue("bankName", bank.banknameen);
+              setValue("bankName", bank.banknamenative);
               setValue("bankAccount", response.data.accountbank.bankaccount);
             }
           }
 
           // Set default value for notification duration
           if (response.data.notification_duration) {
-            setNotificationValue("notificationDuration", response.data.notification_duration.toString());
-            localStorage.setItem("notification-duration", response.data.notification_duration.toString());
+            setNotificationValue(
+              "notificationDuration",
+              response.data.notification_duration.toString(),
+            );
+            localStorage.setItem(
+              "notification-duration",
+              response.data.notification_duration.toString(),
+            );
           }
         } else {
-          toast.error(response.data.message || "설정을 불러오는 데 실패했습니다");
+          toast.error(
+            response.data.message || "설정을 불러오는 데 실패했습니다",
+          );
         }
       } catch (error) {
         console.error("Failed to fetch settings:", error);
@@ -164,13 +172,17 @@ export default function SettingForm() {
   const {
     register: registerNotification,
     handleSubmit: handleSubmitNotification,
-    formState: { errors: notificationErrors, isValid: registerNotificationIsValid },
+    formState: {
+      errors: notificationErrors,
+      isValid: registerNotificationIsValid,
+    },
     setValue: setNotificationValue,
   } = useForm({
     // resolver: yupResolver(notificationSchema),
     mode: "all",
     defaultValues: {
-      notificationDuration: localStorage.getItem("notification-duration") || "30",
+      notificationDuration:
+        localStorage.getItem("notification-duration") || "30",
     },
   });
 
@@ -178,11 +190,11 @@ export default function SettingForm() {
   useEffect(() => {
     if (settingsData?.accountbank && bankOptions?.length > 0) {
       const currentBank = bankOptions.find(
-        (opt) => opt.value.banknameen === settingsData.accountbank.bankname,
+        (opt) => opt.value.banknamenative === settingsData.accountbank.bankname,
       );
       if (currentBank) {
         setSelectedOption(currentBank);
-        setBankValue("bankName", currentBank.value.banknameen);
+        setBankValue("bankName", currentBank.value.banknamenative);
       }
     }
   }, [settingsData]);
@@ -196,30 +208,41 @@ export default function SettingForm() {
   const handleApiResponse = (response, successMessage, errorMessage) => {
     if (response.data.status === "OK") {
       setModalData({
-        message: successMessage || response.data.message || "성공적으로 업데이트되었습니다",
+        message:
+          successMessage ||
+          response.data.message ||
+          "성공적으로 업데이트되었습니다",
         color: "success",
         title: "성공",
       });
       toast.success(successMessage || "성공적으로 업데이트되었습니다");
     } else {
       setModalData({
-        message: errorMessage || response.data.message || "업데이트에 실패했습니다",
+        message:
+          errorMessage || response.data.message || "업데이트에 실패했습니다",
         color: "error",
         title: "실패",
       });
-      toast.error(errorMessage || response.data.message || "업데이트에 실패했습니다");
+      toast.error(
+        errorMessage || response.data.message || "업데이트에 실패했습니다",
+      );
     }
     setisModalVisible(true);
   };
 
   const handleApiError = (error, defaultMessage) => {
     setModalData({
-      message: error.response?.data?.message || defaultMessage || "오류가 발생했습니다",
+      message:
+        error.response?.data?.message ||
+        defaultMessage ||
+        "오류가 발생했습니다",
       color: "error",
       title: "오류",
     });
     setisModalVisible(true);
-    toast.error(error.response?.data?.message || defaultMessage || "오류가 발생했습니다");
+    toast.error(
+      error.response?.data?.message || defaultMessage || "오류가 발생했습니다",
+    );
   };
 
   const onSubmitNotification = async (data) => {
@@ -227,7 +250,7 @@ export default function SettingForm() {
       const payload = {
         NOTIFY_FETCH_DURATION: data.notificationDuration,
       };
-      
+
       const response = await axios.post(`/setting`, payload, {
         headers: {
           Authorization: token,
@@ -237,7 +260,10 @@ export default function SettingForm() {
       });
 
       if (response.data.status === "OK") {
-        localStorage.setItem("notification-duration", data.notificationDuration);
+        localStorage.setItem(
+          "notification-duration",
+          data.notificationDuration,
+        );
         handleApiResponse(response, "알림 설정이 업데이트되었습니다");
       } else {
         handleApiResponse(response, null, "알림 설정 업데이트 실패");
@@ -282,14 +308,14 @@ export default function SettingForm() {
 
   const onSubmitBank = async (data) => {
     const SelectedBank = banks.find(
-      (item) => item.banknameen === data.bankName,
+      (item) => item.banknamenative === data.bankName,
     );
     const payload = {
-      bankname: SelectedBank.banknameen,
+      bankname: SelectedBank.banknamenative,
       bankaccount: data.bankAccount,
       bankid: SelectedBank.id,
     };
-    
+
     try {
       const response = await axios.post(`/setting`, payload, {
         headers: {
@@ -300,7 +326,10 @@ export default function SettingForm() {
       });
 
       if (response.data.status === "OK") {
-        handleApiResponse(response, "은행 정보가 성공적으로 업데이트되었습니다");
+        handleApiResponse(
+          response,
+          "은행 정보가 성공적으로 업데이트되었습니다",
+        );
       } else {
         handleApiResponse(response, null, "은행 정보 업데이트 실패");
       }
@@ -313,7 +342,7 @@ export default function SettingForm() {
     const payload = {
       address: data.address,
     };
-    
+
     try {
       const response = await axios.post(`/setting`, payload, {
         headers: {
@@ -338,7 +367,7 @@ export default function SettingForm() {
     if (bankOptions?.length > 0) {
       const firstBank = bankOptions[0];
       setSelectedOption(firstBank); // for ReactSelect UI
-      setValue("bankName", firstBank.value.banknameen); // for your form schema
+      setValue("bankName", firstBank.value.banknamenative); // for your form schema
     }
   }, [banksDetail]);
 
@@ -357,7 +386,7 @@ export default function SettingForm() {
   return (
     <Page title="설정">
       <div className="transition-content px-[--margin-x] pb-6 pt-4">
-        <div className="rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
+        <div className="rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-900 md:p-[38px] lg:p-[54px]">
           <div className="grid grid-cols-12 place-content-start gap-4 sm:gap-5 lg:gap-9">
             {/* Password Form */}
             <div className="col-span-12 md:col-span-6">
@@ -366,7 +395,7 @@ export default function SettingForm() {
                 onSubmit={handleSubmit(onSubmitPassword)}
                 id="new-password-form"
               >
-                <div className="flex flex-col gap-5 rounded-lg border p-4 dark:border-gray-600">
+                <div className="flex flex-col gap-5 rounded-lg border p-4 dark:border-gray-800">
                   {/* Existing password */}
                   <div className="relative">
                     <Input
@@ -450,7 +479,7 @@ export default function SettingForm() {
 
                   {/* Action buttons */}
                   <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
-                    <Button 
+                    <Button
                       type="button"
                       className="w-[250px] min-w-[7rem] px-5 text-base font-medium"
                       onClick={() => {
@@ -481,7 +510,7 @@ export default function SettingForm() {
                 onSubmit={handleSubmitAddress(onSubmitAddress)}
                 id="new-address-form"
               >
-                <div className="flex h-full flex-col gap-5 rounded-lg border p-4 dark:border-gray-600">
+                <div className="flex h-full flex-col gap-5 rounded-lg border p-4 dark:border-gray-800">
                   <label>*기본 주소</label>
 
                   {/*Default address*/}
@@ -494,11 +523,14 @@ export default function SettingForm() {
 
                   {/*Action buttons*/}
                   <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
-                    <Button 
+                    <Button
                       type="button"
                       className="w-[250px] min-w-[7rem] px-5 text-base font-medium"
                       onClick={() => {
-                        setAddressValue("address", settingsData?.myagencyinfo?.address || "");
+                        setAddressValue(
+                          "address",
+                          settingsData?.myagencyinfo?.address || "",
+                        );
                       }}
                     >
                       취소
@@ -514,21 +546,21 @@ export default function SettingForm() {
                   </div>
                 </div>
               </form>
-              
+
               {/* Notification Form */}
-              <div className="md:mt-6 mt-4">
+              <div className="mt-4 md:mt-6">
                 <form
                   autoComplete="off"
                   onSubmit={handleSubmitNotification(onSubmitNotification)}
                   id="notification-form"
                 >
-                  <div className="flex h-full flex-col gap-5 rounded-lg border p-4 dark:border-gray-600">
+                  <div className="flex h-full flex-col gap-5 rounded-lg border p-4 dark:border-gray-800">
                     <Select
                       label="알림주기"
                       data={[
                         ...Array.from({ length: 60 }, (_, i) => ({
                           label: `${i + 1}분`,
-                          value: `${i + 1}`
+                          value: `${i + 1}`,
                         })),
                       ]}
                       {...registerNotification("notificationDuration")}
@@ -541,12 +573,17 @@ export default function SettingForm() {
 
                     {/*Action buttons*/}
                     <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
-                      <Button 
+                      <Button
                         type="button"
                         className="w-[250px] min-w-[7rem] px-5 text-base font-medium"
                         onClick={() => {
-                          const currentDuration = localStorage.getItem("notification-duration") || "30";
-                          setNotificationValue("notificationDuration", currentDuration);
+                          const currentDuration =
+                            localStorage.getItem("notification-duration") ||
+                            "30";
+                          setNotificationValue(
+                            "notificationDuration",
+                            currentDuration,
+                          );
                         }}
                       >
                         취소
@@ -566,15 +603,15 @@ export default function SettingForm() {
             </div>
 
             {/* Bank Form */}
-            <div className="col-span-12 md:col-span-6 -mt-[74px]">
+            <div className="col-span-12 -mt-[74px] md:col-span-6">
               <form
                 autoComplete="off"
                 onSubmit={handleSubmitBank(onSubmitBank)}
                 id="new-bank-form"
               >
-                <div className="flex flex-col gap-5 rounded-lg border p-4 dark:border-gray-600">
+                <div className="flex flex-col gap-5 rounded-lg border p-4 dark:border-gray-800">
                   <label>기본 계정</label>
-                  
+
                   {/*Receiving bank*/}
                   <label className="-mb-4">
                     받는은행<span className="text-red-500">*</span>
@@ -584,7 +621,7 @@ export default function SettingForm() {
                     value={selectedOption}
                     onChange={(selected) => {
                       setSelectedOption(selected);
-                      setBankValue("bankName", selected.value.banknameen);
+                      setBankValue("bankName", selected.value.banknamenative);
                     }}
                     classNames={{
                       control: () =>
@@ -611,24 +648,29 @@ export default function SettingForm() {
                     {...registerBank("bankAccount")}
                     error={bankErrors?.bankAccount?.message}
                   />
-                  
+
                   {/*Action buttons*/}
                   <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
-                    <Button 
+                    <Button
                       type="button"
                       className="w-[250px] min-w-[7rem] px-5 text-base font-medium"
                       onClick={() => {
                         if (settingsData?.accountbank) {
                           const bank = banks?.find(
-                            (b) => b.banknameen === settingsData.accountbank.bankname
+                            (b) =>
+                              b.banknamenative ===
+                              settingsData.accountbank.bankname,
                           );
                           if (bank) {
                             const bankOption = bankOptions?.find(
-                              (opt) => opt.value.id === bank.id
+                              (opt) => opt.value.id === bank.id,
                             );
                             setSelectedOption(bankOption);
-                            setBankValue("bankName", bank.banknameen);
-                            setBankValue("bankAccount", settingsData.accountbank.bankaccount);
+                            setBankValue("bankName", bank.banknamenative);
+                            setBankValue(
+                              "bankAccount",
+                              settingsData.accountbank.bankaccount,
+                            );
                           }
                         }
                       }}
@@ -682,8 +724,8 @@ export default function SettingForm() {
             <DialogPanel className="scrollbar-sm relative flex min-w-[400px] max-w-md flex-col overflow-y-auto rounded-lg bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-dark-700 sm:px-5">
               <CheckCircleIcon
                 className={`mx-auto inline size-28 shrink-0 ${
-                  modalData.color === "success" 
-                    ? "text-green-500" 
+                  modalData.color === "success"
+                    ? "text-green-500"
                     : "text-red-500"
                 }`}
               />

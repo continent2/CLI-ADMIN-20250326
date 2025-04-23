@@ -58,7 +58,7 @@ export default function SiteRegistrationForm() {
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
           src={bank.urllogo || "/images/dummy-bank.png"}
-          alt={bank.banknameen || "Bank logo"}
+          alt={bank.banknamenative || "Bank logo"}
           style={{ width: 20, height: 20 }}
           onError={(e) => {
             e.currentTarget.src = "/images/dummy-bank.png";
@@ -67,22 +67,24 @@ export default function SiteRegistrationForm() {
         {bank.banknamenative}
       </div>
     ),
-    bankData: bank // Store the full bank object for easy access
+    bankData: bank, // Store the full bank object for easy access
   }));
 
   const onSubmit = async (data) => {
-    const bankAccount = banks.find((item) => item.banknameen === data.bankName);
-    
+    const bankAccount = banks.find(
+      (item) => item.banknamenative === data.bankName,
+    );
+
     const payload = {
       siteurl: data.siteUrl,
       socialgroupid: data.SocialGroupId,
       managersocialid: data.managerSocialId,
       iscrypto: data.isCrypto,
       isreceiveagencyorsite: `${data.isReceiveAgencyOrSite}`,
-      bankname: bankAccount?.["banknameen"] || "",
+      bankname: bankAccount?.["banknamenative"] || "",
       bankaccount: data.bankAccount,
       address: data.address,
-      bankid: bankAccount?.["id"] || ""
+      bankid: bankAccount?.["id"] || "",
     };
 
     try {
@@ -130,14 +132,14 @@ export default function SiteRegistrationForm() {
     <Page title="사이트 등록">
       <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] py-5">
         <div>
-          <div className="h-fit rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
+          <div className="h-fit rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-900 md:p-[38px] lg:p-[54px]">
             <form
               autoComplete="off"
               onSubmit={handleSubmit(onSubmit)}
               id="new-site-form"
             >
               <div className="flex flex-col gap-9 md:flex-row">
-                <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600 md:w-1/2">
+                <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-800 md:w-1/2">
                   <Input
                     placeholder="사이트 URL 값"
                     label={
@@ -148,7 +150,7 @@ export default function SiteRegistrationForm() {
                     {...register("siteUrl")}
                     error={errors?.siteUrl?.message}
                   />
-                  
+
                   <Input
                     placeholder="소셜 그룹 ID"
                     label="소셜 그룹 ID"
@@ -163,8 +165,8 @@ export default function SiteRegistrationForm() {
                     error={errors?.managerSocialId?.message}
                   />
                 </div>
-                
-                <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600 md:w-1/2">
+
+                <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-800 md:w-1/2">
                   <div className="mx-auto">
                     <label className="col-span-2">기본 입금 유형</label>
                     <div className="col-span-10">
@@ -181,7 +183,7 @@ export default function SiteRegistrationForm() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="mx-auto">
                     <label className="col-span-2">입금주소</label>
                     <div className="col-span-10">
@@ -201,7 +203,7 @@ export default function SiteRegistrationForm() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <label className="-mb-4">은행</label>
                   <ReactSelect
                     options={bankOptions}
@@ -210,11 +212,12 @@ export default function SiteRegistrationForm() {
                     placeholder="은행을 선택하세요"
                     onChange={(selected) => {
                       setSelectedOption(selected);
-                      setValue("bankName", selected.bankData.banknameen);
+                      setValue("bankName", selected.bankData.banknamenative);
                       setValue("bankId", selected.bankData.id);
                     }}
                     classNames={{
-                      control: () => "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                      control: () =>
+                        "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
                       singleValue: () => "text-black dark:text-dark-100",
                       input: () => "text-black dark:text-white",
                       option: ({ isFocused, isSelected }) =>
@@ -223,12 +226,14 @@ export default function SiteRegistrationForm() {
                           "bg-white dark:bg-dark-800",
                           isFocused && "bg-gray-100 dark:bg-gray-700",
                           isSelected && "bg-blue-500 text-white",
-                        ].filter(Boolean).join(" "),
+                        ]
+                          .filter(Boolean)
+                          .join(" "),
                       menu: () => "bg-white dark:bg-gray-800",
                       menuList: () => "bg-white dark:bg-gray-800",
                     }}
                   />
-                  
+
                   <Input
                     placeholder=""
                     label={
@@ -239,7 +244,7 @@ export default function SiteRegistrationForm() {
                     {...register("bankAccount")}
                     error={errors?.bankAccount?.message}
                   />
-                  
+
                   <Input
                     placeholder="입금주소값"
                     label={
@@ -252,7 +257,7 @@ export default function SiteRegistrationForm() {
                   />
                 </div>
               </div>
-              
+
               <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                 <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
                   취소

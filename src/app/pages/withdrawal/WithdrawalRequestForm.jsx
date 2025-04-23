@@ -58,7 +58,7 @@ export default function WithdrawalRequestForm() {
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <img
           src={bank.urllogo || "/images/dummy-bank.png"}
-          alt={bank.banknameen || "Bank logo"}
+          alt={bank.banknamenative || "Bank logo"}
           style={{ width: 20, height: 20 }}
           onError={(e) => {
             e.currentTarget.src = "/images/dummy-bank.png";
@@ -84,6 +84,7 @@ export default function WithdrawalRequestForm() {
     getValues,
     watch,
     formState: { errors, isValid },
+    resetField,
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -106,7 +107,7 @@ export default function WithdrawalRequestForm() {
       bankid:
         data.isCrypto === 0
           ? agencyBank.find(
-              (bank) => data.bankName === bank["bank.banknameen"],
+              (bank) => data.bankName === bank["bank.banknamenative"],
             )?.["bank.id"]
           : "",
       bankname: data.isCrypto === 0 ? data.bankName : "",
@@ -205,14 +206,16 @@ export default function WithdrawalRequestForm() {
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <img
             src={b["bank.urllogo"] || "/images/dummy-bank.png"}
-            alt={b["bank.banknameen"] || "Bank logo"}
+            alt={b["bank.banknamenative"] || "Bank logo"}
             style={{ width: 20, height: 20 }}
             onError={(e) => {
               e.currentTarget.src = "/images/dummy-bank.png";
             }}
           />
           <div className="flex items-center gap-1 text-xs text-gray-500">
-            <div className="text-xs text-gray-500">{b["bank.banknameen"]}</div>{" "}
+            <div className="text-xs text-gray-500">
+              {b["bank.banknamenative"]}
+            </div>{" "}
             - <div className="text-xs text-gray-500">{b.bankaccount}</div>
           </div>
         </div>
@@ -236,23 +239,23 @@ export default function WithdrawalRequestForm() {
 
       <div className="transition-content grid w-full grid-rows-[auto_1fr] px-[--margin-x] py-5">
         <div className="space-y-4">
-          <div className="space-y-2">
-            <h2 className="mb-2 text-base font-semibold">
-              폼 작성 전 참고사항 💡
-            </h2>
-            <ul className="list-disc space-y-1 pl-5">
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-              <li>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris.
-              </li>
-              <li>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum.
-              </li>
-            </ul>
-          </div>
-          <div className="h-fit rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
+          {/* <div className="space-y-2"> */}
+          {/*   <h2 className="mb-2 text-base font-semibold"> */}
+          {/*     폼 작성 전 참고사항 💡 */}
+          {/*   </h2> */}
+          {/*   <ul className="list-disc space-y-1 pl-5"> */}
+          {/*     <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li> */}
+          {/*     <li> */}
+          {/*       Ut enim ad minim veniam, quis nostrud exercitation ullamco */}
+          {/*       laboris. */}
+          {/*     </li> */}
+          {/*     <li> */}
+          {/*       Duis aute irure dolor in reprehenderit in voluptate velit esse */}
+          {/*       cillum. */}
+          {/*     </li> */}
+          {/*   </ul> */}
+          {/* </div> */}
+          <div className="h-fit rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-900 md:p-[38px] lg:p-[54px]">
             <div>
               <form
                 autoComplete="off"
@@ -260,7 +263,7 @@ export default function WithdrawalRequestForm() {
                 id="new-withdrawal-form"
               >
                 <div className="flex flex-col gap-9 lg:flex-row">
-                  <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600 lg:w-1/2">
+                  <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-800 lg:w-1/2">
                     <Input
                       placeholder=""
                       label="출금가능액"
@@ -278,7 +281,7 @@ export default function WithdrawalRequestForm() {
                     />
                   </div>
 
-                  <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-600 lg:w-1/2">
+                  <div className="flex w-full flex-col gap-5 rounded-lg border p-4 pb-5 dark:border-gray-800 lg:w-1/2">
                     <div className="mx-auto">
                       <label className="col-span-2">출금종류</label>
                       <div className="col-span-10">
@@ -289,7 +292,7 @@ export default function WithdrawalRequestForm() {
                               label="KRW"
                               checked={watch("isCrypto") === 0}
                               onChange={(e) => {
-                                if (isWithdrawal) {
+                                if (!isDisabled) {
                                   setValue(
                                     "isCrypto",
                                     e.target.checked ? 0 : 1,
@@ -344,7 +347,7 @@ export default function WithdrawalRequestForm() {
                               getOptionValue={(option) => option.value}
                               placeholder="주소를 선택하세요"
                               onChange={(item) => {
-                                if (isWithdrawal) {
+                                if (!isDisabled) {
                                   setSelectedAgencyBank(item);
                                   OnReceivedAddressChange(item.value);
                                 }
@@ -411,7 +414,7 @@ export default function WithdrawalRequestForm() {
                               getOptionValue={(option) => option.value}
                               placeholder="계정을 선택하세요"
                               onChange={(selected) => {
-                                if (isWithdrawal) {
+                                if (!isDisabled) {
                                   setSelectedAccountOption(selected);
                                   setValue(
                                     "bankAccount",
@@ -459,11 +462,11 @@ export default function WithdrawalRequestForm() {
                           value={selectedOption}
                           getOptionValue={(option) => option.value}
                           onChange={(selected) => {
-                            if (isWithdrawal) {
+                            if (!isDisabled) {
                               setSelectedOption(selected);
                               setValue(
                                 "bankName",
-                                selected.bankData.banknameen,
+                                selected.bankData.banknamenative,
                                 {
                                   shouldValidate: true,
                                 },
@@ -514,7 +517,17 @@ export default function WithdrawalRequestForm() {
                 </div>
 
                 <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
-                  <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
+                  <Button
+                    className="w-[250px] min-w-[7rem] px-5 text-base font-medium"
+                    onClick={() => {
+                      resetField("bankAccount");
+                      setSelectedOption(null);
+                      resetField("address");
+                      resetField("value");
+                      setSelectedAgencyBank(null);
+                      setSelectedAccountOption(null);
+                    }}
+                  >
                     취소
                   </Button>
                   <div className="flex items-center">

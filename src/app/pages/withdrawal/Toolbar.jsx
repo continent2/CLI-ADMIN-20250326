@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 // Local Imports
 import { Input } from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
+import { SearchInput, SearchSiteInput } from "components/ui";
 import { DateFilter } from "components/shared/table/DateFilter";
 import { useState } from "react";
 import { TableConfig } from "./TableConfig";
@@ -98,32 +99,6 @@ export function Toolbar({ table }) {
   );
 }
 
-function SearchInput({ onSearch, value }) {
-  return (
-    <Input
-      value={value}
-      onChange={(e) => {
-        onSearch(e.target.value);
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          onSearch(e.target.value); // Trigger search only on Enter key
-        }
-      }}
-      prefix={<MagnifyingGlassIcon className="size-4" />}
-      classNames={{
-        root: "shrink-0",
-        input: "py-2 text-sm ring-primary-500/50 focus:ring",
-      }}
-      placeholder="검색"
-    />
-  );
-}
-
 Toolbar.propTypes = {
   table: PropTypes.object,
-};
-
-SearchInput.propTypes = {
-  onSearch: PropTypes.func,
 };

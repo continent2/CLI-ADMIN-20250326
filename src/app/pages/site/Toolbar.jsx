@@ -1,17 +1,16 @@
 // Import Dependencies
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
 // Local Imports
-import { Input } from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
 import { DateFilter } from "components/shared/table/DateFilter";
-import { TableConfig } from "../deposit/TableConfig.jsx";
 import { useSiteContext } from "../../contexts/site/context.js";
 import { RoleFilter } from "../deposit/RoleFilter.jsx";
+import { TableConfig } from "../deposit/TableConfig.jsx";
 
+import { SearchInput, SearchSiteInput } from "components/ui";
 // ----------------------------------------------------------------------
 
 export function Toolbar({ table }) {
@@ -118,41 +117,6 @@ export function Toolbar({ table }) {
         </div>
       )}
     </div>
-  );
-}
-
-function SearchInput({ onSearch, value }) {
-  return (
-    <Input
-      value={value}
-      onChange={(e) => {
-        onSearch(e.target.value);
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          onSearch(e.target.value); // Trigger search only on Enter key
-        }
-      }}
-      prefix={<MagnifyingGlassIcon className="size-4" />}
-      classNames={{
-        root: "shrink-0",
-        input: "py-2 text-sm ring-primary-500/50 focus:ring",
-      }}
-      placeholder="검색"
-    />
-  );
-}
-
-function SearchSiteInput() {
-  return (
-    <Input
-      prefix={<MagnifyingGlassIcon className="size-6" />}
-      classNames={{
-        root: "h-full",
-        input: "border-0 py-2 text-sm",
-      }}
-      placeholder="사이트 검색"
-    />
   );
 }
 
