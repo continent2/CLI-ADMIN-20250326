@@ -1,5 +1,6 @@
 // src/api/activities.js
 import axios from 'axios';
+import JWT_HOST_API from 'configs/auth.config';
 
 const transformActivityData = (item) => ({
   id: item.id,
@@ -23,7 +24,8 @@ const transformActivityData = (item) => ({
 
 export const fetchActivities = async (offset, limit, search) => {
   const response = await axios.get(
-    `https://testnet.cdeposit.online:50825/query/list/custom/deposit/_/_/id/DESC/${offset}/${limit}`,
+//    `https://testnet.cde posit.online:50825/query/list/custom/deposit/_/_/id/DESC/${offset}/${limit}`,
+    `${ JWT_HOST_API }/query/list/custom/deposit/_/_/id/DESC/${offset}/${limit}`,
     { params: { search } }
   );
 

@@ -2,6 +2,7 @@ import { useEffect, useCallback, useMemo, useRef } from "react";
 import axios from "axios";
 import { useThemeContext } from "app/contexts/theme/context";
 import { toast } from "sonner";
+import JWT_HOST_API from 'configs/auth.config'; 
 
 const NotificationPoller = () => {
   const { themeMode } = useThemeContext();
@@ -54,8 +55,8 @@ const NotificationPoller = () => {
 
   const fetchNotifications = useCallback(async () => {
     try {
-      const { data } = await axios.get(
-        "https://testnet.cdeposit.online:50825/query/list/plain/notify/status/1/id/DESC/0/15",
+      const { data } = await axios.get( `${ JWT_HOST_API }/query/list/plain/notify/status/1/id/DESC/0/15`,
+//        "https://testnet.cd eposit.online:50825/query/list/plain/notify/status/1/id/DESC/0/15",
         {
           headers: {
             Authorization: localStorage.getItem("authToken"),

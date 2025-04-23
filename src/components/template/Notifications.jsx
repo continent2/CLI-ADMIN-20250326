@@ -28,6 +28,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
+import JWT_HOST_API from 'configs/auth.config'; 
 
 const notificationTypes = {
   all: {
@@ -59,7 +60,8 @@ export function Notifications() {
     queryKey: ["wallet-data"],
     queryFn: async () => {
       const response = await axios.get(
-        `https://testnet.cdeposit.online:50825/dash/agency`,
+        `${ JWT_HOST_API }/dash/agency`,
+//        `https://testne t.cdeposit.online:50825/dash/agency`,
         {
           headers: {
             Authorization: localStorage.getItem("authToken"),

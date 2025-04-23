@@ -8,13 +8,15 @@ import { Exchange } from "./Exchange";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import DashboardWithdrawalRequestForm from "app/pages/withdrawal/DashboardWithDrawSection";
+import JWT_HOST_API from 'configs/auth.config'; 
 
 const useWalletData = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["wallet-data"],
     queryFn: async () => {
       const response = await axios.get(
-        `https://testnet.cdeposit.online:50825/dash/agency`,
+//        `https://testnet.cde posit.online:50825/dash/agency`,
+        `${ JWT_HOST_API }/dash/agency`,
         {
           headers: {
             Authorization: localStorage.getItem("authToken"),
