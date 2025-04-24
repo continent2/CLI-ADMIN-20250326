@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import {JWT_HOST_API} from 'configs/auth.config';
+import {JWT_HOST_API } from 'configs/auth.config';
 
 
 const axiosInstance = axios.create({
-  baseURL: JWT_HOST_API,
+  baseURL: JWT_HOST_API ,
 });
 
 axiosInstance.interceptors.response.use(

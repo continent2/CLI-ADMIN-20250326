@@ -137,7 +137,7 @@ export default function SignIn() {
             </div>
           </Card>
           <div className="mt-8 flex justify-center text-xs text-gray-400 dark:text-dark-300">
-            <a href="##">VER.2025-04-14 01:12</a>
+            <a href="##">VER.2025-04-23 01:12</a>
             <div className="mx-2.5 my-0.5 w-px bg-gray-200 dark:bg-dark-500"></div>
             <a href="##">이용약관</a>
           </div>

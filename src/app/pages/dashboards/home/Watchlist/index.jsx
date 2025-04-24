@@ -187,26 +187,26 @@ export function Watchlist({ data }) {
     <Card>
       <div className="flex items-center justify-between px-4 py-3 sm:px-5">
         <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
-          예금통계
+        입금현황
         </h2>
       </div>
 
       <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
         <DepositCard
           data={hourlyData}
-          title="시간당 입금"
-          timeUnit="24시간"
+          title="시간대별 입금" 
+          timeUnit="(30일)"
           isHourly={true}
         />
         <DepositCard
           data={dailyData}
-          title="일일 예금"
-          timeUnit="날짜"
+          title="일별 입금"
+          timeUnit="(30일)"
           isHourly={false}
         />
 
         <div className="flex flex-col gap-2">
-          <h2 className="w-28">상위 5개 예금주</h2>
+          <h2 className="w-28">상위 입금회원</h2>
           <ol className="space-y-3">
             {top5?.map((user, index) => (
               <li key={index} className="flex items-center gap-2">

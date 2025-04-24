@@ -24,7 +24,8 @@ import { columns } from "./columns";
 import { useBoxSize, useDidUpdate } from "hooks";
 import { fuzzyFilter } from "utils/react-table/fuzzyFilter";
 import { useSkipper } from "utils/react-table/useSkipper";
-import JWT_HOST_API from 'configs/auth.config'; 
+// import JWT_HOST_API from 'configs/auth.config'; 
+import { JWT_HOST_API }  from 'configs/auth.config'; 
 
 const API_URL =  `${ JWT_HOST_API }/query/list/custom/deposit/_/_/id/DESC`;
 //  "https://testnet.c deposit.online:50825/query/list/custom/deposit/_/_/id/DESC";

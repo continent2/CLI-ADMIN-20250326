@@ -2,7 +2,8 @@ import { useEffect, useCallback, useMemo, useRef } from "react";
 import axios from "axios";
 import { useThemeContext } from "app/contexts/theme/context";
 import { toast } from "sonner";
-import JWT_HOST_API from 'configs/auth.config'; 
+// import JWT_HOST_API from 'configs/auth.config'; 
+import { JWT_HOST_API }  from 'configs/auth.config'; 
 
 const NotificationPoller = () => {
   const { themeMode } = useThemeContext();

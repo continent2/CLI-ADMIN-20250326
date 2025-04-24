@@ -1,6 +1,7 @@
 // src/api/activities.js
 import axios from 'axios';
-import JWT_HOST_API from 'configs/auth.config';
+// import JWT_HOST_API from 'configs/auth.config';
+import { JWT_HOST_API } from 'configs/auth.config';
 
 const transformActivityData = (item) => ({
   id: item.id,
