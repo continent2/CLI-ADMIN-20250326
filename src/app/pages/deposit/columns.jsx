@@ -107,8 +107,10 @@ export const columns = [
       </div>
     ),
     cell: ({ row }) => {
-      const amount = row.original["amount"]; // Get transfer amount
-      const currency = row.original["currency"]; // Get transfer currency
+      // const amount = row.original["amount"]; // Get transfer amount
+      const amount = row.original["transfer.amount"];
+//      const currency = row.original["currency"]; // Get transfer currency
+      const currency = row.original["transfer.currency"]; 
       //      const convrate = row.original["convrate"]; // Get transfer currency
       const convrate = row.original["transfer.convamount"]; // Get transfer currency
       return (
