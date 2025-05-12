@@ -33,9 +33,9 @@ export function ListView({ table, rows, flexRender }) {
                       "bg-gray-200 font-semibold uppercase text-gray-800 dark:bg-dark-800 dark:text-dark-100 ltr:first:rounded-tl-lg ltr:last:rounded-tr-lg rtl:first:rounded-tr-lg rtl:last:rounded-tl-lg",
                       header.column.getCanPin() && [
                         header.column.getIsPinned() === "left" &&
-                          "sticky z-2 ltr:left-0 rtl:right-0",
+                        "sticky z-2 ltr:left-0 rtl:right-0",
                         header.column.getIsPinned() === "right" &&
-                          "sticky z-2 ltr:right-0 rtl:left-0",
+                        "sticky z-2 ltr:right-0 rtl:left-0",
                       ],
                       header.column.id === "status" && "w-px px-3",
                     )}
@@ -49,9 +49,9 @@ export function ListView({ table, rows, flexRender }) {
                           {header.isPlaceholder
                             ? null
                             : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                         </span>
                         <TableSortIcon sorted={header.column.getIsSorted()} />
                       </div>
@@ -75,7 +75,7 @@ export function ListView({ table, rows, flexRender }) {
                   className={clsx(
                     "relative border-y border-transparent border-b-gray-200 dark:border-b-dark-500",
                     row.getIsSelected() &&
-                      "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
+                    "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
                   )}
                 >
                   {/* first row is a normal row */}
@@ -84,21 +84,22 @@ export function ListView({ table, rows, flexRender }) {
                     .filter((cell) => !cell.column.columnDef.isHiddenColumn)
                     .map((cell) => {
                       return (
-                        <Td
+                        <Td Td
                           key={cell.id}
-                          className={clsx(
-                            "relative",
-                            cardSkin === "shadow"
-                              ? "dark:bg-dark-700"
-                              : "dark:bg-dark-900",
-                            cell.column.getCanPin() && [
-                              cell.column.getIsPinned() === "left" &&
+                          className={
+                            clsx(
+                              "relative",
+                              cardSkin === "shadow"
+                                ? "dark:bg-dark-700"
+                                : "dark:bg-dark-900",
+                              cell.column.getCanPin() && [
+                                cell.column.getIsPinned() === "left" &&
                                 "sticky z-2 ltr:left-0 rtl:right-0",
-                              cell.column.getIsPinned() === "right" &&
+                                cell.column.getIsPinned() === "right" &&
                                 "sticky z-2 ltr:right-0 rtl:left-0",
-                            ],
-                            cell.column.id === "status" && "px-3",
-                          )}
+                              ],
+                              cell.column.id === "status" && "px-3",
+                            )}
                         >
                           {cell.column.getIsPinned() && (
                             <div
@@ -133,7 +134,7 @@ export function ListView({ table, rows, flexRender }) {
           )}
         </TBody>
       </Table>
-    </div>
+    </div >
   );
 }
 

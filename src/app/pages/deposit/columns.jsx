@@ -19,7 +19,7 @@ export const columns = [
   {
     id: "생성시간",
     accessorKey: "transfer.timestamp",
-    header: "생성시간", //creation time
+    header: "생성시간 입금 시간", //creation time
     // cell: (info) => {
     //   const timestamp = info.row.original?.["createdat"];
     //   return timestamp ? new Date(timestamp).toLocaleString() : "-";
@@ -109,8 +109,8 @@ export const columns = [
     cell: ({ row }) => {
       // const amount = row.original["amount"]; // Get transfer amount
       const amount = row.original["transfer.amount"];
-//      const currency = row.original["currency"]; // Get transfer currency
-      const currency = row.original["transfer.currency"]; 
+      //      const currency = row.original["currency"]; // Get transfer currency
+      const currency = row.original["transfer.currency"];
       //      const convrate = row.original["convrate"]; // Get transfer currency
       const convrate = row.original["transfer.convamount"]; // Get transfer currency
       return (
@@ -125,7 +125,7 @@ export const columns = [
             {convrate === null || convrate === undefined
               ? "N/A"
               : formatNumberWithCommas(Number(convrate || 0)?.toFixed(0)) ||
-                "N/A"}
+              "N/A"}
           </p>
         </div>
       );

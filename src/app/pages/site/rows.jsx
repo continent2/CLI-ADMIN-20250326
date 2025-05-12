@@ -10,17 +10,44 @@ import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
 
 // ----------------------------------------------------------------------
 
+// export function CreateUpdateCell({ row }) {
+//   const { locale } = useLocaleContext();
+//   const createdDate = row.original.info["createdat"];
+//   const updatedDate = row.original.info["updatedat"];
+
+//   const formattedCreatedDate = createdDate
+//     ? `${dayjs(createdDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
+//     : "N/A";
+
+//   const formattedUpdatedDate = updatedDate
+//     ? `${dayjs(updatedDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
+//     : "N/A";
+
+//   return (
+//     <div>
+//       <p>{formattedCreatedDate}</p>
+//       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+//       <p>{formattedUpdatedDate}</p>
+//     </div>
+//   );
+// }
+
 export function CreateUpdateCell({ row }) {
   const { locale } = useLocaleContext();
   const createdDate = row.original.info["createdat"];
   const updatedDate = row.original.info["updatedat"];
 
+  const isKoreanFormat = locale === 'en';
+
+  // const isKoreanFormat = true;
+  const dateFormat = isKoreanFormat ? 'YYYY년MM월DD일' : 'YYYY-MM-DD';
+
   const formattedCreatedDate = createdDate
-    ? `${dayjs(createdDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
+    ? `${dayjs(createdDate).locale(locale).format(dateFormat)} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
     : "N/A";
 
   const formattedUpdatedDate = updatedDate
-    ? `${dayjs(updatedDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
+    ? `${dayjs(updatedDate).locale(locale).format(dateFormat)} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
     : "N/A";
 
   return (
@@ -31,6 +58,7 @@ export function CreateUpdateCell({ row }) {
     </div>
   );
 }
+
 
 export function SiteIdURL({ row }) {
   const siteURL = row.original.info?.["siteurl"];

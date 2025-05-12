@@ -70,8 +70,8 @@ const columns = [
     accessorKey: "user.externaluserid",
     header: () => (
       <div>
-         사용자 이름<div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-         사용자ID
+        사용자 이름<div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+        사용자ID
       </div>
     ),
     cell: ({ row }) => {
@@ -178,7 +178,7 @@ export function ActivitiesTable() {
   const { dashboardDepositInfo, dashboardDeposit, dashboardDepositCount } =
     useAppDataContext();
   const [depositList, setDepositList] = useState([]);
-  
+
   const [searchParams] = useSearchParams();
   const pageIndex = searchParams.get("page") || 1;
 
@@ -294,9 +294,9 @@ export function ActivitiesTable() {
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
                           </span>
                           <TableSortIcon sorted={header.column.getIsSorted()} />
                         </div>
@@ -318,7 +318,7 @@ export function ActivitiesTable() {
                   className={clsx(
                     "relative border-y border-transparent border-b-gray-200 dark:border-b-dark-500",
                     row.getIsSelected() &&
-                      "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
+                    "row-selected after:pointer-events-none after:absolute after:inset-0 after:z-2 after:h-full after:w-full after:border-3 after:border-transparent after:bg-primary-500/10 ltr:after:border-l-primary-500 rtl:after:border-r-primary-500",
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (
