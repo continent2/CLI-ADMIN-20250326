@@ -36,7 +36,7 @@ export const columns = [
     id: "회원아이디",
     accessorKey: "user.externaluserid", // Keep the accessor for sorting/filtering
     header: () => (
-      <div>
+      <div style={{ color: "rgb(214, 158, 54)" }}  >
         사용자 이름
         <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
         외부 사용자 ID
@@ -47,12 +47,12 @@ export const columns = [
       const externalUserId = row.original["user.externaluserid"];
 
       return (
-        <div>
+        <div style={{ color: "rgb(214, 158, 54)" }}  >
           <a
             href={userName || "#"} // Corrected link to use userName
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 no-underline dark:text-gray-500" // Add style if needed
+            className="text-[rgb(214, 158, 54)] no-underline dark:text-[rgb(214, 158, 54)]" // Add style if needed
           >
             {userName.replace(/^https?:\/\//, "") || "N/A"}{" "}
             {/* Display site URL or "-" if not available */}
@@ -99,7 +99,7 @@ export const columns = [
   {
     accessorKey: "amount", // Keep the accessor for sorting/filtering
     header: () => (
-      <div>
+      <div style={{ color: "rgb(214, 158, 54)" }} >
         거래금액{/* Transaction amount */}
         <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
         {/* 거래화폐 Transaction currency */}
@@ -114,13 +114,13 @@ export const columns = [
       //      const convrate = row.original["convrate"]; // Get transfer currency
       const convrate = row.original["transfer.convamount"]; // Get transfer currency
       return (
-        <div>
+        <div style={{ color: "#d69e36" }} >
           <p>
             {formatNumberWithCommas(Number(amount)?.toFixed(0)) || "N/A"}{" "}
             {currency || "N/A"}
           </p>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-          <p>
+          <p  >
             ₩{" "}
             {convrate === null || convrate === undefined
               ? "N/A"

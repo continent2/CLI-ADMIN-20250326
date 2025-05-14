@@ -44,7 +44,7 @@ export function Menu() {
       scrollableNodeProps={{ ref }}
       className="h-full overflow-x-hidden pb-6"
     >
-      <Accordion value={expanded} onChange={setExpanded} className="space-y-1">
+      <Accordion value={expanded} onChange={setExpanded} className=" space-y-1">
         {navigation.map((nav) => (
           <Group key={nav.id} data={nav} />
         ))}

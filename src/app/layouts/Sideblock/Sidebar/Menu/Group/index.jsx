@@ -19,7 +19,7 @@ export function Group({ data }) {
   const { cardSkin } = useThemeContext();
 
   return (
-    <div className="pt-3">
+    <div className=" pt-3">
       <div
         className={clsx(
           "sticky top-0 z-10 bg-white px-6",

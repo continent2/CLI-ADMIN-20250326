@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 
 // Local Imports
 import { useLocaleContext } from "app/contexts/locale/context";
+import { isKoreanFormat } from "utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ export function CreateUpdateCell({ row }) {
     const createdDate = row.original["createdat"];
     const updatedDate = row.original["updatedat"];
 
-    const isKoreanFormat = locale === 'en';
+    // const isKoreanFormat = locale === 'en' ;
 
     // const isKoreanFormat = true;
     const dateFormat = isKoreanFormat ? 'YYYY년MM월DD일' : 'YYYY-MM-DD';
@@ -29,8 +30,8 @@ export function CreateUpdateCell({ row }) {
 
     return (
         <div>
-            <p>{formattedCreatedDate}</p>
-            <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+            {/* <p>{formattedCreatedDate}</p>
+            <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
             <p>{formattedUpdatedDate}</p>
         </div>
     );
