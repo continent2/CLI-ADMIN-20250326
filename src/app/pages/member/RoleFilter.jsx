@@ -13,7 +13,7 @@ import { dark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 export function RoleFilter({ table, options }) {
   const selectedValue = table.options?.meta?.siteId ?? ""; // fallback just in case
-
+  console.log(options, "options")
   return (
     <div
       data-tab

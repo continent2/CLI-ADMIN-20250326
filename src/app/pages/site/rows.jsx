@@ -7,6 +7,7 @@ import { useLocaleContext } from "app/contexts/locale/context";
 import { CopyableCellWithClick } from "components/shared/table/CopyableCell";
 import { tronScan_Address } from "../../../constants/app.constant.js";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas.js";
+import { isKoreanFormat } from "utils/formatNumber.js";
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +38,7 @@ export function CreateUpdateCell({ row }) {
   const createdDate = row.original.info["createdat"];
   const updatedDate = row.original.info["updatedat"];
 
-  const isKoreanFormat = locale === 'en';
+  // const isKoreanFormat = locale === 'en';
 
   // const isKoreanFormat = true;
   const dateFormat = isKoreanFormat ? 'YYYY년MM월DD일' : 'YYYY-MM-DD';
@@ -52,8 +53,8 @@ export function CreateUpdateCell({ row }) {
 
   return (
     <div>
-      <p>{formattedCreatedDate}</p>
-      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+      {/* <p>{formattedCreatedDate}</p>
+      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
       <p>{formattedUpdatedDate}</p>
     </div>
   );

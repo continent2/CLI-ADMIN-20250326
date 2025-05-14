@@ -6,6 +6,9 @@
  * @returns {string} - The formatted number with the appropriate suffix.
  * @throws {Error} - If `num` is not a number.
  */
+
+export const isKoreanFormat = true;
+
 export function formatNumber(num, precision = 2) {
   if (typeof num !== "number" || isNaN(num)) {
     throw new Error("Input must be a valid number.");

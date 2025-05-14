@@ -71,6 +71,7 @@ export default function MemberList() {
   const [dateRange, setDateRange] = useState(null);
   const paginationData = {
     fetchData: (offset, limit) => {
+      console.log(dateRange, "daterange")
       const timeStartIso = dateRange
         ? new Date(dateRange[0]).toISOString().replace(/\.\d+Z$/, "")
         : null;
@@ -226,7 +227,7 @@ export default function MemberList() {
           className={clsx(
             "flex h-full w-full flex-col",
             tableSettings.enableFullScreen &&
-              "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
+            "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
           )}
         >
           <Toolbar table={table} />
@@ -262,16 +263,16 @@ export default function MemberList() {
                   className={clsx(
                     "pb-4 sm:pt-4",
                     (viewType === "list" || tableSettings.enableFullScreen) &&
-                      "px-4 sm:px-5",
+                    "px-4 sm:px-5",
                     tableSettings.enableFullScreen &&
-                      "bg-gray-50 dark:bg-dark-800",
+                    "bg-gray-50 dark:bg-dark-800",
                     !(
                       table.getIsSomeRowsSelected() ||
                       table.getIsAllRowsSelected()
                     ) && "pt-4",
                     viewType === "grid" &&
-                      !tableSettings.enableFullScreen &&
-                      "mt-3",
+                    !tableSettings.enableFullScreen &&
+                    "mt-3",
                   )}
                 >
                   <PaginationSection

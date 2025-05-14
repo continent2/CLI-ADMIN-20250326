@@ -19,6 +19,8 @@ export function Toolbar({ table }) {
   const { siteList, isLoading } = useMemberContext();
   const [siteOption, setSiteOption] = useState({});
 
+  console.log(siteList, "list for options")
+
   // Update the site options when siteList changes
   useEffect(() => {
     if (siteList && siteList?.length > 0) {

@@ -9,8 +9,8 @@ import { useLocaleContext } from "app/contexts/locale/context";
 
 // ----------------------------------------------------------------------
 
-export function CreateUpdateCell({row}) {
-    const {locale} = useLocaleContext();
+export function CreateUpdateCell({ row }) {
+    const { locale } = useLocaleContext();
     const createdDate = row.original["createdat"];
     const updatedDate = row.original["updatedat"];
 
@@ -24,21 +24,21 @@ export function CreateUpdateCell({row}) {
 
     return (
         <div>
-            <p>{formattedCreatedDate}</p>
-            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            {/* <p>{formattedCreatedDate}</p>
+            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/> */}
             <p>{formattedUpdatedDate}</p>
         </div>
     );
 }
 
-export function userDetail({row}) {
+export function userDetail({ row }) {
     const Id = row.original["id"];
     const userName = row.original["username"];
 
     return (
         <div>
             <p>{Id ?? "N/A"}</p>
-            <div style={{margin: "8px 0", borderBottom: "2px solid #ddd"}}/>
+            <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
             <p>{userName ?? "N/A"}</p>
         </div>
     );

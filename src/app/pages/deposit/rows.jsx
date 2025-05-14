@@ -10,6 +10,7 @@ import { rolesOptions } from "./data";
 import { Highlight } from "components/shared/Highlight";
 import { useLocaleContext } from "app/contexts/locale/context";
 import { ensureString } from "utils/ensureString";
+import { isKoreanFormat } from "utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -87,7 +88,7 @@ export function DateCell({ row }) {
   const createdDate = row?.original?.["user.createdat"];
   const updatedDate = row?.original?.["user.updatedat"];
 
-  const isKoreanFormat = locale === 'en';
+  // const isKoreanFormat = locale === 'en';
 
   // const isKoreanFormat = true;
   const dateFormat = isKoreanFormat ? 'YYYY년MM월DD일' : 'YYYY-MM-DD';
@@ -102,8 +103,8 @@ export function DateCell({ row }) {
 
   return (
     <div>
-      <p>{formattedCreatedDate}</p>
-      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+      {/* <p>{formattedCreatedDate}</p>
+      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
       <p>{formattedUpdatedDate}</p>
     </div>
   );

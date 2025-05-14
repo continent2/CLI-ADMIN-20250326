@@ -9,7 +9,8 @@
 
 // const columnHelper = createColumnHelper();
 
-import { CreateUpdateCell, SiteIdURL, Stat1, Stat2 } from "./rows.jsx";
+import { CopyableCellWithClick } from "components/shared/table/CopyableCell.jsx";
+import { bankAccount, bankNameNative, CreateUpdateCell, refundAddress, SiteIdURL, Stat1, Stat2 } from "./rows.jsx";
 
 export const columns = [
   {
@@ -77,7 +78,7 @@ export const columns = [
     id: "전일입금액",
     accessorKey: "stat.sum_2d", //  transfer.account.countuse", // Use accessor for sorting/filtering
     header: () => (
-      <div>
+      <div style={{ color: "rgb(214, 158, 54)" }}  >
         전일입금액{/* Previous deposit amount */} (회수){/* (recovery) */}
         <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
         환산금액 {/* Conversion amount */}
@@ -89,7 +90,7 @@ export const columns = [
     id: "금일입금액",
     accessorKey: "stat.sum_1d", // Use accessor for sorting/filtering
     header: () => (
-      <div>
+      <div style={{ color: "rgb(214, 158, 54)" }}  >
         금일입금액{/* Today's deposit amount */} (회수) {/* (Recovery) */}
         <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
         환산금액 {/* Conversion amount */}
@@ -127,6 +128,59 @@ export const columns = [
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
           {/* <p>{complaintCount || "N/A"}</p> {/* Display Number of complaints */}{" "}
         </div>
+      );
+    },
+  },
+  {
+    id: "은행명",
+    accessorKey: "info.banknamenative", // Use accessor for sorting/filtering
+    header: () => (
+      <div   >
+        은행명  {/* banknamenative */}
+      </div>
+    ),
+    cell: bankNameNative,
+  },
+  {
+    id: "은행계좌",
+    accessorKey: "info.bankaccount", // Use accessor for sorting/filtering
+    header: () => (
+      <div   >
+        은행계좌  {/* bankaccount */}
+      </div>
+    ),
+    cell: bankAccount,
+  },
+  // {
+  //   id: "환불주소",
+  //   accessorKey: "info.refundaddress", // Use accessor for sorting/filtering
+  //   header: () => (
+  //     <div  >
+  //       환불주소  {/* refundaddress */}
+  //     </div>
+  //   ),
+  //   cell: refundAddress,
+  // },
+  {
+    id: "환불주소",
+    accessorKey: "refundaddress",
+    header: () => (
+      <div  >
+        환불주소  {/* refundaddress */}
+      </div>
+    ), //Receving address
+    cell: ({ row, table }) => {
+      const receivingAddress = row.original?.info["refundaddress"];
+      return (
+        <CopyableCellWithClick
+          getValue={() => receivingAddress || "N/A"}
+          table={table}
+          onClick={() => {
+            if (receivingAddress) {
+              window.open(`${tronScan_Address}${receivingAddress}`, "_blank");
+            }
+          }}
+        />
       );
     },
   },
