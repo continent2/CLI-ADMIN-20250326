@@ -1,7 +1,9 @@
 import { Page } from "components/shared/Page";
 import { Input, Button, Switch, Select } from "components/ui";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+
 import { schema } from "./schema.js";
 import { useAppDataContext } from "../../contexts/appData/context.js";
 import { Fragment, useEffect, useState } from "react";

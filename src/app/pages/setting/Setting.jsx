@@ -1,7 +1,9 @@
 import { Page } from "components/shared/Page";
 import { Button, Input, Switch } from "../../../components/ui/index.js";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+
 import { schema } from "../adminstratorForm/schema.js";
 import { toast } from "sonner";
 import { Delta } from "../../../components/shared/form/TextEditor.jsx";
@@ -42,7 +44,7 @@ export default function Setting() {
     <Page title="설정">
       <div className="transition-content px-[--margin-x] pb-6 pt-4">
         <h2 className="pt-5 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50 lg:py-6 lg:text-2xl">
-        설정
+          설정
         </h2>
         <div className="rounded-lg border border-none border-gray-200 bg-white p-[24px] shadow-sm dark:bg-dark-700 md:p-[38px] lg:p-[54px]">
           <div className="grid grid-cols-12 place-content-start gap-4 sm:gap-5 lg:gap-9">
@@ -69,7 +71,7 @@ export default function Setting() {
 
                   <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                     <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
-                    취소
+                      취소
                     </Button>
                     <Button
                       type="submit"
@@ -99,7 +101,7 @@ export default function Setting() {
                 {/*Action buttons*/}
                 <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                   <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
-                  취소
+                    취소
                   </Button>
                   <Button
                     type="submit"
@@ -120,7 +122,7 @@ export default function Setting() {
                 {/*Action buttons*/}
                 <div className="mt-[24px] flex flex-col items-center justify-center gap-5 md:mt-[38px] md:flex-row lg:mt-[54px] lg:gap-7 rtl:space-x-reverse">
                   <Button className="w-[250px] min-w-[7rem] px-5 text-base font-medium">
-                  취소
+                    취소
                   </Button>
                   <Button
                     type="submit"

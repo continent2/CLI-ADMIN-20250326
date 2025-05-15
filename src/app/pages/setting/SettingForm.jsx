@@ -1,7 +1,9 @@
 import { Page } from "components/shared/Page";
 import { Button, Input, Select } from "../../../components/ui/index.js";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+
 import { bankSchema, userUpdateSchema, addressSchema } from "./schema.js";
 import axios from "../../../utils/axios.js";
 import { useEffect, useState } from "react";
@@ -723,11 +725,10 @@ export default function SettingForm() {
           >
             <DialogPanel className="scrollbar-sm relative flex min-w-[400px] max-w-md flex-col overflow-y-auto rounded-lg bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-dark-700 sm:px-5">
               <CheckCircleIcon
-                className={`mx-auto inline size-28 shrink-0 ${
-                  modalData.color === "success"
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
+                className={`mx-auto inline size-28 shrink-0 ${modalData.color === "success"
+                  ? "text-green-500"
+                  : "text-red-500"
+                  }`}
               />
 
               <div className="mt-4">

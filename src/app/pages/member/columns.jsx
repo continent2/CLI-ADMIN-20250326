@@ -152,14 +152,17 @@ export const columns = [
     ),
     cell: ({ row, table }) => {
       const bankname = row.original?.info["banknamenative"];
-      const banklogo = row.original?.info["bank.urllogo"];
+      let banklogo = row.original?.info["bank.urllogo"];
 
+      if (banklogo == null) {
+        banklogo = "https://static.vecteezy.com/system/resources/previews/013/948/616/non_2x/bank-icon-logo-design-vector.jpg"
+      }
 
       return (
-        <div className="flex items-center gap-[4px]" >
+        <div className="flex items-center gap-[8px]" >
           {
             banklogo != null &&
-            <img src={banklogo} alt="logo" />
+            <img className="rounded-full h-[25px] w-[25px]" src={banklogo} alt="logo" />
           }
           {bankname != null ? bankname : "N/A"}
         </div>

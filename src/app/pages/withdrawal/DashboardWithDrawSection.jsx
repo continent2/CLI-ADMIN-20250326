@@ -1,7 +1,8 @@
 import { Page } from "components/shared/Page.jsx";
 import { Input, Button, Switch, Select, Card } from "components/ui/index.js";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup.js";
 import { schema } from "./schema.js";
 import { useAppDataContext } from "../../contexts/appData/context.js";
 import { Fragment, useEffect, useState } from "react";
@@ -114,8 +115,8 @@ export default function WithdrawalRequestForm() {
       bankid:
         data.isCrypto === 0
           ? agencyBank.find(
-              (bank) => data.bankName === bank["bank.banknamenative"],
-            )["bank.id"]
+            (bank) => data.bankName === bank["bank.banknamenative"],
+          )["bank.id"]
           : "",
       bankname: data.isCrypto === 0 ? data.bankName : "",
       bankaccount: data.isCrypto === 0 ? data.bankAccount : "",
@@ -352,7 +353,7 @@ export default function WithdrawalRequestForm() {
                                       "text-black dark:text-white",
                                       "bg-white dark:bg-dark-800",
                                       isFocused &&
-                                        "bg-gray-100 dark:bg-gray-700",
+                                      "bg-gray-100 dark:bg-gray-700",
                                       isSelected && "bg-blue-500 text-white",
                                     ]
                                       .filter(Boolean)
@@ -410,7 +411,7 @@ export default function WithdrawalRequestForm() {
                                       "text-black dark:text-white",
                                       "bg-white dark:bg-dark-800",
                                       isFocused &&
-                                        "bg-gray-100 dark:bg-gray-700",
+                                      "bg-gray-100 dark:bg-gray-700",
                                       isSelected && "bg-blue-500 text-white",
                                     ]
                                       .filter(Boolean)

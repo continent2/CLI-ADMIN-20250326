@@ -1,7 +1,9 @@
 import { Page } from "components/shared/Page.jsx";
 import { Input, Button, Switch, Select } from "components/ui/index.js";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+
 import { schema } from "./schema.js";
 import { useAppDataContext } from "../../contexts/appData/context.js";
 import { Fragment, useEffect, useState } from "react";
@@ -107,8 +109,8 @@ export default function WithdrawalRequestForm() {
       bankid:
         data.isCrypto === 0
           ? agencyBank.find(
-              (bank) => data.bankName === bank["bank.banknamenative"],
-            )?.["bank.id"]
+            (bank) => data.bankName === bank["bank.banknamenative"],
+          )?.["bank.id"]
           : "",
       bankname: data.isCrypto === 0 ? data.bankName : "",
       bankaccount: data.isCrypto === 0 ? data.bankAccount : "",

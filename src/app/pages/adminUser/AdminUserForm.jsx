@@ -1,5 +1,6 @@
 // Import Dependencies
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { useForm } from "react-hook-form";
 import { ChevronDownIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
@@ -307,7 +308,7 @@ const AdminUserForm = () => {
                         "!flex !items-center !justify-start !rounded-lg !bg-transparent",
                         "hover:!border-gray-400 dark:!border-dark-450",
                         state.isFocused &&
-                          "!border-primary-500 !ring-2 !ring-primary-500",
+                        "!border-primary-500 !ring-2 !ring-primary-500",
                       ),
                     singleValue: () =>
                       "!flex !items-center !text-black dark:!text-dark-100",
