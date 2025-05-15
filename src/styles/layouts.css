@@ -39,7 +39,7 @@
 
 /* Sideblock */
 [data-layout="sideblock"] {
-  @apply [--margin-x:1rem] [--sidebar-panel-width:17.5rem] md:[--margin-x:1.5rem] 2xl:[--margin-x:3rem];
+  @apply [--margin-x:1rem] [--sidebar-panel-width:13.5rem] md:[--margin-x:1.5rem] 2xl:[--margin-x:3rem];
 }
 
 [data-layout="sideblock"] #root {
