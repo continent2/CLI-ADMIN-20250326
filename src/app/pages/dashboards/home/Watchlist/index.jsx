@@ -73,8 +73,8 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
   const trend =
     chartPoints.length > 1
       ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) /
-          (chartPoints[0] || 1)) *
-        100
+        (chartPoints[0] || 1)) *
+      100
       : 0;
 
   const chartConfig = {
@@ -117,7 +117,7 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
     if (!dateStr) return "";
     const month = dateStr.slice(4, 6);
     const day = dateStr.slice(6, 8);
-    return `${day}/${month}`;
+    return `${month}/${day}`;
   }
 
   // Helper function to format date for tooltips (Weekday, Month Day)
@@ -138,11 +138,10 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
     <Box className="flex w-full shrink-0 flex-col sm:w-96">
       <div className="flex items-center gap-2">
         <div
-          className={`size-6 rounded-full ${
-            trend >= 0
-              ? "bg-green-100 dark:bg-green-900"
-              : "bg-red-100 dark:bg-red-900"
-          }`}
+          className={`size-6 rounded-full ${trend >= 0
+            ? "bg-green-100 dark:bg-green-900"
+            : "bg-red-100 dark:bg-red-900"
+            }`}
         />
         <div>
           <span>{title}</span>
@@ -187,14 +186,14 @@ export function Watchlist({ data }) {
     <Card>
       <div className="flex items-center justify-between px-4 py-3 sm:px-5">
         <h2 className="truncate font-medium tracking-wide text-gray-800 dark:text-dark-100">
-        입금현황
+          입금현황
         </h2>
       </div>
 
       <div className="custom-scrollbar flex space-x-4 overflow-x-auto overflow-y-hidden px-4 pb-4 sm:px-5">
         <DepositCard
           data={hourlyData}
-          title="시간대별 입금" 
+          title="시간대별 입금"
           timeUnit="(30일)"
           isHourly={true}
         />
@@ -264,7 +263,7 @@ function ActionMenu() {
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-none transition-colors",
                   focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                  "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
                 <span>데이터 새로 고침</span>
@@ -277,7 +276,7 @@ function ActionMenu() {
                 className={clsx(
                   "flex h-9 w-full items-center px-3 tracking-wide outline-none transition-colors",
                   focus &&
-                    "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
+                  "bg-gray-100 text-gray-800 dark:bg-dark-600 dark:text-dark-100",
                 )}
               >
                 <span>내보내다</span>

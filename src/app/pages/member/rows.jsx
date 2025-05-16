@@ -63,12 +63,24 @@ export function Stat1({ row }) {
 
   return (
     <div style={{ color: "rgb(214, 158, 54)" }}  >
-      <div className="flex gap-x-1">
-        <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0} USDT</p>
-        <p>({formatNumberWithCommas(count?.toFixed(0)) ?? 0})</p>
+      <div className="flex items-center justify-between gap-x-1">
+        <span>
+          <img className="h-[25px] object-contain rounded-full" src="https://github.com/spothq/cryptocurrency-icons/blob/master/128/icon/usdt.png?raw=true" />
+        </span>
+        <span className="flex items-center" >
+          <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0}</p>
+          <p>({formatNumberWithCommas(count?.toFixed(0)) ?? 0})</p>
+        </span>
       </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>₩ {formatNumberWithCommas(sumInQuote?.toFixed(0))}</p>
+      <div className="flex items-center justify-between" >
+        <span className="text-black pl-1 dark:text-white" >
+          ₩
+        </span>
+        <span>
+          {formatNumberWithCommas(sumInQuote?.toFixed(0))}
+        </span>
+      </div>
     </div>
   );
 }
@@ -80,12 +92,24 @@ export function Stat2({ row }) {
 
   return (
     <div style={{ color: "rgb(214, 158, 54)" }}  >
-      <div className="flex gap-x-1">
-        <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0} USDT</p>
-        <p>({formatNumberWithCommas(count?.toFixed(0)) ?? 0})</p>
+      <div className="flex items-center justify-between gap-x-1">
+        <span>
+          <img className="h-[25px] object-contain rounded-full" src="https://github.com/spothq/cryptocurrency-icons/blob/master/128/icon/usdt.png?raw=true" />
+        </span>
+        <span className="flex items-center" >
+          <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0}</p>
+          <p>({formatNumberWithCommas(count?.toFixed(0)) ?? 0})</p>
+        </span>
       </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>₩ {formatNumberWithCommas(sumInQuote?.toFixed(0))}</p>
+      <div className="flex items-center justify-between" >
+        <span className="text-black pl-1 dark:text-white" >
+          ₩
+        </span>
+        <span>
+          {formatNumberWithCommas(sumInQuote?.toFixed(0))}
+        </span>
+      </div>
     </div>
   );
 }

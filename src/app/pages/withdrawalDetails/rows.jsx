@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 // Local Imports
 import { useLocaleContext } from "app/contexts/locale/context";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
+import { isKoreanFormat } from "utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -14,18 +15,20 @@ export function CreateUpdateCell({ row }) {
   const createdDate = row.original["createdat"];
   const updatedDate = row.original["updatedat"];
 
+  const dateFormat = isKoreanFormat ? 'YYYY년MM월DD일' : 'YYYY-MM-DD';
+
   const formattedCreatedDate = createdDate
-    ? `${dayjs(createdDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
+    ? `${dayjs(createdDate).locale(locale).format(dateFormat)} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
     : "N/A";
 
   const formattedUpdatedDate = updatedDate
-    ? `${dayjs(updatedDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
+    ? `${dayjs(updatedDate).locale(locale).format(dateFormat)} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
     : "N/A";
 
   return (
     <div>
-      <p>{formattedCreatedDate}</p>
-      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+      {/* <p>{formattedCreatedDate}</p>
+      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
       <p>{formattedUpdatedDate}</p>
     </div>
   );
@@ -37,7 +40,14 @@ export function AmountCurrency({ row }) {
 
   return (
     <div>
-      <p>{formatNumberWithCommas(Amount) ?? "N/A"}</p>
+      <div className="flex items-center justify-between gap-x-1">
+        <span>
+          <img className="h-[25px] object-contain rounded-full" src="https://github.com/spothq/cryptocurrency-icons/blob/master/128/icon/usdt.png?raw=true" />
+        </span>
+        <span>
+          <p>{formatNumberWithCommas(Amount) ?? 0}</p>
+        </span>
+      </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
       <p>{Currency ?? "N/A"}</p>
     </div>

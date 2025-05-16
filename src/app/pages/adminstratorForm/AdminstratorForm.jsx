@@ -1,4 +1,5 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 

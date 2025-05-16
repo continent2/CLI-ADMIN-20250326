@@ -115,18 +115,27 @@ export const columns = [
       const convrate = row.original["transfer.convamount"]; // Get transfer currency
       return (
         <div style={{ color: "#d69e36" }} >
-          <p>
-            {formatNumberWithCommas(Number(amount)?.toFixed(0)) || "N/A"}{" "}
-            {currency || "N/A"}
-          </p>
+          <div className="flex items-center justify-between" >
+            <span>
+              <img className="h-[25px] object-contain rounded-full" src="https://github.com/spothq/cryptocurrency-icons/blob/master/128/icon/usdt.png?raw=true" />
+            </span>
+            <span>
+              {formatNumberWithCommas(Number(amount)?.toFixed(0)) || "N/A"}{" "}
+              {/* {currency || "N/A"} */}
+            </span>
+          </div>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-          <p  >
-            ₩{" "}
-            {convrate === null || convrate === undefined
-              ? "N/A"
-              : formatNumberWithCommas(Number(convrate || 0)?.toFixed(0)) ||
-              "N/A"}
-          </p>
+          <div className="flex items-center justify-between">
+            <span className="text-black pl-1 dark:text-white" >
+              ₩{" "}
+            </span>
+            <span>
+              {convrate === null || convrate === undefined
+                ? "N/A"
+                : formatNumberWithCommas(Number(convrate || 0)?.toFixed(0)) ||
+                "N/A"}
+            </span>
+          </div>
         </div>
       );
     },

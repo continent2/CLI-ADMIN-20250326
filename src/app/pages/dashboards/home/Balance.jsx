@@ -64,14 +64,14 @@ export function Balance({ data }) {
         <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
           {/* Income */}
           <div>
-            <p className="text-white/90">당일 입금액</p>
+            <div className="text-white/90">당일 입금액</div>
             <div className="mt-1 flex flex-nowrap items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowRightIcon className="size-4" />
               </div>
-              <p className="flex flex-nowrap gap-1 text-nowrap text-[11px] font-medium">
+              <div className="flex flex-nowrap gap-1 text-nowrap text-[11px] font-medium">
                 {formatNumberWithCommas(depositToday)} <p>USDT</p>
-              </p>
+              </div>
               {/** <p className="text-base font-medium">₩{depositToday}</p>*/}
             </div>
             <Button
@@ -84,15 +84,16 @@ export function Balance({ data }) {
 
           {/* Expense */}
           <div>
-            <p className="text-white/90">당일 출금액</p>
+            <div className="text-white/90">당일 출금액</div>
             <div className="mt-1 flex flex-nowrap items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-full bg-black/20">
                 <ArrowRightIcon className="size-4" />
               </div>
-              <p className="flex flex-nowrap gap-1 text-nowrap text-[11px] font-medium">
+              <div className="flex flex-nowrap gap-1 text-nowrap text-[11px] font-medium">
                 {formatNumberWithCommas(withdrawToday)}
-                <p>USDT</p>
-              </p>
+                <span>USDT</span>
+              </div>
+
               {/** <p className="text-base font-medium">₩{withdrawToday}</p> */}
             </div>
             <Button
