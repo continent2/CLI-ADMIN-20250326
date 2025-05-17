@@ -91,9 +91,9 @@ export const columns = [
     accessorKey: "stat.sum_2d", //  transfer.account.countuse", // Use accessor for sorting/filtering
     header: () => (
       <div style={{ color: "rgb(214, 158, 54)" }}  >
-        현재 예금{/* Previous deposit amount */}  
+        누적입금액{/* Previous deposit amount */}
         <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-        오늘의 예금 {/* Conversion amount */}
+        회수 {/* Conversion amount */}
       </div>
     ),
     cell: Stat2,

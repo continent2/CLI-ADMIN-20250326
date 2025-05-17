@@ -65,7 +65,7 @@ export function Stat1({ row }) {
     <div style={{ color: "rgb(214, 158, 54)" }}  >
       <div className="flex items-center justify-between gap-x-1">
         <span>
-          <img className="h-[25px] object-contain rounded-full" src="/images/Ticon.png" />
+          <img className="h-[20px] object-contain rounded-full" src="/images/Ticon.png" />
         </span>
         <span className="flex items-center" >
           <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0}</p>
@@ -93,7 +93,7 @@ export function Stat2({ row }) {
     <div style={{ color: "rgb(214, 158, 54)" }}  >
       <div className="flex items-center justify-between gap-x-1">
         <span>
-          <img className="h-[25px] object-contain rounded-full" src="/images/Ticon.png" />
+          <img className="h-[20px] object-contain rounded-full" src="/images/Ticon.png" />
         </span>
         <span className="flex items-center" >
           <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0}</p>

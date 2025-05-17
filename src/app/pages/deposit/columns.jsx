@@ -117,7 +117,7 @@ export const columns = [
         <div style={{ color: "#d69e36" }} >
           <div className="flex items-center justify-between" >
             <span>
-              <img className="h-[25px] object-contain rounded-full" src="/images/Ticon.png" />
+              <img className="h-[20px] object-contain rounded-full" src="/images/Ticon.png" />
             </span>
             <span>
               {formatNumberWithCommas(Number(amount)?.toFixed(0)) || "N/A"}{" "}
