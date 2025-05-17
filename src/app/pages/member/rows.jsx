@@ -86,9 +86,8 @@ export function Stat1({ row }) {
 }
 
 export function Stat2({ row }) {
-  const sum = row.original.stat?.["sum_2d"];
-  const count = row.original.stat?.["count_2d"];
-  const sumInQuote = row.original.stat?.["sum_2d_in_quote"];
+  const sum = row.original.stat?.["sum_cumul"];
+  const count = row.original.stat?.["count_cumul"];
 
   return (
     <div style={{ color: "rgb(214, 158, 54)" }}  >
@@ -98,7 +97,6 @@ export function Stat2({ row }) {
         </span>
         <span className="flex items-center" >
           <p>{formatNumberWithCommas(sum?.toFixed(0)) ?? 0}</p>
-          <p>({formatNumberWithCommas(count?.toFixed(0)) ?? 0})</p>
         </span>
       </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
@@ -107,7 +105,7 @@ export function Stat2({ row }) {
           ₩
         </span>
         <span>
-          {formatNumberWithCommas(sumInQuote?.toFixed(0))}
+          {formatNumberWithCommas(count?.toFixed(0))}
         </span>
       </div>
     </div>

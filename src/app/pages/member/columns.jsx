@@ -75,18 +75,6 @@ export const columns = [
     cell: SiteIdURL,
   },
   {
-    id: "전일입금액",
-    accessorKey: "stat.sum_2d", //  transfer.account.countuse", // Use accessor for sorting/filtering
-    header: () => (
-      <div style={{ color: "rgb(214, 158, 54)" }}  >
-        전일입금액{/* Previous deposit amount */} (회수){/* (recovery) */}
-        <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-        환산금액 {/* Conversion amount */}
-      </div>
-    ),
-    cell: Stat2,
-  },
-  {
     id: "금일입금액",
     accessorKey: "stat.sum_1d", // Use accessor for sorting/filtering
     header: () => (
@@ -98,6 +86,19 @@ export const columns = [
     ),
     cell: Stat1,
   },
+  {
+    id: "전일입금액",
+    accessorKey: "stat.sum_2d", //  transfer.account.countuse", // Use accessor for sorting/filtering
+    header: () => (
+      <div style={{ color: "rgb(214, 158, 54)" }}  >
+        현재 예금{/* Previous deposit amount */}  
+        <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+        오늘의 예금 {/* Conversion amount */}
+      </div>
+    ),
+    cell: Stat2,
+  },
+
   {
     id: "상태",
     accessorKey: "info.status", // Keep the accessor for sorting/filtering
