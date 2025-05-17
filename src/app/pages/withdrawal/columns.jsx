@@ -121,8 +121,9 @@ export const columns = [
     header: "상태", //Situation
 
     cell: ({ row }) => {
-      // console.log("row", row);
-      const statusstr = row.original["dispstrstatus"]; // User status
+      let statusstr = false
+      statusstr = !!row.original["dispstrstatus"]  // User status
+      console.log(statusstr, row.original["dispstrstatus"]);
 
       const status = row.original['status']
       const statusMapping = {
@@ -140,8 +141,8 @@ export const columns = [
       //            console.log("status", status);
       return (
         <div>
-          {statusstr != null || statusstr != undefined ?
-            <p>{statusstr || "N/A"}</p>
+          {statusstr ?
+            <p>{row.original["dispstrstatus"] || "N/A"}</p>
             :
             <p>{statusMapping[status] || "N/A"}</p>
           }
