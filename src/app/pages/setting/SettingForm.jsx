@@ -21,7 +21,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import { useAppDataContext } from "../../contexts/appData/context.js";
-import ReactSelect from "react-select";
+import ReactSelect, { components } from "react-select";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 
@@ -54,7 +54,7 @@ export default function SettingForm() {
         <img
           src={bank.urllogo || "/images/dummy-bank.png"}
           alt={bank.banknamenative}
-          style={{ width: 20, height: 20 }}
+          style={{ width: 20, height: 20, borderRadius: "100%" }}
           onError={(e) => {
             e.currentTarget.src = "/images/dummy-bank.png";
           }}
@@ -625,9 +625,38 @@ export default function SettingForm() {
                       setSelectedOption(selected);
                       setBankValue("bankName", selected.value.banknamenative);
                     }}
+                    components={{
+                      SingleValue: ({ children, ...props }) => {
+                        const { data } = props;
+                        return (
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={data.value?.urllogo || "/images/dummy-bank.png"}
+                              alt={data.value?.banknamenative || "Bank logo"}
+                              style={{ width: 20, height: 20, borderRadius: "100%" }}
+                              onError={(e) => {
+                                e.currentTarget.src = "/images/dummy-bank.png";
+                              }}
+                            />
+                            <div>{data.value?.banknamenative}</div>
+                          </div>
+                        );
+                      },
+                      Input: (props) => {
+                        return <components.Input {...props} className="opacity-0 absolute" />;
+                      },
+                      Control: ({ children, ...props }) => {
+                        return (
+                          <components.Control {...props}>
+                            <div className="w-full h-full absolute cursor-pointer" onClick={() => props.selectProps.onMenuOpen()}></div>
+                            {children}
+                          </components.Control>
+                        );
+                      }
+                    }}
                     classNames={{
                       control: () =>
-                        "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                        "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450 relative",
                       singleValue: () => "text-black dark:text-dark-100",
                       input: () => "text-black dark:text-white",
                       option: ({ isFocused, isSelected }) =>
@@ -643,6 +672,7 @@ export default function SettingForm() {
                       menuList: () => "bg-white dark:bg-gray-800",
                     }}
                   />
+
 
                   <Input
                     placeholder=""

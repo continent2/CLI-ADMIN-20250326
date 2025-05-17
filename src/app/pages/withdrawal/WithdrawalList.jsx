@@ -91,6 +91,8 @@ export default function WithdrawalList() {
     name: "withdrawalDetail"
   };
 
+  console.log(paginationData, "data here")
+
   const table = useReactTable({
     data: withdraw,
     columns: columns,
@@ -115,7 +117,7 @@ export default function WithdrawalList() {
         setDateRange(null);
         withdrawas({
           offSet: 0,
-          limit: 20,
+          limit: 50,
           searchKey: "",
           timeStartIso: "",
           timeEndIso: "",
@@ -188,10 +190,13 @@ export default function WithdrawalList() {
 
   const rows = table.getRowModel().rows;
 
+  console.log(rows, "rows")
+
   const WrapComponent = viewType === "list" ? Card : Box;
+  console.log(table, 'hi')
 
   useEffect(() => {
-    withdrawas({ offSet: 0, limit: 20 });
+    withdrawas({ offSet: 0, limit: 50 });
   }, []);
 
   // Update the `deposit` state when `list` changes
@@ -205,7 +210,7 @@ export default function WithdrawalList() {
     // This will run after dateRange changes
     if (dateRange !== null) {
       // Add any condition you need
-      paginationData.fetchData(0, 20);
+      paginationData.fetchData(0, 50);
     }
   }, [dateRange]); // Only run when dateRange changes
 
@@ -219,7 +224,7 @@ export default function WithdrawalList() {
           className={clsx(
             "flex h-full w-full flex-col",
             tableSettings.enableFullScreen &&
-              "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
+            "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
           )}
         >
           <Toolbar table={table} />
@@ -255,16 +260,16 @@ export default function WithdrawalList() {
                   className={clsx(
                     "pb-4 sm:pt-4",
                     (viewType === "list" || tableSettings.enableFullScreen) &&
-                      "px-4 sm:px-5",
+                    "px-4 sm:px-5",
                     tableSettings.enableFullScreen &&
-                      "bg-gray-50 dark:bg-dark-800",
+                    "bg-gray-50 dark:bg-dark-800",
                     !(
                       table.getIsSomeRowsSelected() ||
                       table.getIsAllRowsSelected()
                     ) && "pt-4",
                     viewType === "grid" &&
-                      !tableSettings.enableFullScreen &&
-                      "mt-3",
+                    !tableSettings.enableFullScreen &&
+                    "mt-3",
                   )}
                 >
                   <PaginationSection

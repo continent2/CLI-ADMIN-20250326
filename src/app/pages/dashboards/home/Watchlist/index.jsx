@@ -135,7 +135,7 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
   }
 
   return (
-    <Box className="flex w-full shrink-0 flex-col sm:w-96">
+    <Box className="flex max-w-fit shrink-0 flex-col sm:w-96">
       <div className="flex items-center gap-2">
         <div
           className={`size-6 rounded-full ${trend >= 0
@@ -150,7 +150,7 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
           </span>
         </div>
       </div>
-      <div className="mt-2.5 flex flex-col rounded-lg bg-gray-50 p-3 dark:bg-surface-3">
+      <div className="mt-2.5 flex max-w-[88%] flex-col rounded-lg bg-gray-50 p-3 dark:bg-surface-3">
         <div className="ax-transparent-gridline">
           <Chart
             options={chartConfig}

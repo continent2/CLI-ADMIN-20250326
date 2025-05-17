@@ -104,6 +104,7 @@ export const columns = [
     header: "상태", //Situation
     cell: ({ row }) => {
       // console.log("row", row);
+      const statusstr = row.original?.info?.dispstrstatus;
       //      const status = row.original["info.status"]; // User status
       const status = row.original?.info?.status;
       //      const status = row["info.status"]; // User status
@@ -122,7 +123,12 @@ export const columns = [
       //      console.log("status", status);
       return (
         <div>
-          <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}
+          {statusstr != null || statusstr != undefined ?
+            <p>{statusstr || "N/A"}</p>
+            :
+            <p>{statusMapping[status] || "N/A"}</p>
+          }
+          {/* Display User status */}
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
           {/* <p>{isRed || "N/A"}</p> {/* Display warning status */}
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}

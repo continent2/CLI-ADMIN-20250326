@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 // Local Imports
 import { useLocaleContext } from "app/contexts/locale/context";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
+import { isKoreanFormat } from "utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -14,18 +15,21 @@ export function CreateUpdateCell({ row }) {
   const createdDate = row.original["createdat"];
   const updatedDate = row.original["updatedat"];
 
+  const dateFormat = isKoreanFormat ? 'YYYY년MM월DD일' : 'YYYY-MM-DD';
+
   const formattedCreatedDate = createdDate
-    ? `${dayjs(createdDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
+    ? `${dayjs(createdDate).locale(locale).format(dateFormat)} | ${dayjs(createdDate).locale(locale).format("HH:mm:ss")}`
     : "N/A";
 
   const formattedUpdatedDate = updatedDate
-    ? `${dayjs(updatedDate).locale(locale).format("YYYY-MM-DD")} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
+    ? `${dayjs(updatedDate).locale(locale).format(dateFormat)} | ${dayjs(updatedDate).locale(locale).format("HH:mm:ss")}`
     : "N/A";
+
 
   return (
     <div>
-      <p>{formattedCreatedDate}</p>
-      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+      {/* <p>{formattedCreatedDate}</p>
+      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
       <p>{formattedUpdatedDate}</p>
     </div>
   );
@@ -36,16 +40,37 @@ export function AmountCurrency({ row }) {
   const Currency = row.original["currency"];
   const AmountInQuote = row.original["amount_in_quote"];
   return (
-    <div>
-      <div className="flex gap-x-1">
-        <p>{formatNumberWithCommas(Number(Amount)?.toFixed(0)) ?? "N/A"}</p>
-        <p>{Currency ?? "N/A"}</p>
+    <div style={{ color: "#d69e36" }} >
+      <div className="flex items-center justify-between" >
+        <span>
+          <img className="h-[25px] object-contain rounded-full" src="/images/Ticon.png" />
+        </span>
+        <span>
+          {formatNumberWithCommas(Number(Amount)?.toFixed(0)) ?? "N/A"}
+          {/* {currency || "N/A"} */}
+        </span>
       </div>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-      <p>₩ {formatNumberWithCommas(Number(AmountInQuote)?.toFixed(0))}</p>
+      <div className="flex items-center justify-between">
+        <span className="text-black pl-1 dark:text-white" >
+          ₩{" "}
+        </span>
+        <span>
+          {formatNumberWithCommas(Number(AmountInQuote)?.toFixed(0))}
+        </span>
+      </div>
     </div>
+    // <div>
+    //   <div className="flex gap-x-1">
+    //     <p>{formatNumberWithCommas(Number(Amount)?.toFixed(0)) ?? "N/A"}</p>
+    //     <p>{Currency ?? "N/A"}</p>
+    //   </div>
+    //   <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
+    //   <p>₩ {formatNumberWithCommas(Number(AmountInQuote)?.toFixed(0))}</p>
+    // </div>
   );
 }
+
 
 export function SendAccount({ row }) {
   const ID = row.original["agency.id"];

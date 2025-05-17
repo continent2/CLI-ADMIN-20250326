@@ -1,6 +1,6 @@
 import { Page } from "components/shared/Page";
 import { Input, Button, Switch } from "components/ui";
-import ReactSelect from "react-select";
+import ReactSelect, { components } from "react-select";
 import { Fragment, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 // import { yupResolver } from "@hookform/resolvers/yup";
@@ -60,7 +60,7 @@ export default function SiteRegistrationForm() {
         <img
           src={bank.urllogo || "/images/dummy-bank.png"}
           alt={bank.banknamenative || "Bank logo"}
-          style={{ width: 20, height: 20 }}
+          style={{ width: 20, height: 20, borderRadius: "100%" }}
           onError={(e) => {
             e.currentTarget.src = "/images/dummy-bank.png";
           }}
@@ -216,16 +216,47 @@ export default function SiteRegistrationForm() {
                       setValue("bankName", selected.bankData.banknamenative);
                       setValue("bankId", selected.bankData.id);
                     }}
+                    components={{
+                      SingleValue: ({ children, ...props }) => {
+                        const { data } = props;
+                        return (
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={data.bankData?.urllogo || "/images/dummy-bank.png"}
+                              alt={data.bankData?.banknamenative || "Bank logo"}
+                              style={{ width: 20, height: 20, borderRadius: "100%" }}
+                              onError={(e) => {
+                                e.currentTarget.src = "/images/dummy-bank.png";
+                              }}
+                            />
+                            <div>{data.bankData?.banknamenative}</div>
+                          </div>
+                        );
+                      },
+                      Input: (props) => {
+                        // Make input invisible but maintain its position and size
+                        return <components.Input {...props} className="opacity-0 absolute" />;
+                      },
+                      // Add a custom Control component to make the entire area clickable
+                      Control: ({ children, ...props }) => {
+                        return (
+                          <components.Control {...props}>
+                            <div className="w-full h-full absolute cursor-pointer" onClick={() => props.selectProps.onMenuOpen()}></div>
+                            {children}
+                          </components.Control>
+                        );
+                      }
+                    }}
                     classNames={{
                       control: () =>
-                        "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450",
+                        "!rounded-lg !bg-transparent hover:!border-gray-400 dark:!border-dark-450 relative",
                       singleValue: () => "text-black dark:text-dark-100",
                       input: () => "text-black dark:text-white",
                       option: ({ isFocused, isSelected }) =>
                         [
                           "text-black dark:text-white",
                           "bg-white dark:bg-dark-800",
-                          isFocused && "bg-gray-100 dark:bg-gray-700",
+                          isFocused && "bg-gray-100 rounded-full dark:bg-gray-700",
                           isSelected && "bg-blue-500 text-white",
                         ]
                           .filter(Boolean)

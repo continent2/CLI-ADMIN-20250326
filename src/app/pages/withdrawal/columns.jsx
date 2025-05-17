@@ -10,10 +10,10 @@ import {
   tronScan_Address,
 } from "../../../constants/app.constant.js";
 import { CopyableCellWithClick } from "components/shared/table/CopyableCell";
-
 // ----------------------------------------------------------------------
 
 // const columnHelper = createColumnHelper();
+
 
 export const columns = [
   {
@@ -26,7 +26,7 @@ export const columns = [
     id: "수량 ,단위",
     accessorKey: "amount", // Keep the accessor for sorting/filtering
     header: () => (
-      <div>
+      <div style={{ color: "#d69e36" }} >
         수량,단위
         <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
         환산금액
@@ -122,7 +122,9 @@ export const columns = [
 
     cell: ({ row }) => {
       // console.log("row", row);
-      const status = row.original["status"]; // User status
+      const statusstr = row.original["dispstrstatus"]; // User status
+
+      const status = row.original['status']
       const statusMapping = {
         0: "대기",
         1: "완료",
@@ -138,7 +140,12 @@ export const columns = [
       //            console.log("status", status);
       return (
         <div>
-          <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}
+          {statusstr != null || statusstr != undefined ?
+            <p>{statusstr || "N/A"}</p>
+            :
+            <p>{statusMapping[status] || "N/A"}</p>
+          }
+          {/* Display User status */}
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
           {/* <p>{isRed || "N/A"}</p> {/* Display warning status */}
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}

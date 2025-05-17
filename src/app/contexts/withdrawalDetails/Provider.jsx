@@ -149,7 +149,8 @@ export function WithdrawalDetailsProvider({ children }) {
       }
 
       const response = await axios.get(
-        `/query/list/custom/withdraw/_/_/id/DESC/${offSet}/${limit}?iscrypto=0`,
+        `/query/list/custom/withdraw/_/_/id/DESC/${offSet}/${limit}`,
+        // `/query/list/custom/withdraw/_/_/id/DESC/${offSet}/${limit}?iscrypto=0`,
         {
           headers: {
             Authorization: token,
@@ -160,6 +161,7 @@ export function WithdrawalDetailsProvider({ children }) {
       );
 
       const { list, count } = response.data;
+      console.log(response.data, "response")
 
       // if (!isString(authToken) && !isObject(user)) {
       //   throw new Error("Response is not vallid");

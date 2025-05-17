@@ -42,7 +42,7 @@ export function AmountCurrency({ row }) {
     <div>
       <div className="flex items-center justify-between gap-x-1">
         <span>
-          <img className="h-[25px] object-contain rounded-full" src="https://github.com/spothq/cryptocurrency-icons/blob/master/128/icon/usdt.png?raw=true" />
+          <img className="h-[25px] object-contain rounded-full" src="/images/Ticon.png" />
         </span>
         <span>
           <p>{formatNumberWithCommas(Amount) ?? 0}</p>

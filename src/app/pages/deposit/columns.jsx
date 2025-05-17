@@ -117,7 +117,7 @@ export const columns = [
         <div style={{ color: "#d69e36" }} >
           <div className="flex items-center justify-between" >
             <span>
-              <img className="h-[25px] object-contain rounded-full" src="https://github.com/spothq/cryptocurrency-icons/blob/master/128/icon/usdt.png?raw=true" />
+              <img className="h-[25px] object-contain rounded-full" src="/images/Ticon.png" />
             </span>
             <span>
               {formatNumberWithCommas(Number(amount)?.toFixed(0)) || "N/A"}{" "}
@@ -367,6 +367,7 @@ export const columns = [
     ),
     cell: ({ row }) => {
       //      const status = row.original["user.status"]; // User status
+      const statusstr = row?.original['dispstrstatus']
       const status = row.original["status"]; // User status
       const statusMapping = {
         0: "대기", // Normal
@@ -383,7 +384,12 @@ export const columns = [
 
       return (
         <div>
-          <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}
+          {statusstr != null || statusstr != undefined ?
+            <p>{statusstr || "N/A"}</p>
+            :
+            <p>{statusMapping[status] || "N/A"}</p>
+          }
+          {/* Display User status */}
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
           {/* <p>{isRed || "N/A"}</p> {/* Display warning status */}
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}

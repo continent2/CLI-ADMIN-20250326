@@ -140,6 +140,8 @@ export default function WithdrawalDetails() {
     autoResetPageIndex,
   });
 
+
+
   useDidUpdate(() => table.resetRowSelection(), [users]);
 
   useLockScrollbar(tableSettings.enableFullScreen);
@@ -149,12 +151,13 @@ export default function WithdrawalDetails() {
   const WrapComponent = viewType === "list" ? Card : Box;
 
   useEffect(() => {
-    withdrawas({ offSet: 0, limit: 20 });
+    withdrawas({ offSet: 0, limit: 50 })
   }, []);
 
   // Update the `deposit` state when `list` changes
   useEffect(() => {
     if (list && list?.length > 0) {
+      console.log(table, "hello")
       setWithdraw(list);
     }
   }, [list]);
@@ -163,13 +166,13 @@ export default function WithdrawalDetails() {
     <Page title="출금 내역">
       <div className="transition-content w-full pb-5">
         <h2 className="truncate px-[--margin-x] py-6 text-xl font-medium tracking-wide text-gray-800 dark:text-dark-50">
-          출금 내역
+          출금 내역 출금 내역
         </h2>
         <div
           className={clsx(
             "flex h-full w-full flex-col",
             tableSettings.enableFullScreen &&
-              "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
+            "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
           )}
         >
           <Toolbar table={table} />
@@ -198,16 +201,16 @@ export default function WithdrawalDetails() {
                   className={clsx(
                     "pb-4 sm:pt-4",
                     (viewType === "list" || tableSettings.enableFullScreen) &&
-                      "px-4 sm:px-5",
+                    "px-4 sm:px-5",
                     tableSettings.enableFullScreen &&
-                      "bg-gray-50 dark:bg-dark-800",
+                    "bg-gray-50 dark:bg-dark-800",
                     !(
                       table.getIsSomeRowsSelected() ||
                       table.getIsAllRowsSelected()
                     ) && "pt-4",
                     viewType === "grid" &&
-                      !tableSettings.enableFullScreen &&
-                      "mt-3",
+                    !tableSettings.enableFullScreen &&
+                    "mt-3",
                   )}
                 >
                   <PaginationSection
