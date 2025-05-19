@@ -153,7 +153,7 @@ export function Notifications() {
         isIcon
         className="relative size-9 rounded-full"
       >
-        <AlarmIcon className="size-6 text-gray-900 dark:text-dark-100" />
+        {/* <AlarmIcon className="size-6 text-gray-900 dark:text-dark-100" /> */}
         {/* {notifications?.length > 0 && (
           <AvatarDot
             color="error"

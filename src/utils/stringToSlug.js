@@ -13,7 +13,7 @@ export function stringToSlug(str) {
     str = str.trim().toLowerCase();
 
     // Normalize accents using a built-in method for better performance and support
-    str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    str = str.normalize('NFD')?.replace(/[\u0300-\u036f]/g, '');
 
     // Replace special characters and spaces with dashes
     str = str?.replace(/[^a-z0-9 -]/g, '')  // Remove invalid characters

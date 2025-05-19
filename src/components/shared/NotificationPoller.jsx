@@ -65,7 +65,7 @@ const NotificationPoller = () => {
         },
       );
 
-      (data?.list || [])?.forEach((item) => {
+      (data?.list || []).forEach((item) => {
         if (shownIds.current.has(item.id)) {
           const audio = new Audio('/bubble.mp3');
           audio.play().catch(e => console.error("Audio playback failed:", e));

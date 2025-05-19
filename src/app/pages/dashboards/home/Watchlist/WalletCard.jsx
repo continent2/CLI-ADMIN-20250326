@@ -59,9 +59,9 @@ const chartConfig = {
 
 export function WalletCard({ depositData }) {
   // Process the deposit data
-  const chartPoints = depositData?.map((item) => item?.sumamount / 1000) || [];
+  const chartPoints = depositData?.map((item) => item.sumamount / 1000) || [];
   const totalAmount =
-    depositData?.reduce((sum, item) => sum + item?.sumamount, 0) || 0;
+    depositData?.reduce((sum, item) => sum + item.sumamount, 0) || 0;
 
   // Calculate trend (percentage change from first to last point)
   const trend =

@@ -58,12 +58,12 @@ const baseChartConfig = {
 
 // Deposit Card Component
 function DepositCard({ data, title, timeUnit, isHourly }) {
-  const chartPoints = data?.map((item) => item?.sumamount) || [];
+  const chartPoints = data?.map((item) => item.sumamount) || [];
   const labels =
     data?.map((item, index) =>
       isHourly
-        ? parseInt(item?.hourvalue) % 2 === 0
-          ? `${item?.hourvalue}h`
+        ? parseInt(item.hourvalue) % 2 === 0
+          ? `${item.hourvalue}h`
           : ""
         : index % 2 === 0
           ? formatDateLabel(item.datevalue)
@@ -71,8 +71,8 @@ function DepositCard({ data, title, timeUnit, isHourly }) {
     ) || [];
 
   const trend =
-    chartPoints?.length > 1
-      ? ((chartPoints[chartPoints?.length - 1] - chartPoints[0]) /
+    chartPoints.length > 1
+      ? ((chartPoints[chartPoints.length - 1] - chartPoints[0]) /
         (chartPoints[0] || 1)) *
       100
       : 0;
@@ -214,10 +214,10 @@ export function Watchlist({ data }) {
                     #{index + 1}
                   </span>
                   <span className="text-gray-600 dark:text-dark-200">
-                    {user?.username}
+                    {user.username}
                   </span>
                   <span className="text-gray-600 dark:text-dark-200">
-                    {user?.externaluserid}
+                    {user.externaluserid}
                   </span>
                 </div>
                 <span className="font-medium text-green-600 dark:text-green-400">

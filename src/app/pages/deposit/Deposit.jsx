@@ -53,10 +53,10 @@ export default function Deposit() {
   const paginationData = {
     fetchData: (offset, limit) => {
       const timeStartIso = dateRange
-        ? new Date(dateRange[0])?.toISOString()?.replace(/\.\d+Z$/, "")
+        ? new Date(dateRange[0]).toISOString()?.replace(/\.\d+Z$/, "")
         : null;
       const timeEndIso = dateRange
-        ? new Date(dateRange[1])?.toISOString()?.replace(/\.\d+Z$/, "")
+        ? new Date(dateRange[1]).toISOString()?.replace(/\.\d+Z$/, "")
         : null;
 
       deposits({

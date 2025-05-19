@@ -3,5 +3,5 @@ export function formatNumberWithCommas(number) {
 }
 
 export function unformatNumberWithCommas(formattedNumber) {
-  return String(formattedNumber).replace(/,/g, '');
+  return String(formattedNumber)?.replace(/,/g, '');
 }

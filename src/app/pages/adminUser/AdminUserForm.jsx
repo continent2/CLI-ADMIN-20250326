@@ -82,7 +82,7 @@ const AdminUserForm = () => {
 
     try {
       const countryCode = phoneCountryCode?.replace("+", "");
-      const regionCode = phoneUtil?.getRegionCodeForCountryCode(
+      const regionCode = phoneUtil.getRegionCodeForCountryCode(
         parseInt(countryCode),
       );
 
