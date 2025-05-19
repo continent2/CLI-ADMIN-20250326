@@ -68,7 +68,7 @@ export function RoleFilter({ table, options }) {
                 orientation: "horizontal",
               })}
             >
-              <p>{option?.siteurl != null ? option.siteurl?.replace(/^https?:\/\//, "").toUpperCase() : 'N/A'}</p>
+              <p>{option?.siteurl != null ? option.siteurl.replace(/^https?:\/\//, "").toUpperCase() : 'N/A'}</p>
               <p> ({option.id})</p>
             </Button>
           );

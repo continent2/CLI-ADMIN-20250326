@@ -81,7 +81,7 @@ const AdminUserForm = () => {
     if (!phoneNationalNumber || !phoneCountryCode) return;
 
     try {
-      const countryCode = phoneCountryCode?.replace("+", "");
+      const countryCode = phoneCountryCode.replace("+", "");
       const regionCode = phoneUtil.getRegionCodeForCountryCode(
         parseInt(countryCode),
       );

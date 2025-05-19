@@ -51,7 +51,7 @@ const columns = [
             rel="noopener noreferrer"
             className="text-blue-500 no-underline dark:text-gray-500" // Add style if needed
           >
-            {siteUrl != null ? siteUrl?.replace(/^https?:\/\//, "") : "N/A"}{" "}
+            {siteUrl != null ? siteUrl.replace(/^https?:\/\//, "") : "N/A"}{" "}
             {/* Display site URL or "-" if not available */}
           </a>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />

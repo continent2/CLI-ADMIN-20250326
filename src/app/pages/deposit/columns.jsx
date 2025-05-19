@@ -54,7 +54,7 @@ export const columns = [
             rel="noopener noreferrer"
             className="text-[rgb(214, 158, 54)] no-underline dark:text-[rgb(214, 158, 54)]" // Add style if needed
           >
-            {userName != null ? userName?.replace(/^https?:\/\//, "") : "N/A"}{" "}
+            {userName != null ? userName.replace(/^https?:\/\//, "") : "N/A"}{" "}
             {/* Display site URL or "-" if not available */}
           </a>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
@@ -86,7 +86,7 @@ export const columns = [
             rel="noopener noreferrer"
             className="text-blue-500 no-underline dark:text-gray-500" // Add style if needed
           >
-            {siteUrl != null ? siteUrl?.replace(/^https?:\/\//, "") : "N/A"}{" "}
+            {siteUrl != null ? siteUrl.replace(/^https?:\/\//, "") : "N/A"}{" "}
             {/* Display site URL or "-" if not available */}
           </a>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
@@ -367,7 +367,7 @@ export const columns = [
     ),
     cell: ({ row }) => {
       //      const status = row.original["user.status"]; // User status
-      const statusstr = false
+      const statusstr = true
       // console.log("row", row);
       // statusstr = !!row.original["dispstrstatus"]
       const status = row.original["status"]; // User status

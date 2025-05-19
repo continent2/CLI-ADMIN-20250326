@@ -105,7 +105,7 @@ export const columns = [
     header: "상태", //Situation
     cell: ({ row }) => {
       // console.log("row", row);
-      const statusstr = false
+      const statusstr = true
 
       // console.log("row", row);
       // statusstr = !!row.original?.info?.dispstrstatus
