@@ -60,12 +60,12 @@ export default function Appearance() {
   const theme = useThemeContext();
 
   useDidUpdate(() => {
+
     toast("Position updated", {
-      description: `Notification position updated to ${
-        notificationPos.find(
-          (pos) => pos.value === theme.notification?.position,
-        ).label
-      }`,
+      description: `Notification position updated to ${notificationPos.find(
+        (pos) => pos.value === theme.notification?.position,
+      ).label
+        }`,
       descriptionClassName: "text-gray-600 dark:text-dark-200 text-xs mt-0.5",
     });
   }, [theme.notification?.position]);
@@ -112,7 +112,7 @@ export default function Appearance() {
                       className={clsx(
                         "relative overflow-hidden rounded-lg border-2 bg-dark-900 dark:border-transparent",
                         checked &&
-                          "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
+                        "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
                       )}
                     >
                       <div
@@ -167,7 +167,7 @@ export default function Appearance() {
                       className={clsx(
                         "relative overflow-hidden rounded-lg border-2 dark:border-transparent",
                         checked &&
-                          "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
+                        "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
                       )}
                     >
                       <div className="w-full space-y-2 bg-gray-50 p-1.5 rtl:space-x-reverse">
@@ -196,7 +196,7 @@ export default function Appearance() {
                       className={clsx(
                         "relative overflow-hidden rounded-lg border border-transparent bg-dark-900",
                         checked &&
-                          "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
+                        "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
                       )}
                     >
                       <div className="w-full space-y-2 bg-dark-900 p-1.5 rtl:space-x-reverse">
@@ -295,7 +295,7 @@ export default function Appearance() {
                         className={clsx(
                           "relative overflow-hidden rounded-lg border-2 dark:border-transparent",
                           checked &&
-                            "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
+                          "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
                         )}
                       >
                         <div
@@ -360,7 +360,7 @@ export default function Appearance() {
                         className={clsx(
                           "relative overflow-hidden rounded-lg",
                           checked &&
-                            "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
+                          "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
                         )}
                       >
                         <div
@@ -430,7 +430,7 @@ export default function Appearance() {
                       className={clsx(
                         "relative flex h-52 w-full items-center rounded-lg border border-gray-200 px-3 py-4 dark:border-dark-500",
                         checked &&
-                          "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
+                        "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
                       )}
                     >
                       <div className="w-full -space-y-6">
@@ -465,7 +465,7 @@ export default function Appearance() {
                       className={clsx(
                         "relative flex h-52 w-full flex-col justify-between space-y-2 rounded-lg border border-gray-200 px-4 py-5 dark:border-dark-500",
                         checked &&
-                          "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
+                        "ring-2 ring-primary-600 ring-offset-2 ring-offset-white transition-all dark:ring-primary-500 dark:ring-offset-dark-700",
                       )}
                     >
                       {Array(3)

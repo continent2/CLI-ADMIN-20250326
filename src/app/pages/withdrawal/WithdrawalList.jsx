@@ -72,10 +72,10 @@ export default function WithdrawalList() {
   const paginationData = {
     fetchData: (offset, limit) => {
       const timeStartIso = dateRange
-        ? new Date(dateRange[0]).toISOString().replace(/\.\d+Z$/, "")
+        ? new Date(dateRange[0])?.toISOString()?.replace(/\.\d+Z$/, "")
         : null;
       const timeEndIso = dateRange
-        ? new Date(dateRange[1]).toISOString().replace(/\.\d+Z$/, "")
+        ? new Date(dateRange[1])?.toISOString()?.replace(/\.\d+Z$/, "")
         : null;
 
       withdrawas({
@@ -190,10 +190,8 @@ export default function WithdrawalList() {
 
   const rows = table.getRowModel().rows;
 
-  console.log(rows, "rows")
 
   const WrapComponent = viewType === "list" ? Card : Box;
-  console.log(table, 'hi')
 
   useEffect(() => {
     withdrawas({ offSet: 0, limit: 50 });
@@ -213,6 +211,7 @@ export default function WithdrawalList() {
       paginationData.fetchData(0, 50);
     }
   }, [dateRange]); // Only run when dateRange changes
+
 
   return (
     <Page title="출금 내역">

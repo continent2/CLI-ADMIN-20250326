@@ -38,7 +38,8 @@ export const columns = [
           rel="noopener noreferrer"
           className="text-blue-500 no-underline dark:text-gray-500"
         >
-          {socialId?.replace(/^https?:\/\//, "") || "N/A"}
+          {/* {socialId?.replace(/^https?:\/\//, "") || "N/A"} */}
+          {socialId != null ? socialId?.replace(/^https?:\/\//, "") : "N/A"}
         </a>
       );
     },

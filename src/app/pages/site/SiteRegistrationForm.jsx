@@ -104,6 +104,7 @@ export default function SiteRegistrationForm() {
           title: "Failed",
         });
         setisModalVisible(true);
+
         toast.error("Fail");
       } else {
         setModalData({
@@ -112,6 +113,7 @@ export default function SiteRegistrationForm() {
           title: "Success",
         });
         setisModalVisible(true);
+
         toast.success("Success");
       }
     } catch (err) {
@@ -121,6 +123,7 @@ export default function SiteRegistrationForm() {
         title: "Failed",
       });
       setisModalVisible(true);
+
       toast.error("Error");
     }
   };

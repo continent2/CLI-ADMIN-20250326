@@ -54,10 +54,16 @@ export const schema = Yup.object().shape({
     .transform((value) => (typeof value === "string" ? value.trim() : value))
     .required("이 필드는 필수입니다")
     .min(1, "이 필드는 필수입니다"),
+  // bankAccount: Yup.string()
+  //   .trim()
+  //   .required("계좌번호를 입력해주세요")
+  //   .matches(/^[0-9]+$/, "숫자만 입력하세요"),
   bankAccount: Yup.string()
     .trim()
     .required("계좌번호를 입력해주세요")
-    .matches(/^[0-9]+$/, "숫자만 입력하세요"),
+    .matches(/^[0-9]+$/, "숫자만 입력하세요")
+    .min(12, "계좌번호는 최소 12자 이상이어야 합니다"),
+
   address: Yup.string()
     .trim()
     .required("주소가 필요합니다")

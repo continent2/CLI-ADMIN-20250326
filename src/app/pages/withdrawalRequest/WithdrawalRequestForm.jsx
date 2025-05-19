@@ -77,6 +77,7 @@ export default function WithdrawalRequestForm() {
       });
 
       if (response.data.status === "OK") {
+
         toast.success("출금 요청이 성공적으로 접수되었습니다");
         setModalData((prev) => ({
           ...prev,
@@ -86,6 +87,7 @@ export default function WithdrawalRequestForm() {
         }));
         setisModalVisible(true);
       } else {
+
         toast.error("출금 요청 처리 중 오류가 발생했습니다");
         setModalData((prev) => ({
           ...prev,
@@ -96,6 +98,7 @@ export default function WithdrawalRequestForm() {
         setisModalVisible(true);
       }
     } catch (err) {
+
       toast.error("출금 요청 처리 중 오류가 발생했습니다");
       setModalData((prev) => ({
         ...prev,

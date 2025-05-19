@@ -10,6 +10,7 @@ import { useThemeContext } from "app/contexts/theme/context";
 export default function Toaster() {
   const { isDark, notification } = useThemeContext();
 
+
   return (
     <SonnerToaster
       theme={isDark ? "dark" : "light"}

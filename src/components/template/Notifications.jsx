@@ -29,7 +29,7 @@ import axios from "axios";
 import { Link } from "react-router";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 // import JWT_HOST_API from 'configs/auth.config'; 
-import { JWT_HOST_API} from 'configs/auth.config'; 
+import { JWT_HOST_API } from 'configs/auth.config';
 
 const notificationTypes = {
   all: {
@@ -61,8 +61,8 @@ export function Notifications() {
     queryKey: ["wallet-data"],
     queryFn: async () => {
       const response = await axios.get(
-        `${  JWT_HOST_API }/dash/agency`,
-//        `https://testne t.cdeposit.online:50825/dash/agency`,
+        `${JWT_HOST_API}/dash/agency`,
+        //        `https://testne t.cdeposit.online:50825/dash/agency`,
         {
           headers: {
             Authorization: localStorage.getItem("authToken"),
@@ -130,8 +130,8 @@ export function Notifications() {
     activeTab === 0
       ? notifications
       : notifications.filter(
-          (notification) => notification.type === tabKeys[activeTab],
-        );
+        (notification) => notification.type === tabKeys[activeTab],
+      );
 
   const removeNotification = (id) => {
     setNotifications((n) => n.filter((n) => n.id !== id));
@@ -154,13 +154,13 @@ export function Notifications() {
         className="relative size-9 rounded-full"
       >
         <AlarmIcon className="size-6 text-gray-900 dark:text-dark-100" />
-        {notifications?.length > 0 && (
+        {/* {notifications?.length > 0 && (
           <AvatarDot
             color="error"
             isPing
             className="top-0 ltr:right-0 rtl:left-0"
           />
-        )}
+        )} */}
       </PopoverButton>
 
       <Transition

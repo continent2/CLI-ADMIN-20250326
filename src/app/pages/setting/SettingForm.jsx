@@ -113,11 +113,13 @@ export default function SettingForm() {
             );
           }
         } else {
+
           toast.error(
             response.data.message || "설정을 불러오는 데 실패했습니다",
           );
         }
       } catch (error) {
+
         console.error("Failed to fetch settings:", error);
         toast.error("설정을 불러오는 중 오류가 발생했습니다");
       } finally {
@@ -217,6 +219,7 @@ export default function SettingForm() {
         color: "success",
         title: "성공",
       });
+
       toast.success(successMessage || "성공적으로 업데이트되었습니다");
     } else {
       setModalData({
@@ -225,6 +228,7 @@ export default function SettingForm() {
         color: "error",
         title: "실패",
       });
+
       toast.error(
         errorMessage || response.data.message || "업데이트에 실패했습니다",
       );
@@ -242,6 +246,7 @@ export default function SettingForm() {
       title: "오류",
     });
     setisModalVisible(true);
+
     toast.error(
       error.response?.data?.message || defaultMessage || "오류가 발생했습니다",
     );
@@ -278,6 +283,7 @@ export default function SettingForm() {
   const onSubmitPassword = async (data) => {
     const userPwd = localStorage.getItem("pw");
     if (userPwd !== data.existingPassword) {
+
       toast.error("기존 비밀번호가 올바르지 않습니다");
       return;
     }

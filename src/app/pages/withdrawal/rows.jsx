@@ -100,7 +100,7 @@ export function ReceivedAccount({ row }) {
         rel="noopener noreferrer"
         className="text-blue-500 no-underline dark:text-gray-500"
       >
-        {Name.replace(/^https?:\/\//, "") || "N/A"}
+        {Name != null ? Name?.replace(/^https?:\/\//, "") : "N/A"}
       </a>
     </div>
   );

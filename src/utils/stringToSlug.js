@@ -16,9 +16,9 @@ export function stringToSlug(str) {
     str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
     // Replace special characters and spaces with dashes
-    str = str.replace(/[^a-z0-9 -]/g, '')  // Remove invalid characters
-             .replace(/\s+/g, '-')        // Replace spaces with dashes
-             .replace(/-+/g, '-');        // Collapse consecutive dashes
+    str = str?.replace(/[^a-z0-9 -]/g, '')  // Remove invalid characters
+             ?.replace(/\s+/g, '-')        // Replace spaces with dashes
+             ?.replace(/-+/g, '-');        // Collapse consecutive dashes
 
     return str;
 }

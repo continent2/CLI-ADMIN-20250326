@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { useLocaleContext } from "app/contexts/locale/context";
 import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 import { isKoreanFormat } from "utils/formatNumber";
+import { toast } from "sonner";
 
 // ----------------------------------------------------------------------
 
@@ -48,7 +49,7 @@ export function SiteIdURL({ row }) {
         rel="noopener noreferrer"
         className="text-blue-500 no-underline dark:text-gray-500"
       >
-        {siteURL != null ? siteURL.replace(/^https?:\/\//, "") : "N/A"}
+        {siteURL != null ? siteURL?.replace(/^https?:\/\//, "") : "N/A"}
       </a>
       <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
       <p>{siteId || "N/A"}</p>
@@ -89,6 +90,8 @@ export function Stat2({ row }) {
   const sum = row.original.stat?.["sum_cumul"];
   const count = row.original.stat?.["count_cumul"];
 
+
+
   return (
     <div style={{ color: "rgb(214, 158, 54)" }}  >
       <div className="flex items-center justify-between gap-x-1">
@@ -104,7 +107,7 @@ export function Stat2({ row }) {
         <span className="text-black pl-1 dark:text-white" >
           ₩
         </span>
-        <span>
+        <span >
           {formatNumberWithCommas(count?.toFixed(0))}
         </span>
       </div>

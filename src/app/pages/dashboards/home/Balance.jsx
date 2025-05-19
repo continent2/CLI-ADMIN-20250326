@@ -38,6 +38,7 @@ export function Balance({ data }) {
             <CopyButton value={data?.address_recent_used}>
               {({ copied, copy }) => {
                 copied && toast.success("Your Wallet Address copied");
+
                 return (
                   <Button
                     unstyled

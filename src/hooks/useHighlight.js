@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 const escapeRegexp = (term) =>
-  term.replace(/[|\\{}()[\]^$+*?.-]/g, (char) => `\\${char}`);
+  term?.replace(/[|\\{}()[\]^$+*?.-]/g, (char) => `\\${char}`);
 
 function buildRegex(query) {
   const _query = query

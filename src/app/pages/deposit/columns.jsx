@@ -54,7 +54,7 @@ export const columns = [
             rel="noopener noreferrer"
             className="text-[rgb(214, 158, 54)] no-underline dark:text-[rgb(214, 158, 54)]" // Add style if needed
           >
-            {userName.replace(/^https?:\/\//, "") || "N/A"}{" "}
+            {userName != null ? userName?.replace(/^https?:\/\//, "") : "N/A"}{" "}
             {/* Display site URL or "-" if not available */}
           </a>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
@@ -86,11 +86,11 @@ export const columns = [
             rel="noopener noreferrer"
             className="text-blue-500 no-underline dark:text-gray-500" // Add style if needed
           >
-            {siteUrl.replace(/^https?:\/\//, "") || "N/A"}{" "}
+            {siteUrl != null ? siteUrl?.replace(/^https?:\/\//, "") : "N/A"}{" "}
             {/* Display site URL or "-" if not available */}
           </a>
           <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} />
-          <p>{siteId || "N/A"}</p>{" "}
+          <p>{siteId != null ? siteId : "N/A"}</p>{" "}
           {/* Display SiteList ID or "N/A" if not available */}
         </div>
       );
@@ -367,9 +367,9 @@ export const columns = [
     ),
     cell: ({ row }) => {
       //      const status = row.original["user.status"]; // User status
-      let statusstr = false
+      const statusstr = false
       // console.log("row", row);
-      statusstr = !!row.original["dispstrstatus"]
+      // statusstr = !!row.original["dispstrstatus"]
       const status = row.original["status"]; // User status
       const statusMapping = {
         0: "대기", // Normal
@@ -385,7 +385,7 @@ export const columns = [
       // const complaintCount = row.original["user.countcomplaint"]; // Number of complaints
 
       return (
-        <div>
+        <div style={{ color: row.original['dispcolorstatus'] }} >
           {statusstr ?
             <p>{row.original["dispstrstatus"] || "N/A"}</p>
             :

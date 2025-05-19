@@ -148,6 +148,7 @@ export function AuthProvider({ children }) {
           user,
         },
       });
+      
       toast.success("Success");
     } catch (err) {
       dispatch({

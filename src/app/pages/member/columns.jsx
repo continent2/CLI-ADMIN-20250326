@@ -105,9 +105,10 @@ export const columns = [
     header: "상태", //Situation
     cell: ({ row }) => {
       // console.log("row", row);
-      let statusstr = false
+      const statusstr = false
+
       // console.log("row", row);
-      statusstr = !!row.original?.info?.dispstrstatus
+      // statusstr = !!row.original?.info?.dispstrstatus
       //      const status = row.original["info.status"]; // User status
       const status = row.original?.info?.status;
       //      const status = row["info.status"]; // User status
@@ -125,9 +126,9 @@ export const columns = [
       // const complaintCount = row.original["user.countcomplaint"]; // Number of complaints
       //      console.log("status", status);
       return (
-        <div>
+        <div style={{ color: row.original?.info?.dispcolorstatus }}  >
           {statusstr ?
-            <p>{row.original?.info?.dispstrstatus || "N/A"}</p>
+            <p  >{row.original?.info?.dispstrstatus || "N/A"}</p>
             :
             <p>{statusMapping[status] || "N/A"}</p>
           }
@@ -135,8 +136,8 @@ export const columns = [
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
           {/* <p>{isRed || "N/A"}</p> {/* Display warning status */}
           {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
-          {/* <p>{complaintCount || "N/A"}</p> {/* Display Number of complaints */}{" "}
-        </div>
+          {/* <p>{complaintCount || "N/A"}</p> {/* Display Number of complaints */} {" "}
+        </div >
       );
     },
   },

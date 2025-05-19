@@ -140,6 +140,7 @@ export default function WithdrawalRequestForm() {
           title: "Failed",
         }));
         setisModalVisible(true);
+
         toast.error("Fail");
       } else {
         setModalData((prev) => ({
@@ -149,6 +150,7 @@ export default function WithdrawalRequestForm() {
           title: "Success",
         }));
         setisModalVisible(true);
+
         toast.success("Success");
       }
     } catch (err) {
@@ -159,6 +161,7 @@ export default function WithdrawalRequestForm() {
         title: "Failed",
       }));
       setisModalVisible(true);
+
       toast.error("Error");
     }
   };
@@ -171,7 +174,7 @@ export default function WithdrawalRequestForm() {
   }
 
   const formatAmount = (amount) => {
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return amount.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   useEffect(() => {

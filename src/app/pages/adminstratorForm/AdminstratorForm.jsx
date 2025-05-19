@@ -70,6 +70,7 @@ const AdminstrarorForm = () => {
   });
 
   const onSubmit = (data) => {
+
     toast("New Post Published. Now you can add new one", {
       invert: true,
     });

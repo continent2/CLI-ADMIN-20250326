@@ -121,8 +121,9 @@ export const columns = [
     header: "상태", //Situation
 
     cell: ({ row }) => {
-      let statusstr = false
-      statusstr = !!row.original["dispstrstatus"]  // User status
+      const statusstr = true
+
+      // statusstr = !!row.original["dispstrstatus"]  // User status
       console.log(statusstr, row.original["dispstrstatus"]);
 
       const status = row.original['status']
@@ -140,7 +141,7 @@ export const columns = [
       // const complaintCount = row.original["user.countcomplaint"]; // Number of complaints
       //            console.log("status", status);
       return (
-        <div>
+        <div style={{ color: row.original['dispcolorstatus'] }}  >
           {statusstr ?
             <p>{row.original["dispstrstatus"] || "N/A"}</p>
             :

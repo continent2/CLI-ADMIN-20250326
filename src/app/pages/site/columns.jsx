@@ -55,6 +55,8 @@ export const columns = [
 
         cell: ({ row }) => { // console.log("row", row);
             //            const status = row.original[ "info.status" ]; // User status
+            const statusstr = false
+
             const status = row?.original?.info?.status;
             const statusMapping = {
                 0: '대기',
@@ -65,8 +67,12 @@ export const columns = [
                 //              5 : '정지해제',
             };
             return (
-                <div>
-                    <p>{statusMapping[status] || "N/A"}</p> {/* Display User status */}
+                <div style={{ color: row?.original?.info?.dispcolorstatus }} >
+                    {statusstr ?
+                        <p  >{row?.original?.info?.dispstrstatus || "N/A"}</p>
+                        :
+                        <p>{statusMapping[status] || "N/A"}</p>
+                    }
                 </div>
             );
         },

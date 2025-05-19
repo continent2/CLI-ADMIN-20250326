@@ -81,8 +81,8 @@ const AdminUserForm = () => {
     if (!phoneNationalNumber || !phoneCountryCode) return;
 
     try {
-      const countryCode = phoneCountryCode.replace("+", "");
-      const regionCode = phoneUtil.getRegionCodeForCountryCode(
+      const countryCode = phoneCountryCode?.replace("+", "");
+      const regionCode = phoneUtil?.getRegionCodeForCountryCode(
         parseInt(countryCode),
       );
 
@@ -197,6 +197,7 @@ const AdminUserForm = () => {
           title: "Success",
         }));
         setisModalVisible(true);
+
         toast.success("Success");
       } else {
         setModalData((prev) => ({
@@ -206,6 +207,7 @@ const AdminUserForm = () => {
           title: "Failed",
         }));
         setisModalVisible(true);
+
         toast.error("Fail");
       }
     } catch (err) {
@@ -215,6 +217,7 @@ const AdminUserForm = () => {
         color: "error",
         title: "Failed",
       }));
+
       toast.error("Error");
       setisModalVisible(true);
     }
