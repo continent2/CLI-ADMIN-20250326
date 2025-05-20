@@ -38,7 +38,7 @@ export function Menu({ nav, setActiveSegment, activeSegment }) {
   return (
     <ScrollShadow
       data-root-menu
-      className="hide-scrollbar flex w-full grow flex-col items-center space-y-4 overflow-y-auto pt-5 lg:space-y-3 xl:pt-5 2xl:space-y-4"
+      className="hide-scrollbar  flex w-full grow flex-col items-center space-y-4 overflow-y-auto pt-5 lg:space-y-3 xl:pt-5 2xl:space-y-4"
     >
       {nav.map(({ id, Icon, path, type, title, transKey, linkProps }) => {
         return (

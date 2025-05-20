@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { NavLink, useRouteLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 // Local Imports
 import { Badge } from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
 import { useSidebarContext } from "app/contexts/sidebar/context";
+import { JWT_HOST_API } from "configs/auth.config";
 
 // ----------------------------------------------------------------------
 
@@ -16,10 +19,38 @@ export function MenuItem({ data }) {
   const { lgAndDown } = useBreakpointsContext();
   const { close } = useSidebarContext();
   const { t } = useTranslation();
+  const [depositIndicator, setDepositIndicator] = useState({ isOn: false, color: '#00FFFFFF' });
 
   const title = t(transKey) || data.title;
-
   const info = useRouteLoaderData("root")?.[id]?.info;
+  const isDepositItem = id === "deposit" || path.includes("/deposit");
+
+  useEffect(() => {
+    if (isDepositItem) {
+      const fetchDepositIndicator = async () => {
+        try {
+          // Get the auth token from localStorage
+          const authToken = localStorage.getItem("authToken");
+
+          // Make the request with the authorization header
+          const { data } = await axios.get(`${JWT_HOST_API}/agency/update`, {
+            headers: {
+              Authorization: authToken
+            }
+          });
+
+          setDepositIndicator({
+            isOn: data.updatedata.isdepositlighton || false,
+            color: data.updatedata.isdepositlighcolor || '#00FFFFFF'
+          });
+        } catch (error) {
+          console.error("Failed to fetch deposit indicator status:", error);
+        }
+      };
+
+      fetchDepositIndicator();
+    }
+  }, [isDepositItem]);
 
   const handleMenuItemClick = () => lgAndDown && close();
 
@@ -43,7 +74,7 @@ export function MenuItem({ data }) {
               data-menu-active={isActive}
               className="flex min-w-0 items-center justify-between gap-2 text-xs+ tracking-wide"
             >
-              <div className="flex min-w-0 items-center gap-3">
+              <div className="flex min-w-0 items-center gap-3 relative">
                 {Icon && (
                   <Icon
                     className={clsx(
@@ -53,6 +84,14 @@ export function MenuItem({ data }) {
                   />
                 )}
                 <span className="truncate">{title}</span>
+
+                {/* Deposit indicator dot */}
+                {isDepositItem && depositIndicator.isOn && (
+                  <div
+                    className="-right-2 top-0 size-2 rounded-full"
+                    style={{ backgroundColor: depositIndicator.color }}
+                  />
+                )}
               </div>
               {info && info.val && (
                 <Badge
