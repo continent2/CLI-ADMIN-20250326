@@ -19,7 +19,7 @@ export function MenuItem({ data }) {
   const { lgAndDown } = useBreakpointsContext();
   const { close } = useSidebarContext();
   const { t } = useTranslation();
-  const [depositIndicator, setDepositIndicator] = useState({ isOn: false, color: '#00FFFFFF' });
+  const [depositIndicator, setDepositIndicator] = useState({ isOn: false, color: '#00FFFFFF', count: 0 });
 
   const title = t(transKey) || data.title;
   const info = useRouteLoaderData("root")?.[id]?.info;
@@ -41,7 +41,8 @@ export function MenuItem({ data }) {
 
           setDepositIndicator({
             isOn: data.updatedata.isdepositlighton || false,
-            color: data.updatedata.isdepositlighcolor || '#00FFFFFF'
+            color: data.updatedata.isdepositlighcolor || '#00FFFFFF',
+            count: data.updatedata.countdeposit
           });
         } catch (error) {
           console.error("Failed to fetch deposit indicator status:", error);
@@ -74,7 +75,7 @@ export function MenuItem({ data }) {
               data-menu-active={isActive}
               className="flex min-w-0 items-center justify-between gap-2 text-xs+ tracking-wide"
             >
-              <div className="flex min-w-0 items-center gap-3 relative">
+              <div className="flex min-w-0 items-center gap-2 relative">
                 {Icon && (
                   <Icon
                     className={clsx(
@@ -91,6 +92,9 @@ export function MenuItem({ data }) {
                     className="-right-2 top-0 size-2 rounded-full"
                     style={{ backgroundColor: depositIndicator.color }}
                   />
+                )}
+                {isDepositItem && depositIndicator.isOn && (
+                  <div>({depositIndicator.count})</div>
                 )}
               </div>
               {info && info.val && (
