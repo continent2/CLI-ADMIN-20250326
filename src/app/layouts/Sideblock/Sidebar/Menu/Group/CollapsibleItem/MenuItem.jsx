@@ -1,13 +1,14 @@
 // Import Dependencies
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { NavLink, useRouteLoaderData } from "react-router";
+import { NavLink, useLocation, useRouteLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 
 // Local Imports
 import { Badge } from "components/ui";
 import { useBreakpointsContext } from "app/contexts/breakpoint/context";
 import { useSidebarContext } from "app/contexts/sidebar/context";
+import { useEffect } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -16,11 +17,47 @@ export function MenuItem({ data }) {
   const { t } = useTranslation();
   const { lgAndDown } = useBreakpointsContext();
   const { close } = useSidebarContext();
+  const location = useLocation()
 
   const title = t(transKey) || data.title;
   const info = useRouteLoaderData("root")?.[id]?.info;
+  const isDepositItem = id === "deposit" || path.includes("/deposit");
 
-  const handleMenuItemClick = () => lgAndDown && close();
+  useEffect(() => {
+    if (isDepositItem) {
+      const fetchDepositIndicator = async () => {
+        try {
+          // Get the auth token from localStorage
+          const authToken = localStorage.getItem("authToken");
+
+          // Make the request with the authorization header
+          const { data } = await axios.get(`${JWT_HOST_API}/agency/update`, {
+            headers: {
+              Authorization: authToken
+            }
+          });
+
+          setDepositIndicator({
+            isOn: data.updatedata.isdepositlighton || false,
+            color: data.updatedata.isdepositlighcolor || '#00FFFFFF',
+            count: data.updatedata.countdeposit
+          });
+        } catch (error) {
+          console.error("Failed to fetch deposit indicator status:", error);
+        }
+      };
+
+      fetchDepositIndicator();
+    }
+  }, [isDepositItem]);
+
+  const handleMenuItemClick = () => {
+    lgAndDown && close()
+    if (location.pathname === path) {
+      e.preventDefault();
+      window.location.reload();
+    }
+  };
 
   return (
     <div className="relative flex">
@@ -51,6 +88,17 @@ export function MenuItem({ data }) {
                 )}
               />
               <span className="truncate">{title}</span>
+
+              {isDepositItem && depositIndicator.isOn && (
+                <div
+                  className="-right-2 top-0 size-2 rounded-full"
+                  style={{ backgroundColor: depositIndicator.color }}
+                />
+              )}
+              {isDepositItem && depositIndicator.isOn && (
+                <div>({depositIndicator.count})</div>
+              )}
+
             </div>
             {info && info.val && (
               <Badge

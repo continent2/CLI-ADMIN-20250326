@@ -1,7 +1,7 @@
 // Import Dependencies
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { NavLink, useRouteLoaderData } from "react-router";
+import { NavLink, useLocation, useRouteLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -15,11 +15,13 @@ import { JWT_HOST_API } from "configs/auth.config";
 // ----------------------------------------------------------------------
 
 export function MenuItem({ data }) {
+
   const { Icon, path, id, transKey } = data;
   const { lgAndDown } = useBreakpointsContext();
   const { close } = useSidebarContext();
   const { t } = useTranslation();
   const [depositIndicator, setDepositIndicator] = useState({ isOn: false, color: '#00FFFFFF', count: 0 });
+  const location = useLocation();
 
   const title = t(transKey) || data.title;
   const info = useRouteLoaderData("root")?.[id]?.info;
@@ -53,7 +55,13 @@ export function MenuItem({ data }) {
     }
   }, [isDepositItem]);
 
-  const handleMenuItemClick = () => lgAndDown && close();
+  const handleMenuItemClick = () => {
+    lgAndDown && close()
+    if (location.pathname === path) {
+      e.preventDefault();
+      window.location.reload();
+    }
+  };
 
   return (
     <div className="relative flex px-3">
