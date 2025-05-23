@@ -33,7 +33,7 @@ const useWalletData = () => {
 
 export default function Home() {
   const { data, isLoading } = useWalletData();
-  console.log(data);
+  console.log(data, "inside hoome");
   return (
     <Page title="대시보드">
       <div className="transition-content w-full px-[--margin-x] pt-5 lg:pt-6">

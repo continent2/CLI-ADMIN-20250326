@@ -9,6 +9,8 @@ import { formatNumberWithCommas } from "utils/formatNumberWithCommas";
 // ----------------------------------------------------------------------
 
 export function Balance({ data }) {
+
+  console.log(data, 'inside dashboard')
   // Optional fallback if data is still loading or undefined
   const depositToday = Number(data?.amount_deposit_today)?.toFixed(0) || 0;
   const withdrawToday = Number(data?.amount_withdraw_today)?.toFixed(0) || 0;
@@ -20,6 +22,12 @@ export function Balance({ data }) {
     Number(data?.withdrawable?.withdrawableamount_in_quote)?.toFixed(0) || 0;
   const withdrawableAmount =
     Number(data?.withdrawable?.withdrawableamount)?.toFixed(0) || 0;
+  const todayDepositAmount =
+    Number(data?.activedeposit?.amount)?.toFixed(0) || 0;
+  const todayDepositCurrency = data?.activedeposit?.amountcurrency
+  const todayConvAmount =
+    Number(data?.activedeposit?.convamount)?.toFixed(0) || 0;
+  const ConvCurrency = data?.activedeposit?.convcurrency
 
   return (
     <div className="rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 px-4 pb-4 text-white sm:px-5">
@@ -53,13 +61,29 @@ export function Balance({ data }) {
           </div>
 
           {/* Display dynamic balance */}
-          <div className="mt-3 text-nowrap text-3xl font-semibold">
-            {/** ₩{withdrawableAmount}*/}
-            {formatNumberWithCommas(withdrawableAmount)} USDT
+          <div className="flex items-center gap-4" >
+            <div>
+              <div className="mt-3 text-nowrap flex items-center gap-4 text-3xl font-semibold">
+                {/** ₩{withdrawableAmount}*/}
+                <div>
+                  {formatNumberWithCommas(withdrawableAmount)} USDT
+                </div>
+              </div>
+              <p className="mt-2 flex items-center gap-4 text-xs+ text-white/80">
+                <div>
+                  ₩ {formatNumberWithCommas(withdrawableAmountQuote)}
+                </div>
+              </p>
+            </div>
+            <div className="flex flex-col h-full justify-between" >
+              <div className="pt-3 text-nowrap flex items-center gap-4 text-3xl font-semibold" >
+                {formatNumberWithCommas(todayDepositAmount)} {todayDepositCurrency}
+              </div>
+              <div className="pt-[8px]" >
+                ₩ {formatNumberWithCommas(todayConvAmount)}
+              </div>
+            </div>
           </div>
-          <p className="mt-2 text-xs+ text-white/80">
-            ₩ {formatNumberWithCommas(withdrawableAmountQuote)}
-          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
