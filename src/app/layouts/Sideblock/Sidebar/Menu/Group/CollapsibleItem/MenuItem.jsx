@@ -17,42 +17,47 @@ export function MenuItem({ data }) {
   const { t } = useTranslation();
   const { lgAndDown } = useBreakpointsContext();
   const { close } = useSidebarContext();
+  const [depositIndicator, setDepositIndicator] = useState({ isOn: false, color: '#00FFFFFF', count: 0 });
   const location = useLocation()
 
   const title = t(transKey) || data.title;
   const info = useRouteLoaderData("root")?.[id]?.info;
   const isDepositItem = id === "deposit" || path.includes("/deposit");
+  const fetchDepositIndicator = async () => {
+    try {
+      // Get the auth token from localStorage
+      const authToken = localStorage.getItem("authToken");
+
+      // Make the request with the authorization header
+      const { data } = await axios.get(`${JWT_HOST_API}/agency/update`, {
+        headers: {
+          Authorization: authToken
+        }
+      });
+
+      setDepositIndicator({
+        isOn: data.updatedata.isdepositlighton || false,
+        color: data.updatedata.isdepositlighcolor || '#00FFFFFF',
+        count: data.updatedata.countdeposit
+      });
+    } catch (error) {
+      console.error("Failed to fetch deposit indicator status:", error);
+    }
+  };
 
   useEffect(() => {
     if (isDepositItem) {
-      const fetchDepositIndicator = async () => {
-        try {
-          // Get the auth token from localStorage
-          const authToken = localStorage.getItem("authToken");
 
-          // Make the request with the authorization header
-          const { data } = await axios.get(`${JWT_HOST_API}/agency/update`, {
-            headers: {
-              Authorization: authToken
-            }
-          });
-
-          setDepositIndicator({
-            isOn: data.updatedata.isdepositlighton || false,
-            color: data.updatedata.isdepositlighcolor || '#00FFFFFF',
-            count: data.updatedata.countdeposit
-          });
-        } catch (error) {
-          console.error("Failed to fetch deposit indicator status:", error);
-        }
-      };
-
+      const interval = setInterval(() => {
+        fetchDepositIndicator();
+      }, 5000);
       fetchDepositIndicator();
     }
   }, [isDepositItem]);
 
   const handleMenuItemClick = () => {
     lgAndDown && close()
+    fetchDepositIndicator();
     if (location.pathname === path) {
       e.preventDefault();
       window.location.reload();
@@ -89,13 +94,13 @@ export function MenuItem({ data }) {
               />
               <span className="truncate">{title}</span>
 
-              {isDepositItem && depositIndicator.isOn && (
+              {isDepositItem && (
                 <div
                   className="-right-2 top-0 size-2 rounded-full"
                   style={{ backgroundColor: depositIndicator.color }}
                 />
               )}
-              {isDepositItem && depositIndicator.isOn && (
+              {isDepositItem && depositIndicator.count > 0 && (
                 <div>({depositIndicator.count})</div>
               )}
 
