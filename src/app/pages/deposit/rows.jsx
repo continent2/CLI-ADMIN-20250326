@@ -85,8 +85,10 @@ export function SiteCell({ getValue }) {
 // }
 export function DateCell({ row }) {
   const { locale } = useLocaleContext();
-  const createdDate = row?.original?.["user.createdat"];
+  // const createdDate = row?.original?.["user.createdat"];
+  const createdDate = row?.original?.["createdat"];
   const updatedDate = row?.original?.["user.updatedat"];
+  console.log(row.original, "for updated date")
 
   // const isKoreanFormat = locale === 'en';
 
@@ -103,9 +105,9 @@ export function DateCell({ row }) {
 
   return (
     <div>
-      {/* <p>{formattedCreatedDate}</p>
-      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
-      <p>{formattedUpdatedDate}</p>
+      <p>{formattedCreatedDate}</p>
+      {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> 
+      <p>{formattedUpdatedDate}</p> */}
     </div>
   );
 }
