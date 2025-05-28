@@ -37,7 +37,7 @@ export function Balance({ data }) {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:gap-6">
         <div>
-          <div className="flex w-9/12 items-center gap-1">
+          <div className="flex w-9/12 items-center">
             <p className="truncate text-xs text-white/80">
               {data?.address_recent_used}{" "}
               {/* 0x9CDBC28F0A6C13BB42ACBD3A3B366BFCAB07B8B1 */}
@@ -63,6 +63,7 @@ export function Balance({ data }) {
           {/* Display dynamic balance */}
           <div className="flex items-center gap-4" >
             <div className="border-r border-gray-200 pr-[30px]" >
+              <div>입금계정잔액</div>
               <div className="mt-3 text-nowrap flex items-center gap-4 text-3xl font-semibold">
                 {/** ₩{withdrawableAmount}*/}
                 <div>
@@ -76,6 +77,7 @@ export function Balance({ data }) {
               </p>
             </div>
             <div className="flex flex-col pl-[15px] h-full justify-between" >
+              <div>출금계정잔액</div>
               <div className="pt-3 text-nowrap flex items-center gap-4 text-3xl font-semibold" >
                 {formatNumberWithCommas(todayDepositAmount)} {todayDepositCurrency}
               </div>
