@@ -94,7 +94,7 @@ export function MenuItem({ data }) {
               />
               <span className="truncate">{title}</span>
 
-              {isDepositItem && (
+              {isDepositItem && depositIndicator.isOn && (
                 <div
                   className="-right-2 top-0 size-2 rounded-full"
                   style={{ backgroundColor: depositIndicator.color }}
