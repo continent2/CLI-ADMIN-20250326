@@ -14,8 +14,12 @@ import {
   LockClosedIcon,
   AcademicCapIcon,
   CubeIcon,
+  BanknotesIcon,
+  CurrencyDollarIcon,
   Cog6ToothIcon,
+  GlobeAsiaAustraliaIcon
 } from "@heroicons/react/24/outline";
+
 
 import { NAV_TYPE_ROOT, NAV_TYPE_ITEM } from "constants/app.constant";
 
@@ -59,7 +63,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "사이트",
-      Icon: BuildingLibraryIcon, // CloudIcon , // LockClosedIcon,
+      Icon: GlobeAsiaAustraliaIcon, // CloudIcon , // LockClosedIcon,
     },
     {
       id: "menu.registerYourSite",
@@ -67,7 +71,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "사이트 등록",
-      Icon: BuildingLibraryIcon, //  HomeIcon,
+      Icon: CloudIcon, //  HomeIcon,
     },
     {
       id: "menu.withdrawalDetail",
@@ -75,15 +79,15 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "출금 내역",
-      Icon: ArrowRightStartOnRectangleIcon, //  ArrowUpOnSquareIcon
+      Icon: CurrencyDollarIcon, //  ArrowUpOnSquareIcon
     },
     {
       id: "menu.withdrawalRequest",
       path: path(ROOT_MENU, "/withdrawalRequest"),
       type: NAV_TYPE_ITEM,
       title: "",
-      transKey:  "출금 요청",
-      Icon: ArrowRightStartOnRectangleIcon,
+      transKey: "출금 요청",
+      Icon: BanknotesIcon,
     },
     {
       id: "menu.siteAdministrator",
@@ -91,7 +95,7 @@ export const menu = {
       type: NAV_TYPE_ITEM,
       title: "",
       transKey: "관리자", // 사이트
-      Icon: AcademicCapIcon,
+      Icon: LockClosedIcon,
     },
     {
       id: "menu.addSiteAdminstratorForm ",

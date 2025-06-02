@@ -15,6 +15,7 @@ import { TableConfig } from "./TableConfig";
 
 // Local Imports
 import { DateFilter } from "components/shared/table/DateFilter";
+import { ExportButton } from "components/shared/CSV.jsx";
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +49,13 @@ export function Toolbar({ table }) {
               isFullScreenEnabled ? "px-4 sm:px-5" : "px-[--margin-x]",
             )}
           >
+            <div className="flex items-center gap-2">
+              <ExportButton
+                table={table}
+                filename="deposit_data.csv"
+                className="mr-2"
+              />
+            </div>
             <SearchInput
               onSearch={(value) => table.options?.meta.handleSearch(value)}
               value={table.options.meta.searchTerm}
@@ -101,6 +109,13 @@ export function Toolbar({ table }) {
           )}
 
           <div className="flex shrink-0 justify-end space-x-2 rtl:space-x-reverse">
+            <div className="flex items-center gap-2">
+              <ExportButton
+                table={table}
+                filename="deposit_data.csv"
+                className="mr-2"
+              />
+            </div>
             <SearchInput
               onSearch={(value) => table.options.meta.handleSearch(value)}
               value={table.options.meta.searchTerm}

@@ -75,12 +75,15 @@ export function AppDataProvider({ children }) {
           timeout: 5000, // Timeout after 5 seconds
         },
       );
+      console.log(response.data, "bankinfo")
 
       const banks = response.data.list;
       dispatch({
         type: "APP_DATA_SUCCESS",
         payload: {
           banks,
+          agencyBank: response.data.list,
+          agencyBankStatus: response.data.status,
         },
       });
     } catch (err) {
@@ -106,11 +109,12 @@ export function AppDataProvider({ children }) {
           timeout: 5000, // Timeout after 5 seconds
         },
       );
+      console.log(response.data, "ag acc")
       dispatch({
         type: "APP_DATA_SUCCESS",
         payload: {
-          agencyBank: response.data.list,
-          agencyBankStatus: response.data.status,
+          // agencyBank: response.data.list,
+          // agencyBankStatus: response.data.status,
         },
       });
     } catch (err) {
@@ -132,12 +136,14 @@ export function AppDataProvider({ children }) {
         },
         timeout: 5000, // Timeout after 5 seconds
       });
-
+      console.log(response.data, 'withdraw info')
       const withdraw = response.data;
       dispatch({
         type: "APP_DATA_SUCCESS",
         payload: {
           withdraw,
+          agencyBank: response.data.listaccount,
+          agencyBankStatus: response.data.status,
         },
       });
     } catch (err) {

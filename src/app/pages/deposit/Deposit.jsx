@@ -50,14 +50,27 @@ export default function Deposit() {
   const [searchParams] = useSearchParams();
   const pageIndex = searchParams.get("page") || 1; // Default to 1 if not provided
 
+  const toISOStringWithoutMs = (input) => {
+    if (!input) return null;
+
+    let date;
+
+    // If input is a number, treat as Unix timestamp
+    if (typeof input === "number") {
+      // Handle seconds vs milliseconds
+      date = new Date(input < 1e12 ? input * 1000 : input);
+    } else {
+      // Otherwise treat as date string
+      date = new Date(input);
+    }
+
+    return date.toISOString().replace(/\.\d+Z$/, "");
+  };
+
   const paginationData = {
     fetchData: (offset, limit) => {
-      const timeStartIso = dateRange
-        ? new Date(dateRange[0]).toISOString().replace(/\.\d+Z$/, "")
-        : null;
-      const timeEndIso = dateRange
-        ? new Date(dateRange[1]).toISOString().replace(/\.\d+Z$/, "")
-        : null;
+      const timeStartIso = dateRange ? toISOStringWithoutMs(dateRange[0]) : null;
+      const timeEndIso = dateRange ? toISOStringWithoutMs(dateRange[1]) : null;
 
       deposits({
         offSet: offset,
@@ -72,6 +85,30 @@ export default function Deposit() {
     pageIndex,
     name: "deposit",
   };
+
+
+  // const paginationData = {
+  //   fetchData: (offset, limit) => {
+  //     const timeStartIso = dateRange
+  //       ? new Date(dateRange[0]).toISOString().replace(/\.\d+Z$/, "")
+  //       : null;
+  //     const timeEndIso = dateRange
+  //       ? new Date(dateRange[1]).toISOString().replace(/\.\d+Z$/, "")
+  //       : null;
+
+  //     deposits({
+  //       offSet: offset,
+  //       limit,
+  //       searchKey: searchTerm,
+  //       timeStartIso,
+  //       timeEndIso,
+  //       siteId,
+  //     });
+  //   },
+  //   count,
+  //   pageIndex,
+  //   name: "deposit",
+  // };
 
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -227,7 +264,7 @@ export default function Deposit() {
           className={clsx(
             "flex h-full w-full flex-col",
             tableSettings.enableFullScreen &&
-              "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
+            "fixed inset-0 z-[61] bg-white pt-3 dark:bg-dark-900",
           )}
         >
           <Toolbar table={table} />
@@ -252,6 +289,7 @@ export default function Deposit() {
                 (rows?.length === 0 ? (
                   <NoData message="No deposit data found." />
                 ) : (
+
                   <ListView table={table} flexRender={flexRender} rows={rows} />
                 ))
               )}
@@ -263,16 +301,16 @@ export default function Deposit() {
                   className={clsx(
                     "pb-4 sm:pt-4",
                     (viewType === "list" || tableSettings.enableFullScreen) &&
-                      "px-4 sm:px-5",
+                    "px-4 sm:px-5",
                     tableSettings.enableFullScreen &&
-                      "bg-gray-50 dark:bg-dark-800",
+                    "bg-gray-50 dark:bg-dark-800",
                     !(
                       table.getIsSomeRowsSelected() ||
                       table.getIsAllRowsSelected()
                     ) && "pt-4",
                     viewType === "grid" &&
-                      !tableSettings.enableFullScreen &&
-                      "mt-3",
+                    !tableSettings.enableFullScreen &&
+                    "mt-3",
                   )}
                 >
                   <PaginationSection

@@ -24,7 +24,8 @@ const activityColor = {
 
 export function DateCell({ row }) {
   const { locale } = useLocaleContext();
-  const createdDate = row?.original?.["agency.createdat"];
+  // const createdDate = row?.original?.["agency.createdat"];
+  const createdDate = row?.original?.["createdat"];
   const updatedDate = row?.original?.["agency.updatedat"];
   const dateFormat = isKoreanFormat ? 'YYYY년MM월DD일' : 'YYYY-MM-DD';
 
@@ -38,9 +39,9 @@ export function DateCell({ row }) {
 
   return (
     <div>
-      {/* <p>{formattedCreatedDate}</p>
-      <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> */}
-      <p>{formattedUpdatedDate}</p>
+      <p>{formattedCreatedDate}</p>
+      {/* <div style={{ margin: "8px 0", borderBottom: "2px solid #ddd" }} /> 
+      <p>{formattedUpdatedDate}</p> */}
     </div>
   );
 }
